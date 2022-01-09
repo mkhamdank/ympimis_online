@@ -231,6 +231,13 @@ Route::get('index/outgoing/lot_status/{vendor}', 'OutgoingController@indexLotSta
 Route::get('fetch/outgoing/lot_status/{vendor}', 'OutgoingController@fetchLotStatus');
 Route::get('fetch/outgoing/lot_status/detail/{vendor}', 'OutgoingController@fetchLotStatusDetail');
 
+Route::get('index/incoming/pareto/{vendor}', 'OutgoingController@indexIncomingPareto');
+Route::get('fetch/incoming/pareto/{vendor}', 'OutgoingController@fetchIncomingPareto');
+Route::get('fetch/incoming/pareto/detail/{vendor}', 'OutgoingController@fetchIncomingParetoDetail');
+
+Route::get('index/incoming/ng_rate/{vendor}', 'OutgoingController@indexIncomingNgRate');
+Route::get('fetch/incoming/ng_rate/{vendor}', 'OutgoingController@fetchIncomingNgRate');
+Route::get('fetch/incoming/ng_rate/detail/{vendor}', 'OutgoingController@fetchIncomingNgRateDetail');
 
 Route::get('index/invoice', 'AccountingController@indexInvoice');
 Route::get('fetch/invoice', 'AccountingController@fetchInvoice');
