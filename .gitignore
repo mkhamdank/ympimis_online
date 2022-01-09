@@ -1,0 +1,8 @@
+<<<<<<< HEAD
+.env
+=======
+.env
+>>>>>>> 77febceeaaf9bd948deeabce2a72a16ad963555a
+public/uploads/
+*.zip
+public/purchase_orders/
