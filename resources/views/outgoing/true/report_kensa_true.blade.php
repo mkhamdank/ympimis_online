@@ -10,7 +10,7 @@
         overflow:hidden;
     }
     tbody>tr>td{
-        text-align:center;
+        text-align:left;
     }
     tfoot>tr>th{
         text-align:center;
@@ -87,7 +87,6 @@
                                         <th style="background-color: #3f50b5;color: white !important;">NG Ratio (%)</th>
                                         <th style="background-color: #3f50b5;color: white !important;">NG Name</th>
                                         <th style="background-color: #3f50b5;color: white !important;">NG Qty</th>
-                                        <th style="background-color: #3f50b5;color: white !important;">QC Final Check</th>
                                     </tr>
                                 </thead>
                                 <tbody id="bodyTableKensa">
@@ -134,13 +133,12 @@
                     bodyTable += '<td>'+result.outgoing[i].serial_number+'</td>';
                     bodyTable += '<td>'+result.outgoing[i].material_number+'<br>'+result.outgoing[i].material_description+'</td>';
                     bodyTable += '<td>'+result.outgoing[i].inspector+'</td>';
-                    bodyTable += '<td>'+result.outgoing[i].qty_check+'</td>';
-                    bodyTable += '<td>'+result.outgoing[i].total_ok+'</td>';
-                    bodyTable += '<td>'+result.outgoing[i].total_ng+'</td>';
-                    bodyTable += '<td>'+result.outgoing[i].ng_ratio+'</td>';
+                    bodyTable += '<td style="text-align:right">'+result.outgoing[i].qty_check+'</td>';
+                    bodyTable += '<td style="text-align:right">'+result.outgoing[i].total_ok+'</td>';
+                    bodyTable += '<td style="text-align:right">'+result.outgoing[i].total_ng+'</td>';
+                    bodyTable += '<td style="text-align:right">'+result.outgoing[i].ng_ratio+'</td>';
                     bodyTable += '<td>'+result.outgoing[i].ng_name+'</td>';
-                    bodyTable += '<td>'+result.outgoing[i].ng_qty+'</td>';
-                    bodyTable += '<td>'+(result.outgoing[i].qa_final_status || 'Not Checked')+'</td>';
+                    bodyTable += '<td style="text-align:right">'+result.outgoing[i].ng_qty+'</td>';
                     bodyTable += '</tr>';
                 }
                 $('#bodyTableKensa').append(bodyTable);

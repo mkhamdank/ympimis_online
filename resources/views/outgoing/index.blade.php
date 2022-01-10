@@ -55,6 +55,24 @@
                                 <a href="{{ url('/index/outgoing/pareto/kbi') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: #e61010;background-color: #fff;color: #4a0505 ">Production Pareto KBI</a>
                             <?php endif ?>
                         </div>
+                        <br>
+                        <br>
+                        <h4 class="card-title"><span style="font-size: 20px;color: #e61010"><i class="fa fa-angle-double-down"></i> Display Incoming YMPI<i class="fa fa-angle-double-down"></i></span></h4>
+                        <div class="text-end">
+                            <?php if (Auth::user()->role_code == 'TRUE' || Auth::user()->role_code == 'MIS'): ?>
+                                <a href="{{ url('/index/incoming/pareto/true') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: white;color: #4a085e">Pareto Incoming Check PT. TRUE</a>
+                                <a href="{{ url('/index/incoming/ng_rate/true') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: white;color: #4a085e">NG Rate Incoming Check PT. TRUE</a>
+                            <?php endif ?>
+                            <?php if (Auth::user()->role_code == 'ARISA' || Auth::user()->role_code == 'MIS'): ?>
+                                <a href="{{ url('/index/incoming/pareto/arisa') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: white;color: #4a085e">Pareto Incoming Check PT. ARISA</a>
+                                <a href="{{ url('/index/incoming/ng_rate/arisa') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: white;color: #4a085e">NG Rate Incoming Check PT. ARISA</a>
+                            <?php endif ?>
+                            <?php if (Auth::user()->role_code == 'KBI' || Auth::user()->role_code == 'MIS'): ?>
+                                <a href="{{ url('/index/incoming/pareto/kbi') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: white;color: #4a085e">Pareto Incoming Check PT. KBI</a>
+                                <a href="{{ url('/index/incoming/ng_rate/kbi') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: white;color: #4a085e">NG Rate Incoming Check PT. KBI</a>
+                                <!-- <a href="{{ url('/index/outgoing/arisa/report') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: purple">Report QC Final ARISA</a> -->
+                            <?php endif ?>
+                        </div>
                     </div>
                 </div>
             </div>

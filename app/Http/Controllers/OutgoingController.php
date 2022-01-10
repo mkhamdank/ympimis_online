@@ -35,49 +35,51 @@ class OutgoingController extends Controller
             }
         }
 
-        $this->critical_true = ['Berjamur,
-			Kotor Serangga,
-			Flashing,
-			Salah Spec,
-			Salah Label,
-			Material Kurang,
-			Material Lebih,
-			Material Tercampur,
-			Tidak Terplating,
-			Plating Kelupas,
-			Tanpa Shoulder Strap,
-			Hook Patah'];
+        $this->critical_true = ['Berjamur',
+			'Kotor Serangga',
+			'Flashing',
+			'Salah Spec',
+			'Salah Label',
+			'Material Kurang',
+			'Material Lebih',
+			'Material Tercampur',
+			'Tidak Terplating',
+			'Plating Kelupas',
+			'Tanpa Shoulder Strap',
+			'Hook Patah',
+		];
 
-		$this->non_critical_true = ['Part Cuil,
-			Cloth Gundul,
-			Terlihat Kayu,
-			Terlihat Styrofoam,
-			Sobek,
-			Kelupas,
-			Celah,
-			Kaku,
-			Longgar,
-			Kerut,
-			Coretan,
-			Kotor Lem,
-			Karat,
-			Kotor Tinta / Kapur,
-			Scratch / Gores,
-			Bergelombang,
-			Cekung,
-			Cembung,
-			Miring,
-			Geser Sliding,
-			Buram,
-			Belang,
-			Painting Terkontamintasi,
-			Plating Beleber,
-			Plating Tipis,
-			Plating Kasar,
-			Sisa Benang,
-			Bahan Kain Kurang,
-			Part Goyang,
-			Jahitan Lepas'];
+		$this->non_critical_true = ['Part Cuil',
+			'Cloth Gundul',
+			'Terlihat Kayu',
+			'Terlihat Styrofoam',
+			'Sobek',
+			'Kelupas',
+			'Celah',
+			'Kaku',
+			'Longgar',
+			'Kerut',
+			'Coretan',
+			'Kotor Lem',
+			'Karat',
+			'Kotor Tinta / Kapur',
+			'Scratch / Gores',
+			'Bergelombang',
+			'Cekung',
+			'Cembung',
+			'Miring',
+			'Geser Sliding',
+			'Buram',
+			'Belang',
+			'Painting Terkontamintasi',
+			'Plating Beleber',
+			'Plating Tipis',
+			'Plating Kasar',
+			'Sisa Benang',
+			'Bahan Kain Kurang',
+			'Part Goyang',
+			'Jahitan Lepas',
+		];
 
 		$this->critical_arisa = ['Bari (flashing)',
 					'Short-shoot',
@@ -303,8 +305,8 @@ class OutgoingController extends Controller
 				        $bcc[1] = 'rio.irvansyah@music.yamaha.com';
 
 				        Mail::to('mokhamad.khamdan.khabibi@music.yamaha.com')
-				        ->cc($cc,'CC')
-				        ->bcc($bcc,'BCC')
+				        // ->cc($cc,'CC')
+				        // ->bcc($bcc,'BCC')
 				        ->send(new SendEmail($outgoing, 'critical_true'));
 		            }
 
@@ -343,9 +345,9 @@ class OutgoingController extends Controller
 				        	'outgoing_critical' => $outgoings_critical, );
 
 				        Mail::to('mokhamad.khamdan.khabibi@music.yamaha.com')
-				        ->cc($cc,'CC')
-				        ->bcc($bcc,'BCC')
-				        ->send(new SendEmail($outgoings, 'over_limit_ratio_true'));
+				        // ->cc($cc,'CC')
+				        // ->bcc($bcc,'BCC')
+				        ->send(new SendEmail($data, 'over_limit_ratio_true'));
 					}
 				}
 			}
@@ -2006,6 +2008,466 @@ class OutgoingController extends Controller
 				'message' => $e->getMessage()
 			);
 			return Response::json($response);
+		}
+	}
+
+
+	public function indexIncomingPareto($vendor)
+	{
+		if ($vendor == 'true') {
+			$title = 'Pareto Incoming Check PT. TRUE';
+			$page = 'Pareto Incoming Check TRUE';
+			$title_jp = '';
+			$vendor_name = 'PT. TRUE';
+			$view = 'outgoing.true.incoming_pareto';
+			$materials = QaMaterial::where('vendor_shortname','TRUE')->get();
+		}
+
+		if ($vendor == 'arisa') {
+			$title = 'Pareto Incoming Check PT. ARISAMANDIRI PRATAMA';
+			$page = 'Pareto Incoming Check ARISAMANDIRI PRATAMA';
+			$title_jp = '';
+			$vendor_name = 'PT. ARISAMANDIRI PRATAMA';
+			$view = 'outgoing.arisa.incoming_pareto';
+			$materials = QaMaterial::where('vendor_shortname','ARISA')->get();
+		}
+
+		if ($vendor == 'kbi') {
+			$title = 'Pareto Incoming Check PT. KBI';
+			$page = 'Pareto Incoming Check KBI';
+			$title_jp = '';
+			$vendor_name = 'PT. KBI';
+			$view = 'outgoing.kbi.incoming_pareto';
+			$materials = QaMaterial::where('vendor_shortname','KYORAKU')->get();
+		}
+
+		return view($view, array(
+			'title' => $title,
+			'title_jp' => $title_jp,
+			'vendor' => $vendor,
+			'materials' => $materials,
+		))->with('page', $page)->with('head', $page);
+	}
+
+	public function fetchIncomingPareto(Request $request,$vendor)
+	{
+		try {
+			if ($vendor == 'arisa') {
+				$vendor_shortname = 'ARISAMANDIRI PRATAMA PT.';
+			}
+			if ($vendor == 'true') {
+				$vendor_shortname = 'PT. TRUE INDONESIA';
+			}
+			if ($vendor == 'kbi') {
+				$vendor_shortname = 'KYORAKU BLOWMOLDING INDONESIA';
+			}
+
+			$first_month_ng = DB::SELECT("SELECT
+	          DATE_FORMAT( week_date, '%Y-%m' ) AS first_month 
+	        FROM
+	          weekly_calendars 
+	        WHERE
+	          fiscal_year = (
+	          SELECT
+	            fiscal_year 
+	          FROM
+	            weekly_calendars 
+	          WHERE
+	            week_date = DATE(
+	            NOW())) 
+	        ORDER BY
+	          week_date 
+	          LIMIT 1");
+	        $month_from = $request->get('month_from');
+	        $month_to = $request->get('month_to');
+	        if ($month_from == "") {
+	             if ($month_to == "") {
+	                  $first = "DATE_FORMAT( NOW(), '%Y-%m' )";
+	                  $last = "DATE_FORMAT( NOW(), '%Y-%m' )";
+	                  $firstMonthTitle = date('M Y');
+	                  $lastMonthTitle = date('M Y');
+	             }else{
+	                  $first = "DATE_FORMAT( NOW(), '%Y-%m' )";
+	                  $last = "'".$month_to."'";
+	                  $firstMonthTitle = date('M Y');
+	                  $lastMonthTitle = date('M Y',strtotime($month_to));
+	             }
+	        }else{
+	             if ($month_to == "") {
+	                  $first = "'".$month_from."'";
+	                  $last = "DATE_FORMAT( NOW(), '%Y-%m' )";
+	                  $firstMonthTitle = date('M Y',strtotime($month_from));
+	                  $lastMonthTitle = date('M Y');
+	             }else{
+	                  $first = "'".$month_from."'";
+	                  $last = "'".$month_to."'";
+	                  $firstMonthTitle = date('M Y',strtotime($month_from));
+	                  $lastMonthTitle = date('M Y',strtotime($month_to));
+	             }
+	        }
+
+	        $material = '';
+	        if($request->get('material') != null){
+	          $materials =  explode(",", $request->get('material'));
+	          for ($i=0; $i < count($materials); $i++) {
+	            $material = $material."'".$materials[$i]."'";
+	            if($i != (count($materials)-1)){
+	              $material = $material.',';
+	            }
+	          }
+	          $materialin = " and qa_incoming_logs.`material_number` in (".$material.") ";
+	        }
+	        else{
+	          $materialin = "";
+	        }
+
+			$material_defect = DB::connection('ympimis')->SELECT("SELECT
+				ng_name,
+				SUM( qty_ng ) AS count,
+				SUM( total_ok ) AS count_ok,
+				SUM( qa_incoming_ng_logs.qty_check ) AS count_check 
+			FROM
+				qa_incoming_ng_logs
+				JOIN qa_incoming_logs ON qa_incoming_logs.incoming_check_code = qa_incoming_ng_logs.incoming_check_code 
+			WHERE
+				DATE_FORMAT( qa_incoming_ng_logs.created_at, '%Y-%m' ) >= ".$first."
+				AND DATE_FORMAT( qa_incoming_ng_logs.created_at, '%Y-%m' ) <= ".$last."
+				AND qa_incoming_logs.vendor = '".$vendor_shortname."' 
+				".$materialin."
+			GROUP BY
+				ng_name 
+			ORDER BY
+				count DESC,
+				count_ok DESC,
+				count_check DESC");
+
+			$material_status = DB::connection('ympimis')->SELECT("SELECT
+				SUM( a.total ) AS total,
+				SUM( a.returnes )+SUM( a.scrapes )+SUM( a.repaires) AS `ng` 
+			FROM
+				(
+				SELECT
+					SUM( qty_check ) AS total,
+					0 AS returnes,
+					0 AS scrapes,
+					0 AS repaires 
+				FROM
+					qa_incoming_logs 
+				WHERE
+					DATE_FORMAT( created_at, '%Y-%m' ) >= ".$first."
+					AND DATE_FORMAT( created_at, '%Y-%m' ) <= ".$last."
+					AND vendor = '".$vendor_shortname."' ".$materialin." UNION ALL
+				SELECT
+					0 total,
+					SUM( `return` ) AS returnes,
+					0 AS scrapes,
+					0 AS repaires 
+				FROM
+					qa_incoming_logs 
+				WHERE
+					DATE_FORMAT( created_at, '%Y-%m' ) >= ".$first."
+					AND DATE_FORMAT( created_at, '%Y-%m' ) <= ".$last."
+				AND vendor = '".$vendor_shortname."' ".$materialin." 
+				UNION ALL
+				SELECT
+					0 total,
+					0 AS returnes,
+					SUM( `scrap` ) AS scrapes,
+					0 AS repaires 
+				FROM
+					qa_incoming_logs 
+				WHERE
+					DATE_FORMAT( created_at, '%Y-%m' ) >= ".$first."
+					AND DATE_FORMAT( created_at, '%Y-%m' ) <= ".$last."
+				AND vendor = '".$vendor_shortname."' ".$materialin." 
+				UNION ALL
+				SELECT
+					0 total,
+					0 AS returnes,
+					0 AS scrapes,
+					SUM( `repair` ) AS repaires 
+				FROM
+					qa_incoming_logs 
+				WHERE
+					DATE_FORMAT( created_at, '%Y-%m' ) >= ".$first."
+					AND DATE_FORMAT( created_at, '%Y-%m' ) <= ".$last."
+				AND vendor = '".$vendor_shortname."' ".$materialin." 
+				) a");
+			$response = array(
+		        'status' => true,
+		        'material_defect' => $material_defect,
+		        'material_status' => $material_status,
+		        'firstMonthTitle' => $firstMonthTitle,
+		        'lastMonthTitle' => $lastMonthTitle,
+		    );
+		    return Response::json($response);
+		} catch (\Exception $e) {
+			$response = array(
+		        'status' => false,
+		        'message' => $e->getMessage(),
+		    );
+		    return Response::json($response);
+		}
+	}
+
+	public function fetchIncomingParetoDetail(Request $request,$vendor)
+	{
+		try {
+			if ($vendor == 'arisa') {
+				$vendor_shortname = 'ARISAMANDIRI PRATAMA PT.';
+			}
+			if ($vendor == 'true') {
+				$vendor_shortname = 'PT. TRUE INDONESIA';
+			}
+			if ($vendor == 'kbi') {
+				$vendor_shortname = 'KYORAKU BLOWMOLDING INDONESIA';
+			}
+
+			$month_from = $request->get('month_from');
+	        $month_to = $request->get('month_to');
+	        if ($month_from == "") {
+	             if ($month_to == "") {
+	                  $first = "DATE_FORMAT( NOW(), '%Y-%m' )";
+	                  $last = "DATE_FORMAT( NOW(), '%Y-%m' )";
+	                  $firstMonthTitle = date('M Y');
+	                  $lastMonthTitle = date('M Y');
+	             }else{
+	                  $first = "DATE_FORMAT( NOW(), '%Y-%m' )";
+	                  $last = "'".$month_to."'";
+	                  $firstMonthTitle = date('M Y');
+	                  $lastMonthTitle = date('M Y',strtotime($month_to));
+	             }
+	        }else{
+	             if ($month_to == "") {
+	                  $first = "'".$month_from."'";
+	                  $last = "DATE_FORMAT( NOW(), '%Y-%m' )";
+	                  $firstMonthTitle = date('M Y',strtotime($month_from));
+	                  $lastMonthTitle = date('M Y');
+	             }else{
+	                  $first = "'".$month_from."'";
+	                  $last = "'".$month_to."'";
+	                  $firstMonthTitle = date('M Y',strtotime($month_from));
+	                  $lastMonthTitle = date('M Y',strtotime($month_to));
+	             }
+	        }
+
+	        $material = '';
+	        if($request->get('material') != null){
+	          $materials =  explode(",", $request->get('material'));
+	          for ($i=0; $i < count($materials); $i++) {
+	            $material = $material."'".$materials[$i]."'";
+	            if($i != (count($materials)-1)){
+	              $material = $material.',';
+	            }
+	          }
+	          $materialin = " and `material_number` in (".$material.") ";
+	        }
+	        else{
+	          $materialin = "";
+	        }
+
+			$details = DB::CONNECTION('ympimis')->SELECT("SELECT
+		            *,
+		          date(created_at) as created
+		          FROM
+		            qa_incoming_ng_logs 
+		          WHERE
+		            DATE_FORMAT( created_at, '%Y-%m' ) >= ".$first." 
+		            AND DATE_FORMAT( created_at, '%Y-%m' ) <= ".$last." 
+		            and vendor = '".$vendor_shortname."'
+		            ".$materialin." 
+		            AND ng_name = '".$request->get('categories')."'");
+
+			$response = array(
+		        'status' => true,
+		        'details' => $details,
+		    );
+		    return Response::json($response);
+		} catch (\Exception $e) {
+			$response = array(
+		        'status' => false,
+		        'message' => $e->getMessage(),
+		    );
+		    return Response::json($response);
+		}
+	}
+
+	public function indexIncomingNgRate($vendor)
+	{
+		if ($vendor == 'true') {
+			$title = 'Incoming NG Rate PT. TRUE';
+			$page = 'Incoming NG Rate PT. TRUE';
+			$title_jp = '';
+			$vendor_name = 'PT. TRUE';
+			$view = 'outgoing.true.incoming_ng_rate';
+			$materials = QaMaterial::where('vendor_shortname','TRUE')->get();
+		}
+
+		if ($vendor == 'arisa') {
+			$title = 'Incoming NG Rate PT. ARISAMANDIRI PRATAMA';
+			$page = 'Incoming NG Rate  PT. ARISAMANDIRI PRATAMA';
+			$title_jp = '';
+			$vendor_name = 'PT. ARISAMANDIRI PRATAMA';
+			$view = 'outgoing.arisa.incoming_ng_rate';
+			$materials = QaMaterial::where('vendor_shortname','ARISA')->get();
+		}
+
+		if ($vendor == 'kbi') {
+			$title = 'Incoming NG Rate PT. KBI';
+			$page = 'Incoming NG Rate PT. KBI';
+			$title_jp = '';
+			$vendor_name = 'PT. KBI';
+			$view = 'outgoing.kbi.incoming_ng_rate';
+			$materials = QaMaterial::where('vendor_shortname','KBI')->get();
+		}
+
+		return view($view, array(
+			'title' => $title,
+			'title_jp' => $title_jp,
+			'vendor' => $vendor,
+			'materials' => $materials,
+		))->with('page', $page)->with('head', $page);
+	}
+
+	public function fetchIncomingNgRate(Request $request,$vendor)
+	{
+		try {
+			if ($vendor == 'arisa') {
+				$vendor_shortname = 'ARISAMANDIRI PRATAMA PT.';
+			}
+			if ($vendor == 'true') {
+				$vendor_shortname = 'PT. TRUE INDONESIA';
+			}
+			if ($vendor == 'kbi') {
+				$vendor_shortname = 'KYORAKU BLOWMOLDING INDONESIA';
+			}
+
+			$date_from = $request->get('date_from');
+	        $date_to = $request->get('date_to');
+	        if ($date_from == "") {
+	             if ($date_to == "") {
+	                  $first = "DATE_FORMAT( NOW(), '%Y-%m-01' ) ";
+	                  $last = "LAST_DAY(NOW())";
+	                  $firstDateTitle = date('01 M Y');
+	                  $lastDateTitle = date('d M Y');
+	             }else{
+	                  $first = "DATE_FORMAT( NOW(), '%Y-%m-01' ) ";
+	                  $last = "'".$date_to."'";
+	                  $firstDateTitle = date('01 M Y');
+	                  $lastDateTitle = date('d M Y',strtotime($date_to));
+	             }
+	        }else{
+	             if ($date_to == "") {
+	                  $first = "'".$date_from."'";
+	                  $last = "LAST_DAY(NOW())";
+	                  $firstDateTitle = date('d M Y',strtotime($date_from));
+	                  $lastDateTitle = date('d M Y');
+	             }else{
+	                  $first = "'".$date_from."'";
+	                  $last = "'".$date_to."'";
+	                  $firstDateTitle = date('d M Y',strtotime($date_from));
+	                  $lastDateTitle = date('d M Y',strtotime($date_to));
+	             }
+	        }
+
+	        $material = '';
+	        if($request->get('material') != null){
+	          $materials =  explode(",", $request->get('material'));
+	          for ($i=0; $i < count($materials); $i++) {
+	            $material = $material."'".$materials[$i]."'";
+	            if($i != (count($materials)-1)){
+	              $material = $material.',';
+	            }
+	          }
+	          $materialin = " and `material_number` in (".$material.") ";
+	        }
+	        else{
+	          $materialin = "";
+	        }
+
+			$outgoing = DB::connection('ympimis')->SELECT("SELECT
+				DATE( created_at ) AS check_date,
+				SUM( qty_check ) AS qty_check,
+				SUM( `return` )+ SUM( `repair` ) AS qty_ng,
+				ROUND((( SUM( `repair` )+ SUM( `return` ))/ SUM( qty_check )) * 100, 1 ) AS ng_ratio 
+			FROM
+				`qa_incoming_logs` 
+			WHERE
+				DATE( created_at ) >= ".$first." 
+				AND DATE( created_at ) <= ".$last."
+				AND vendor = '".$vendor_shortname."' 
+				".$materialin."
+			GROUP BY
+				DATE(
+				created_at)");
+			$response = array(
+		        'status' => true,
+		        'outgoing' => $outgoing,
+		        'firstDateTitle' => $firstDateTitle,
+		        'lastDateTitle' => $lastDateTitle,
+		    );
+		    return Response::json($response);
+		} catch (\Exception $e) {
+			$response = array(
+		        'status' => false,
+		        'message' => $e->getMessage(),
+		    );
+		    return Response::json($response);
+		}
+	}
+
+	public function fetchIncomingNgRateDetail(Request $request,$vendor)
+	{
+		try {
+			if ($vendor == 'arisa') {
+				$vendor_shortname = 'ARISAMANDIRI PRATAMA PT.';
+			}
+			if ($vendor == 'true') {
+				$vendor_shortname = 'PT. TRUE INDONESIA';
+			}
+			if ($vendor == 'kbi') {
+				$vendor_shortname = 'KYORAKU BLOWMOLDING INDONESIA';
+			}
+
+	        $material = '';
+	        if($request->get('material') != null){
+	          $materials =  explode(",", $request->get('material'));
+	          for ($i=0; $i < count($materials); $i++) {
+	            $material = $material."'".$materials[$i]."'";
+	            if($i != (count($materials)-1)){
+	              $material = $material.',';
+	            }
+	          }
+	          $materialin = " and qa_incoming_logs.`material_number` in (".$material.") ";
+	        }
+	        else{
+	          $materialin = "";
+	        }
+
+			$outgoing = DB::connection('ympimis')->SELECT("SELECT
+					qa_incoming_logs.*,
+					qa_incoming_ng_logs.ng_name,
+					qa_incoming_ng_logs.qty_ng,
+					DATE( qa_incoming_logs.created_at ) AS created 
+				FROM
+					`qa_incoming_logs`
+					LEFT JOIN qa_incoming_ng_logs ON qa_incoming_logs.incoming_check_code = qa_incoming_ng_logs.incoming_check_code 
+				WHERE
+					DATE( qa_incoming_logs.created_at ) = '".$request->get('categories')."' 
+					AND qa_incoming_logs.vendor = '".$vendor_shortname."'
+		          ".$materialin."");
+
+			$response = array(
+		        'status' => true,
+		        'outgoing' => $outgoing,
+		    );
+		    return Response::json($response);
+		} catch (\Exception $e) {
+			$response = array(
+		        'status' => false,
+		        'message' => $e->getMessage(),
+		    );
+		    return Response::json($response);
 		}
 	}
 
