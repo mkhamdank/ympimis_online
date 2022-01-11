@@ -122,14 +122,18 @@ table.table-bordered > tfoot > tr > th{
   @stop
 
   @section('scripts')
-  <script src="{{ url("js/dataTables.buttons.min.js")}}"></script>
-  <script src="{{ url("js/jquery.dataTables.min.js") }}"></script>
-  <script src="{{ url("js/dataTables.bootstrap4.min.js") }}"></script>
-  <script src="{{ url("js/buttons.flash.min.js")}}"></script>
-  <script src="{{ url("js/jszip.min.js")}}"></script>
-  <script src="{{ url("js/vfs_fonts.js")}}"></script>
-  <script src="{{ url("js/buttons.html5.min.js")}}"></script>
-  <script src="{{ url("js/buttons.print.min.js")}}"></script>
+<script src="{{ url("js/jquery-3.5.1.js") }}"></script>
+<script src="<?php echo e(url("js/jquery.numpad.js")); ?>"></script>
+<script src="{{ url("js/jquery.gritter.min.js") }}"></script>
+<script src="{{ url("js/jquery.dataTables.min.js") }}"></script>
+<script src="{{ url("js/dataTables.bootstrap4.min.js") }}"></script>
+<script src="{{ url("js/jquery.flot.min.js") }}"></script>
+<script src="{{ url("js/dataTables.buttons.min.js")}}"></script>
+<script src="{{ url("js/buttons.flash.min.js")}}"></script>
+<script src="{{ url("js/jszip.min.js")}}"></script>
+<script src="{{ url("js/vfs_fonts.js")}}"></script>
+<script src="{{ url("js/buttons.html5.min.js")}}"></script>
+<script src="{{ url("js/buttons.print.min.js")}}"></script>
   <script>
     // function hideSidebar() {
     //   document.getElementById("main-wrapper").setAttribute('data-sidebartype','mini-sidebar');
@@ -140,7 +144,6 @@ table.table-bordered > tfoot > tr > th{
     //   document.getElementsByClassName('sidebar-item active selected')[0].style.setProperty('width', '65px', 'important');
     // }
     jQuery(document).ready(function() {
-      hideSidebar();
       $('#example1 tfoot th').each( function () {
         var title = $(this).text();
         $(this).html( '<input style="text-align: center;" type="text" placeholder="Search '+title+'" size="20"/>' );
