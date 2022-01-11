@@ -299,14 +299,15 @@ class OutgoingController extends Controller
 
 				        $cc = [];
 				        $cc[0] = 'yayuk.wahyuni@music.yamaha.com';
+				        $cc[1] = 'imron.faizal@music.yamaha.com';
 
 				        $bcc = [];
 				        $bcc[0] = 'mokhamad.khamdan.khabibi@music.yamaha.com';
 				        $bcc[1] = 'rio.irvansyah@music.yamaha.com';
 
-				        Mail::to('mokhamad.khamdan.khabibi@music.yamaha.com')
-				        // ->cc($cc,'CC')
-				        // ->bcc($bcc,'BCC')
+				        Mail::to($mail_to)
+				        ->cc($cc,'CC')
+				        ->bcc($bcc,'BCC')
 				        ->send(new SendEmail($outgoing, 'critical_true'));
 		            }
 
@@ -344,9 +345,9 @@ class OutgoingController extends Controller
 				        	'outgoing_non' => $outgoings,
 				        	'outgoing_critical' => $outgoings_critical, );
 
-				        Mail::to('mokhamad.khamdan.khabibi@music.yamaha.com')
-				        // ->cc($cc,'CC')
-				        // ->bcc($bcc,'BCC')
+				        Mail::to($mail_to)
+				        ->cc($cc,'CC')
+				        ->bcc($bcc,'BCC')
 				        ->send(new SendEmail($data, 'over_limit_ratio_true'));
 					}
 				}

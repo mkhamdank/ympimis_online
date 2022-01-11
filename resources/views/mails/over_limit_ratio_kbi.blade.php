@@ -44,43 +44,43 @@
 							<th colspan="2" style="border:1px solid black;font-weight: bold;background-color: #d4e157;color: black">Details</th>
 						</tr>
 						<tr>
-							<th style="border:1px solid black;font-weight: bold;background-color: rgb(126,86,134);color: white;">Serial Number</th>
+							<th style="border:1px solid black;font-weight: bold;background-color: rgb(126,86,134);text-align: left;color: white;">Serial Number</th>
 							<td style="border:1px solid black;text-align: left">
 								{{$data['outgoing_non'][0]['serial_number']}}
 							</td>
 						</tr>
 						<tr>
-							<th style="border:1px solid black;font-weight: bold;background-color: rgb(126,86,134);color: white;">Material</th>
+							<th style="border:1px solid black;font-weight: bold;background-color: rgb(126,86,134);text-align: left;color: white;">Material</th>
 							<td style="border:1px solid black;text-align: left">
 								{{$data['outgoing_non'][0]['material_number']}} - {{$data['outgoing_non'][0]['material_description']}}
 							</td>
 						</tr>
 						<tr>
-							<th style="border:1px solid black;font-weight: bold;background-color: rgb(126,86,134);color: white;">Qty Check</th>
+							<th style="border:1px solid black;font-weight: bold;background-color: rgb(126,86,134);text-align: left;color: white;">Qty Check</th>
 							<td style="border:1px solid black;text-align: right">
 								{{$data['outgoing_non'][0]['qty_check']}}
 							</td>
 						</tr>
 						<tr>
-							<th style="border:1px solid black;font-weight: bold;background-color: rgb(126,86,134);color: white;">Total OK</th>
+							<th style="border:1px solid black;font-weight: bold;background-color: rgb(126,86,134);text-align: left;color: white;">Total OK</th>
 							<td style="border:1px solid black;text-align: right">
 								{{$data['outgoing_non'][0]['total_ok']}}
 							</td>
 						</tr>
 						<tr>
-							<th style="border:1px solid black;font-weight: bold;background-color: rgb(126,86,134);color: white;">Total Defect</th>
+							<th style="border:1px solid black;font-weight: bold;background-color: rgb(126,86,134);text-align: left;color: white;">Total Defect</th>
 							<td style="border:1px solid black;text-align: right">
 								{{$data['outgoing_non'][0]['total_ng']}}
 							</td>
 						</tr>
 						<tr>
-							<th style="border:1px solid black;font-weight: bold;background-color: rgb(126,86,134);color: white;">Defect Ratio</th>
+							<th style="border:1px solid black;font-weight: bold;background-color: rgb(126,86,134);text-align: left;color: white;">Defect Ratio</th>
 							<td style="border:1px solid black;text-align: right">
 								{{$data['outgoing_non'][0]['ng_ratio']}} %
 							</td>
 						</tr>
 						<tr>
-							<th style="border:1px solid black;font-weight: bold;background-color: rgb(126,86,134);color: white;">Inspector</th>
+							<th style="border:1px solid black;font-weight: bold;background-color: rgb(126,86,134);text-align: left;color: white;">Inspector</th>
 							<td style="border:1px solid black;text-align: left">
 								{{$data['outgoing_non'][0]['inspector']}}
 							</td>
