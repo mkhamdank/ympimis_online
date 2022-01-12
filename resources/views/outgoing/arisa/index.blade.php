@@ -225,13 +225,13 @@
 					</tr>
 					<tr>
 						<td>
-							<input type="number" class="pull-right numpad" name="qty_check_appearance" style="height: 50px;font-size: 1.7vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="qty_check_appearance" onchange="checkQty(this.id)" placeholder="Qty Appearance" readonly="">
+							<input type="number" class="pull-right" name="qty_check_appearance" style="height: 50px;font-size: 1.7vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="qty_check_appearance" onchange="checkQty(this.id)" placeholder="Qty Appearance" >
 						</td>
 						<td>
-							<input type="number" class="pull-right" name="qty_check_functional" style="height: 50px;font-size: 1.7vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="qty_check_functional" placeholder="Qty Functional" readonly="">
+							<input type="number" class="pull-right" name="qty_check_functional" style="height: 50px;font-size: 1.7vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="qty_check_functional" placeholder="Qty Functional" >
 						</td>
 						<td>
-							<input type="number" class="pull-right" name="qty_check_dimensional" style="height: 50px;font-size: 1.7vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="qty_check_dimensional" placeholder="Qty Dimentional" readonly="">
+							<input type="number" class="pull-right" name="qty_check_dimensional" style="height: 50px;font-size: 1.7vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="qty_check_dimensional" placeholder="Qty Dimentional" >
 						</td>
 					</tr>
 				</tbody>
@@ -435,9 +435,9 @@
 			        		</thead>
 			        		<tbody id="bodyTableInputs">
 			        			<tr>
-			        				<td><input type="number" class="pull-right numpad" name="qty_check_app" style="height: 50px;font-size: 1.7vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="qty_check_app" onchange="checkQty(this.id)" placeholder="Qty Appearance" readonly=""></td>
-			        				<td><input type="number" class="pull-right numpad" name="qty_check_fun" style="height: 50px;font-size: 1.7vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="qty_check_fun" placeholder="Qty Functional" readonly=""></td>
-			        				<td><input type="number" class="pull-right numpad" name="qty_check_dim" style="height: 50px;font-size: 1.7vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="qty_check_dim" placeholder="Qty Dimensional" readonly=""></td>
+			        				<td><input type="number" class="pull-right" name="qty_check_app" style="height: 50px;font-size: 1.7vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="qty_check_app" onchange="checkQty(this.id)" placeholder="Qty Appearance" ></td>
+			        				<td><input type="number" class="pull-right" name="qty_check_fun" style="height: 50px;font-size: 1.7vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="qty_check_fun" placeholder="Qty Functional" ></td>
+			        				<td><input type="number" class="pull-right" name="qty_check_dim" style="height: 50px;font-size: 1.7vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="qty_check_dim" placeholder="Qty Dimensional" ></td>
 			        			</tr>
 			        		</tbody>
 			        	</table>
@@ -867,7 +867,7 @@
 							tableDataFunctional += '<td>'+result.point_check[i].point_check_lower+'</td>';
 							tableDataFunctional += '<td>'+result.point_check[i].point_check_upper+'</td>';
 							for(var j = 1; j < parseInt($('#qty_check_fun').val())+1; j++){
-								tableDataFunctional += '<td><input type="number" class="pull-right numpad3" name="values_'+j+'_'+result.point_check[i].id+'_'+index_values_functional+'" style="height: 50px;font-size: 2vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="values_'+j+'_'+result.point_check[i].id+'_'+index_values_functional+'" placeholder="'+j+'" onchange="checkValue('+result.point_check[i].point_check_upper+','+result.point_check[i].point_check_lower+','+j+','+result.point_check[i].id+','+index_values_functional+')"></td>';
+								tableDataFunctional += '<td><input type="number" class="pull-right" name="values_'+j+'_'+result.point_check[i].id+'_'+index_values_functional+'" style="height: 50px;font-size: 2vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="values_'+j+'_'+result.point_check[i].id+'_'+index_values_functional+'" placeholder="'+j+'" onchange="checkValue('+result.point_check[i].point_check_upper+','+result.point_check[i].point_check_lower+','+j+','+result.point_check[i].id+','+index_values_functional+')"></td>';
 								index_values_functional++;
 								id_values_functional.push(result.point_check[i].id);
 							}
@@ -888,7 +888,7 @@
 							tableDataDimensional += '<td>'+result.point_check[i].point_check_lower+'</td>';
 							tableDataDimensional += '<td>'+result.point_check[i].point_check_upper+'</td>';
 							for(var j = 1; j < parseInt($('#qty_check_dim').val())+1; j++){
-								tableDataDimensional += '<td><input type="number" class="pull-right numpad3" name="values_'+j+'_'+result.point_check[i].id+'_'+index_values_dimensional+'" style="height: 50px;font-size: 2vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="values_'+j+'_'+result.point_check[i].id+'_'+index_values_dimensional+'" placeholder="'+j+'" onchange="checkValue('+result.point_check[i].point_check_upper+','+result.point_check[i].point_check_lower+','+j+','+result.point_check[i].id+','+index_values_dimensional+')"></td>';
+								tableDataDimensional += '<td><input type="number" class="pull-right " name="values_'+j+'_'+result.point_check[i].id+'_'+index_values_dimensional+'" style="height: 50px;font-size: 2vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="values_'+j+'_'+result.point_check[i].id+'_'+index_values_dimensional+'" placeholder="'+j+'" onchange="checkValue('+result.point_check[i].point_check_upper+','+result.point_check[i].point_check_lower+','+j+','+result.point_check[i].id+','+index_values_dimensional+')"></td>';
 								index_values_dimensional++;
 								id_values_dimensional.push(result.point_check[i].id);
 							}
