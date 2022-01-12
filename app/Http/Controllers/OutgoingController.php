@@ -306,7 +306,7 @@ class OutgoingController extends Controller
 				        $bcc[1] = 'rio.irvansyah@music.yamaha.com';
 
 				        Mail::to($mail_to)
-				        ->cc($cc,'CC')
+				        // ->cc($cc,'CC')
 				        ->bcc($bcc,'BCC')
 				        ->send(new SendEmail($outgoing, 'critical_true'));
 		            }
@@ -346,7 +346,7 @@ class OutgoingController extends Controller
 				        	'outgoing_critical' => $outgoings_critical, );
 
 				        Mail::to($mail_to)
-				        ->cc($cc,'CC')
+				        // ->cc($cc,'CC')
 				        ->bcc($bcc,'BCC')
 				        ->send(new SendEmail($data, 'over_limit_ratio_true'));
 					}
