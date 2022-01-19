@@ -20,7 +20,7 @@
                         <h4 class="card-title"><span style="font-size: 20px; color: #0e691e;"><i class="fa fa-angle-double-down"></i> Process <i class="fa fa-angle-double-down"></i></span></h4>
                         <div class="text-end">
                             <?php if (Auth::user()->role_code == 'TRUE' || Auth::user()->role_code == 'MIS'): ?>
-                                <a href="{{ url('/index/outgoing/true/input') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: #0e691e;background-color: white;color: #094a05">Input Outgoing PT. TRUE</a>
+                                <a href="{{ url('/index/outgoing/true/input') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: #0e691e;background-color: white;color: #094a05">Input Vendor Final Inspection PT. TRUE</a>
                             <?php endif ?>
                             <?php if (Auth::user()->role_code == 'ARISA' || Auth::user()->role_code == 'MIS'): ?>
                                 <a href="{{ url('/index/kensa/arisa') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: #0e691e;background-color: white;color: #094a05">Production Check ARISA</a>
@@ -80,7 +80,7 @@
             <div class="col-sm-4 col-xs-6" style="text-align: center;padding: 5px">
                 <div class="card">
                     <div class="card-body" style="padding: 10px">
-                        <h4 class="card-title"><span style="font-size: 20px;color: purple"><i class="fa fa-angle-double-down"></i> Report Outgoing <i class="fa fa-angle-double-down"></i></span></h4>
+                        <h4 class="card-title"><span style="font-size: 20px;color: purple"><i class="fa fa-angle-double-down"></i> Report Vendor Final Inspection <i class="fa fa-angle-double-down"></i></span></h4>
                         <div class="text-end">
                             <?php if (Auth::user()->role_code == 'TRUE' || Auth::user()->role_code == 'MIS'): ?>
                                 <a href="{{ url('/index/kensa/true/report') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: white;color: #4a085e">Report Production Check PT. TRUE</a>

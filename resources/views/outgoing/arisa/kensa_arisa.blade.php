@@ -251,9 +251,9 @@
 				<table class="table table-bordered" style="width: 100%; margin-bottom: 2px;" border="1" id="tableNgList">
 					<thead>
 						<tr>
-							<th style="width: 10%; background-color: rgb(220,220,220); padding:0;font-size: 20px;" >#</th>
+							<!-- <th style="width: 10%; background-color: rgb(220,220,220); padding:0;font-size: 20px;" >#</th> -->
 							<th style="width: 65%; background-color: rgb(220,220,220); padding:0;font-size: 20px;" >NG Name</th>
-							<th style="width: 10%; background-color: rgb(220,220,220); padding:0;font-size: 20px;" >#</th>
+							<!-- <th style="width: 10%; background-color: rgb(220,220,220); padding:0;font-size: 20px;" >#</th> -->
 							<th style="width: 15%; background-color: rgb(220,220,220); padding:0;font-size: 20px;" >Count</th>
 						</tr>
 					</thead>
@@ -269,10 +269,10 @@
 						?>
 						<input type="hidden" id="loop" value="{{$loop->count}}">
 						<tr <?php echo $color ?>>
-							<td id="minus" onclick="minus({{$nomor+1}})" style="background-color: rgb(255,204,255); font-weight: bold; font-size: 45px; cursor: pointer;" class="unselectable">-</td>
+							<!-- <td id="minus" onclick="minus({{$nomor+1}})" style="background-color: rgb(255,204,255); font-weight: bold; font-size: 45px; cursor: pointer;" class="unselectable">-</td> -->
 							<td id="ng{{$nomor+1}}" style="font-size: 20px;">{{ $ng_list->ng_name }}</td>
-							<td id="plus" onclick="plus({{$nomor+1}})" style="background-color: rgb(204,255,255); font-weight: bold; font-size: 45px; cursor: pointer;" class="unselectable">+</td>
-							<td style="font-weight: bold; font-size: 45px; background-color: rgb(100,100,100); color: yellow;"><span id="count{{$nomor+1}}">0</span></td>
+							<!-- <td id="plus" onclick="plus({{$nomor+1}})" style="background-color: rgb(204,255,255); font-weight: bold; font-size: 45px; cursor: pointer;" class="unselectable">+</td> -->
+							<td><input type="number" style="font-weight: bold; font-size: 45px; background-color: rgb(100,100,100); color: yellow;width: 100%;text-align: center;" id="count{{$nomor+1}}" value="0" onkeyup="checkQtyNg(this.value,this.id)" placeholder="0"></td>
 						</tr>
 						<?php $no+=1; ?>
 						@endforeach
@@ -559,7 +559,7 @@
 		var jumlah_ng = '{{$nomor+1}}';
 		for (var i = 1; i <= jumlah_ng; i++ ) {
 			// for (var j = 0; j < ng_name.length; j++ ) {
-				$('#count'+i).html(0);
+				$('#count'+i).val('');
 			// }
 		}
 		// updateKensaCode();
@@ -627,8 +627,8 @@
 		var qty_ng = 0;
 		var jumlah_ng = '{{$nomor+1}}';
 		for (var i = 1; i <= jumlah_ng; i++ ) {
-			if ($('#count'+i).text() != 0) {
-				qty_ng = qty_ng + parseInt($('#count'+i).text());
+			if ($('#count'+i).val() != 0) {
+				qty_ng = qty_ng + parseInt($('#count'+i).val());
 			}
 		}
 		var total_ok = value - qty_ng;
@@ -662,6 +662,21 @@
 				$('#count'+id).text(parseInt(count)-1);
 			}
 		}
+	}
+
+	function checkQtyNg(value,id) {
+		var qty_check = $('#qty_check').val();
+		var qty_ng = 0;
+		var jumlah_ng = '{{$nomor+1}}';
+		for (var i = 1; i <= jumlah_ng; i++ ) {
+			if ($('#count'+i).val() != 0) {
+				qty_ng = qty_ng + parseInt($('#count'+i).val());
+			}
+		}
+		var total_ok = qty_check - qty_ng;
+		$('#total_ok').val(total_ok);
+		$('#total_ng').val(qty_ng);
+		$('#ng_ratio').val(((qty_ng/qty_check)*100).toFixed(1));
 	}
 
 	function openSuccessGritter(title, message){
@@ -744,9 +759,9 @@
 			var ng_qty = [];
 			var jumlah_ng = '{{$nomor+1}}';
 			for (var i = 1; i <= jumlah_ng; i++ ) {
-				if ($('#count'+i).text() != 0) {
+				if ($('#count'+i).val() != '') {
 					ng_name.push($('#ng'+i).text());
-					ng_qty.push($('#count'+i).text());
+					ng_qty.push($('#count'+i).val());
 				}
 			}
 

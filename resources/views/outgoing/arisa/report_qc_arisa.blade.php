@@ -84,7 +84,6 @@
                                     <tr>
                                         <th style="background-color: #3f50b5;color: white !important;width: 1%">SO Number</th>
                                         <th style="background-color: #3f50b5;color: white !important;width: 1%">Final Serial Number</th>
-                                        <th style="background-color: #3f50b5;color: white !important;width: 1%">Result Prod. Check</th>
                                         <th style="background-color: #3f50b5;color: white !important;width: 2%">Material</th>
                                         <th style="background-color: #3f50b5;color: white !important;width: 1%">Inspector</th>
                                         <th style="background-color: #3f50b5;color: white !important;width: 1%">Point Check Type</th>
@@ -187,21 +186,20 @@
                 $("#bodyTableKensa").html('');
                 var bodyTable = '';
                 var final_serial_number = [];
-                var allcheck = uniqByKeepFirst(result.allchecks, it => it.serial_number);
                 for (var i = 0; i < result.outgoing.length; i++) {
                     bodyTable += '<tr>';
                     bodyTable += '<td>'+(result.outgoing[i].so_number || '')+'</td>';
                     bodyTable += '<td>'+result.outgoing[i].final_serial_number+'</td>';
-                    var sernum = result.outgoing[i].serial_number.split(',');
-                    bodyTable += '<td>';
-                    for(var j = 0; j < sernum.length;j++){
-                        for(var k = 0; k < allcheck.length;k++){
-                            if (sernum[j] == allcheck[k].serial_number) {
-                                bodyTable += sernum[j]+'<br>OK : '+allcheck[k].result_check.split('_')[2]+'<br>NG : '+allcheck[k].result_check.split('_')[3]+'<hr style="border:2px solid red;padding:0px;margin-top:0px;margin-bottom:0px">';
-                            }
-                        }
-                    }
-                    bodyTable += '</td>';
+                    // var sernum = result.outgoing[i].serial_number.split(',');
+                    // bodyTable += '<td>';
+                    // for(var j = 0; j < sernum.length;j++){
+                    //     for(var k = 0; k < allcheck.length;k++){
+                    //         if (sernum[j] == allcheck[k].serial_number) {
+                    //             bodyTable += sernum[j]+'<br>OK : '+allcheck[k].result_check.split('_')[2]+'<br>NG : '+allcheck[k].result_check.split('_')[3]+'<hr style="border:2px solid red;padding:0px;margin-top:0px;margin-bottom:0px">';
+                    //         }
+                    //     }
+                    // }
+                    // bodyTable += '</td>';
                     bodyTable += '<td>'+result.outgoing[i].material_number+'<br>'+result.outgoing[i].material_description+'</td>';
                     bodyTable += '<td>'+result.outgoing[i].inspector+'</td>';
                     bodyTable += '<td>'+result.outgoing[i].point_check_type+'</td>';

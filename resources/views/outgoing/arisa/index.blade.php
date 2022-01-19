@@ -202,12 +202,6 @@
 					<tr>
 						<th colspan="2" style=" background-color: #d1d1d1; text-align: center; color: #14213d; padding:0;font-size: 15px;width: 50%">Serial Number</th>
 					</tr>
-					<tr>
-						<table class="table table-bordered table-striped table-hover">
-			        		<tbody id="bodyTableSerialNumber">
-			        		</tbody>
-			        	</table>
-					</tr>
 				</tbody>
 			</table>
 			<table class="table table-bordered" style="width: 100%; margin-bottom: 5px;border: 0">
@@ -245,7 +239,7 @@
 					</tr>
 					<tr>
 						<td style="background-color: #d1d1d1; text-align: center; color: #14213d; padding:0;font-size: 20px;font-weight: bold;width: 50%">
-							<select style="height: 50px;font-size: 1.7vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d;background-color: green;color: white;font-weight: bold;" id="lot_status" data-placeholder="Lot Status" onchange="changeLotStatus(this.value)">
+							<select style="height: 50px;font-size: 1.7vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d;background-color: green;color: white;font-weight: bold;" id="lot_status" data-placeholder="Lot Status">
 								<option value="LOT OK">LOT OK</option>
 								<option value="LOT OUT">LOT OUT</option>
 							</select>
@@ -543,6 +537,8 @@
 		document.getElementById('lot_status').style.backgroundColor = "green";
 		document.getElementById('lot_status').style.color = "white";
 		$("#lot_status").val('LOT OK').trigger('change');
+		var lot_status_select = document.getElementById('lot_status');
+		lot_status_select.setAttribute('onchange','changeLotStatus(this.value)');
 		ng_list();
 		all_check = 0;
 	});
@@ -577,7 +573,7 @@
 		$('#bodyTableAppearance').html('');
 		$('#bodyTableFunctional').html('');
 		$('#bodyTableDimensional').html('');
-		$('#bodyTableSerialNumber').html('');
+		// $('#bodyTableSerialNumber').html('');
 		$('#bodyTableInput').html('');
 
 		$('#qty_check_app').val('');
@@ -910,15 +906,17 @@
 					decimalSeparator : '.'
 				});
 
-				var serial_number_product = '';
-				$('#bodyTableSerialNumber').html('');
-				for(var m = 0; m < serial_number.length;m++){
-					serial_number_product += '<tr style="background-color:white">';
-					serial_number_product += '<td style="font-size:20px">'+serial_number[m]+'</td>';
-					serial_number_product += '</tr>';
-				}
-				$('#bodyTableSerialNumber').append(serial_number_product);
-				updateKensaCode();
+				$('#serial_number').html(serial_number[0]);
+
+				// var serial_number_product = '';
+				// $('#bodyTableSerialNumber').html('');
+				// for(var m = 0; m < serial_number.length;m++){
+				// 	serial_number_product += '<tr style="background-color:white">';
+				// 	serial_number_product += '<td style="font-size:20px">'+serial_number[m]+'</td>';
+				// 	serial_number_product += '</tr>';
+				// }
+				// $('#bodyTableSerialNumber').append(serial_number_product);
+				// updateKensaCode();
 			}else{
 				openErrorGritter('Error!',result.message);
 				$('#loading').hide();
@@ -1227,7 +1225,7 @@
 				// functional_ng:functional_ng,
 				inspector:inspector,
 				result_check:result_check,
-				serial_number:serial_number,
+				// serial_number:serial_number,
 				final_serial_number:final_serial_number,
 				lot_status:lot_status,
 			}
@@ -1235,7 +1233,7 @@
 			$.post('{{ url("index/outgoing/arisa/confirm") }}', data, function(result, status, xhr){
 				if(result.status){
 					cancelAll('button');
-					updateKensaCode();
+					// updateKensaCode();
 					openSuccessGritter('Success!',result.message);
 					$('#loading').hide();
 					$('#btn_confirm').removeAttr('disabled');

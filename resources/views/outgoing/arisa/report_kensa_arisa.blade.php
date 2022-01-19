@@ -78,11 +78,11 @@
             <div class="col-sm-12 col-xs-12" style="text-align: center;">
                 <div class="card">
                     <div class="card-body" style="padding: 0px">
-                        <div class="col-md-12" style="padding: 10px">
+                        <div class="col-md-12" style="padding: 10px" style="overflow-x: scroll;">
                             <table class="table user-table no-wrap" id="tableKensa">
                                 <thead>
                                     <tr>
-                                        <th style="background-color: #3f50b5;color: white !important">Serial Number</th>
+                                        <th style="background-color: #3f50b5;color: white !important">SN</th>
                                         <th style="background-color: #3f50b5;color: white !important">Material</th>
                                         <th style="background-color: #3f50b5;color: white !important">Inspector</th>
                                         <th style="background-color: #3f50b5;color: white !important">Production Result</th>

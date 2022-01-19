@@ -185,16 +185,16 @@ class OutgoingController extends Controller
   	}
     public function index($vendor){
 		if ($vendor == 'true') {
-			$title = 'Outgoing PT. TRUE';
-			$page = 'Outgoing True';
+			$title = 'Vendor Final Inspection - PT. TRUE';
+			$page = 'Vendor Final Inspection - True';
 			$title_jp = '';
 		}else if ($vendor == 'kbi') {
-			$title = 'Outgoing PT. KBI';
-			$page = 'Outgoing KBI';
+			$title = 'Vendor Final Inspection - PT. KBI';
+			$page = 'Vendor Final Inspection - KBI';
 			$title_jp = '';
 		}else if ($vendor == 'arisa') {
-			$title = 'Outgoing PT. ARISA';
-			$page = 'Outgoing ARISA';
+			$title = 'Vendor Final Inspection - PT. ARISA';
+			$page = 'Vendor Final Inspection - ARISA';
 			$title_jp = '';
 		}
 
@@ -469,8 +469,8 @@ class OutgoingController extends Controller
 			$qty_check_functional = $request->get('qty_check_functional');
 			$qty_check_dimensional = $request->get('qty_check_dimensional');
 			$final_serial_number = $request->get('final_serial_number');
-			$serial_number = $request->get('serial_number');
-			$serial_number_for = $request->get('serial_number');
+			// $serial_number = $request->get('serial_number');
+			$serial_number_for = $request->get('final_serial_number');
 			$lot_status = $request->get('lot_status');
 			// $appearance_ng = $request->get('appearance_ng');
 			// $functional_ng = $request->get('functional_ng');
@@ -501,7 +501,7 @@ class OutgoingController extends Controller
 					'qty_check' => $qty_check,
 					'final_serial_number' => $final_serial_number,
 					'lot_status' => $lot_status,
-					'serial_number' => join(",",$serial_number),
+					// 'serial_number' => join(",",$serial_number),
 					// 'total_ok' => $total_ok,
 					// 'total_ng' => $total_ng,
 					// 'ng_ratio' => $ng_ratio,
@@ -516,15 +516,15 @@ class OutgoingController extends Controller
 				
 			}
 
-			for ($j=0; $j < count($serial_number_for); $j++) { 
-				$final = QaOutgoingVendor::where('serial_number',$serial_number_for[$j])->get();
+			// for ($j=0; $j < count($serial_number_for); $j++) { 
+				$final = QaOutgoingVendor::where('serial_number',$serial_number_for)->get();
 				for ($k=0; $k < count($final); $k++) { 
 					$final_update = QaOutgoingVendor::where('id',$final[$k]->id)->first();
 					$final_update->qa_final_status = 'Checked';
 					$final_update->lot_status = $lot_status;
 					$final_update->save();
 				}
-			}
+			// }
 			$response = array(
 		        'status' => true,
 		        'message' => 'Success Input Data'
@@ -770,7 +770,7 @@ class OutgoingController extends Controller
 	public function fetchReportKensaArisa()
 	{
 		try {
-			$outgoing = QaOutgoingVendor::where('vendor_shortname','ARISA')->get();
+			$outgoing = QaOutgoingVendor::where('vendor_shortname','ARISA')->orderby('qa_outgoing_vendors.created_at','desc')->get();
 
 			$response = array(
 		        'status' => true,
@@ -802,46 +802,49 @@ class OutgoingController extends Controller
 	public function fetchReportQcArisa()
 	{
 		try {
-			$outgoing = QaOutgoingVendorFinal::where('qa_outgoing_vendor_finals.vendor_shortname','ARISA')->join('qa_outgoing_point_checks','qa_outgoing_point_checks.id','qa_outgoing_vendor_finals.point_check_id')->get();
-			$allchecks = [];
-			for ($i=0; $i < count($outgoing); $i++) { 
-				$sernum = explode(',', $outgoing[$i]->serial_number);
-				for ($j=0; $j < count($sernum); $j++) { 
-					$allcheck = DB::SELECT("SELECT
-						CONCAT(
-							serial_number,
-							'_',
-							material_number,
-							'_',
-							total_ok,
-							'_',
-							total_ng,
-							'_',
-							ng_ratio,
-							'_',
-							GROUP_CONCAT( ng_name ),
-							'_',
-						GROUP_CONCAT( ng_qty )) AS result_check 
-					FROM
-						`qa_outgoing_vendors` 
-					WHERE
-						serial_number = '".$sernum[$j]."' 
-					GROUP BY
-						material_number,
-						total_ok,
-						total_ng,
-						ng_ratio");
-						array_push($allchecks, [
-							'serial_number' => $sernum[$j],
-							'result_check' => $allcheck[0]->result_check
-						]);
-				}
-			}
+			$outgoing = QaOutgoingVendorFinal::where('qa_outgoing_vendor_finals.vendor_shortname','ARISA')
+			->join('qa_outgoing_point_checks','qa_outgoing_point_checks.id','qa_outgoing_vendor_finals.point_check_id')
+			->orderby('qa_outgoing_vendor_finals.created_at','desc')
+			->get();
+			// $allchecks = [];
+			// for ($i=0; $i < count($outgoing); $i++) { 
+			// 	$sernum = explode(',', $outgoing[$i]->serial_number);
+			// 	for ($j=0; $j < count($sernum); $j++) { 
+			// 		$allcheck = DB::SELECT("SELECT
+			// 			CONCAT(
+			// 				serial_number,
+			// 				'_',
+			// 				material_number,
+			// 				'_',
+			// 				total_ok,
+			// 				'_',
+			// 				total_ng,
+			// 				'_',
+			// 				ng_ratio,
+			// 				'_',
+			// 				GROUP_CONCAT( ng_name ),
+			// 				'_',
+			// 			GROUP_CONCAT( ng_qty )) AS result_check 
+			// 		FROM
+			// 			`qa_outgoing_vendors` 
+			// 		WHERE
+			// 			serial_number = '".$sernum[$j]."' 
+			// 		GROUP BY
+			// 			material_number,
+			// 			total_ok,
+			// 			total_ng,
+			// 			ng_ratio");
+			// 			array_push($allchecks, [
+			// 				'serial_number' => $sernum[$j],
+			// 				'result_check' => $allcheck[0]->result_check
+			// 			]);
+			// 	}
+			// }
 
 			$response = array(
 		        'status' => true,
 		        'outgoing' => $outgoing,
-		        'allchecks' => $allchecks,
+		        // 'allchecks' => $allchecks,
 		        'message' => 'Success Input Data',
 		    );
 		    return Response::json($response);
@@ -1125,7 +1128,7 @@ class OutgoingController extends Controller
 	public function fetchReportKensaTrue()
 	{
 		try {
-			$outgoing = QaOutgoingVendor::where('vendor_shortname','TRUE')->get();
+			$outgoing = QaOutgoingVendor::where('vendor_shortname','TRUE')->orderby('qa_outgoing_vendors.created_at','desc')->get();
 
 			$response = array(
 		        'status' => true,
