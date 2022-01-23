@@ -179,9 +179,12 @@ Route::group(['nav' => 'A4', 'middleware' => 'permission'], function(){
 });
 
 Route::group(['nav' => 'S0', 'middleware' => 'permission'], function(){
+	//ALL
 	Route::get('index/outgoing/{vendor}', 'OutgoingController@index');
-	Route::get('index/outgoing/true/input', 'OutgoingController@indexInputTrue');
-	Route::post('index/outgoing/true/confirm', 'OutgoingController@confirmInputTrue');
+	Route::get('index/incoming/{vendor}/report', 'OutgoingController@indexReportIncoming');
+	Route::get('fetch/incoming/{vendor}/report', 'OutgoingController@fetchReportIncoming');
+
+	//ARISA
 	Route::get('index/outgoing/arisa/input', 'OutgoingController@indexInputArisa');
 	Route::get('fetch/outgoing/arisa/point_check', 'OutgoingController@fetchPointCheck');
 	Route::get('fetch/kensa/arisa/serial_number', 'OutgoingController@fetchKensaSerialNumber');
@@ -199,6 +202,8 @@ Route::group(['nav' => 'S0', 'middleware' => 'permission'], function(){
 	Route::get('fetch/outgoing/arisa/report', 'OutgoingController@fetchReportQcArisa');
 	Route::get('input/outgoing/arisa/so_number', 'OutgoingController@inputSONumberArisa');
 
+	//KBI
+
 	Route::get('index/serial_number/kbi', 'OutgoingController@indexUploadSerialNumberKbi');
 	Route::get('fetch/serial_number/kbi', 'OutgoingController@fetchSerialNumberKbi');
 	Route::post('upload/serial_number/kbi', 'OutgoingController@uploadSerialNumberKbi');
@@ -212,11 +217,21 @@ Route::group(['nav' => 'S0', 'middleware' => 'permission'], function(){
 	Route::get('index/kensa/kbi/report', 'OutgoingController@indexReportKensaKbi');
 	Route::get('fetch/kensa/kbi/report', 'OutgoingController@fetchReportKensaKbi');
 
+	//TRUE
+
+	Route::get('index/outgoing/true/input', 'OutgoingController@indexInputTrue');
+	Route::post('index/outgoing/true/confirm', 'OutgoingController@confirmInputTrue');
+	Route::get('fetch/outgoing/true/material', 'OutgoingController@fetchMaterialTrue');
+
 	Route::get('index/kensa/true/report', 'OutgoingController@indexReportKensaTrue');
 	Route::get('fetch/kensa/true/report', 'OutgoingController@fetchReportKensaTrue');
 
-	Route::get('index/incoming/{vendor}/report', 'OutgoingController@indexReportIncoming');
-	Route::get('fetch/incoming/{vendor}/report', 'OutgoingController@fetchReportIncoming');
+	Route::get('index/serial_number/true', 'OutgoingController@indexUploadSerialNumberTrue');
+	Route::get('fetch/serial_number/true', 'OutgoingController@fetchSerialNumberTrue');
+	Route::post('upload/serial_number/true', 'OutgoingController@uploadSerialNumberTrue');
+	Route::get('download/serial_number/true', 'OutgoingController@downloadSerialNumberTrue');
+	Route::get('update/serial_number/true', 'OutgoingController@updateSerialNumberTrue');
+	Route::get('delete/serial_number/true', 'OutgoingController@deleteSerialNumberTrue');
 });
 
 Route::get('index/outgoing/ng_rate/{vendor}', 'OutgoingController@indexNgRate');

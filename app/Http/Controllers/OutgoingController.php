@@ -198,7 +198,7 @@ class OutgoingController extends Controller
 			$title_jp = '';
 		}
 
-		if (Auth::user()->role_code == strtoupper($vendor) || Auth::user()->role_code == 'MIS') {
+		if (Auth::user()->role_code == strtoupper($vendor) || Auth::user()->role_code == 'MIS' || Auth::user()->role_code == 'E - Purchasing') {
 			return view('outgoing.index', array(
 				'title' => $title,
 				'vendor' => $vendor,
@@ -212,7 +212,7 @@ class OutgoingController extends Controller
 
 	public function indexInputTrue()
 	{
-		$title = 'Input Outgoing Check';
+		$title = 'Input Final Inspection';
 		$title_jp = '';
 
 		$ng_lists = DB::SELECT("select * from ng_lists where ng_lists.location = 'outgoing' and remark = 'true'");
@@ -226,7 +226,28 @@ class OutgoingController extends Controller
 			'vendor' => 'PT. TRUE INDONESIA',
 			'inspector' => Auth::user()->name,
 			'materials' => $materials,
-		))->with('page', 'Input Outgoing Check TRUE')->with('head', 'Input Outgoing Check TRUE');
+		))->with('page', 'Input Final Inspection TRUE')->with('head', 'Input Final Inspection TRUE');
+	}
+
+	public function fetchMaterialTrue(Request $request)
+	{
+		try {
+			$target = QaOutgoingSerialNumber::where(DB::RAW('DATE_FORMAT(date,"%Y-%m")'),date('Y-m',strtotime($request->get('periode'))))->where('material_number',$request->get('material_number'))->first();
+
+			if (count($target) > 0) {
+				$response = array(
+			        'status' => true,
+			        'target' => $target,
+			    );
+			    return Response::json($response);
+			}
+		} catch (\Exception $e) {
+			$response = array(
+		        'status' => false,
+		        'message' => $e->getMessage(),
+		    );
+		    return Response::json($response);
+		}
 	}
 
 	public function confirmInputTrue(Request $request)
@@ -371,7 +392,7 @@ class OutgoingController extends Controller
 
 	public function indexInputArisa()
 	{
-		$title = 'Input Outgoing Check';
+		$title = 'Input Final Inspection';
 		$title_jp = '';
 
 		$product = DB::SELECT("SELECT DISTINCT
@@ -390,7 +411,7 @@ class OutgoingController extends Controller
 			'product' => $product,
 			'inspector' => Auth::user()->name,
 			'vendor' => 'PT. ARISAMANDIRI PRATAMA',
-		))->with('page', 'Input Outgoing Check ARISA')->with('head', 'Input Outgoing Check ARISA');
+		))->with('page', 'Input Final Inspection ARISA')->with('head', 'Input Final Inspection ARISA');
 	}
 
 	public function fetchInspectionLevel(Request $request)
@@ -687,8 +708,8 @@ class OutgoingController extends Controller
 				        $bcc[0] = 'mokhamad.khamdan.khabibi@music.yamaha.com';
 				        $bcc[1] = 'rio.irvansyah@music.yamaha.com';
 
-				        Mail::to('mokhamad.khamdan.khabibi@music.yamaha.com')
-				        ->cc($cc,'CC')
+				        Mail::to($mail_to)
+				        // ->cc($cc,'CC')
 				        ->bcc($bcc,'BCC')
 				        ->send(new SendEmail($outgoing, 'critical_arisa'));
 
@@ -732,8 +753,8 @@ class OutgoingController extends Controller
 				        	'outgoing_non' => $outgoings,
 				        	'outgoing_critical' => $outgoings_critical, );
 
-				        Mail::to('mokhamad.khamdan.khabibi@music.yamaha.com')
-				        ->cc($cc,'CC')
+				        Mail::to($mail_to)
+				        // ->cc($cc,'CC')
 				        ->bcc($bcc,'BCC')
 				        ->send(new SendEmail($data, 'over_limit_ratio_arisa'));
 					}
@@ -2475,6 +2496,164 @@ class OutgoingController extends Controller
 		}
 	}
 
+	public function indexUploadSerialNumberTrue()
+	{
+		$title = 'Upload Monthly Schedule PT. TRUE';
+		$title_jp = '';
+		$page = 'Upload Monthly Schedule PT. TRUE';
+
+		$material = QaMaterial::where('vendor_shortname','TRUE')->get();
+		return view('outgoing.true.upload', array(
+			'title' => $title,
+			'title_jp' => $title_jp,
+			'material' => $material,
+		))->with('page', $page)->with('head', $page);
+	}
+
+	public function downloadSerialNumberTrue()
+	{
+		$file_path = public_path('qa/TemplateSerialNumberTRUE.xlsx');
+		return response()->download($file_path);
+	}
+
+	public function fetchSerialNumberTrue(Request $request)
+	{
+		try {
+			$serial_number = QaOutgoingSerialNumber::select('qa_outgoing_serial_numbers.*',DB::RAW('DATE_FORMAT(qa_outgoing_serial_numbers.date,"%M %Y") as periode'))->where('vendor_shortname','TRUE')->orderby('created_at','desc')->get();
+			$response = array(
+		        'status' => true,
+		        'serial_number' => $serial_number,
+		    );
+		    return Response::json($response);
+		} catch (\Exception $e) {
+			$response = array(
+		        'status' => false,
+		        'message' => $e->getMessage(),
+		    );
+		    return Response::json($response);
+		}
+	}
+
+	public function uploadSerialNumberTrue(Request $request)
+	{
+		$filename = "";
+		$file_destination = 'qa';
+
+		if (count($request->file('newAttachment')) > 0) {
+			try{
+				$errors = [];
+				$file = $request->file('newAttachment');
+				$filename = 'serial_number_true_'.date('YmdHisa').'.'.$request->input('extension');
+				$file->move($file_destination, $filename);
+
+				$excel = 'qa/' . $filename;
+				$rows = Excel::load($excel, function($reader) {
+					$reader->noHeading();
+					$reader->skipRows(1);
+
+					$reader->each(function($row) {
+					});
+				})->toObject();
+
+				for ($i=0; $i < count($rows); $i++) {
+					if ($rows[$i][2] != 0) {
+						$part_names = QaMaterial::where('material_number',$rows[$i][0])->first();
+						if (count($part_names) > 0) {
+							$part_name = $part_names->material_description;
+						}else{
+							$part_name = $rows[$i][1];
+							$errorlog = new ErrorLog([
+								'error_message' => 'ERROR_KBI_'.$rows[$i][1],
+								'created_by' => Auth::user()->id,
+				            ]);
+
+				            $errorlog->save();
+						}
+						$code_generator = CodeGenerator::where('note', '=', 'true')->first();
+				        $serial_number = $code_generator->prefix.sprintf("%'.0" . $code_generator->length . "d", $code_generator->index+1);
+						$menu = QaOutgoingSerialNumber::create(
+							[
+								'date' => $request->get('periode').'-01',
+								'serial_number' => $serial_number,
+								'material_number' => $rows[$i][0],
+								'part_name' => $part_name,
+								'qty' => $rows[$i][2],
+								'vendor' => 'PT. TRUE INDONESIA',
+								'vendor_shortname' => 'TRUE',
+								'created_by' => Auth::id()
+							]
+						);
+						$menu->save();
+						$code_generator->index = $code_generator->index+1;
+				        $code_generator->save();	
+					}
+				}
+
+				$response = array(
+					'status' => true,
+					'message' => 'Schedule succesfully uploaded',
+				);
+				return Response::json($response);
+			}
+			catch(\Exception $e){
+				$response = array(
+					'status' => false,
+					'message' => $e->getMessage(),
+				);
+				return Response::json($response);
+			}
+		}
+		else{
+			$response = array(
+				'status' => false,
+				'message' => 'Please select file to attach'
+			);
+			return Response::json($response);
+		}
+	}
+
+	public function updateSerialNumberTrue(Request $request)
+	{
+		try {
+			$sernum = QaOutgoingSerialNumber::where('id',$request->get('id'))->first();
+			$sernum->qty = $request->get('qty');
+			$sernum->material_number = explode('_',$request->get('material'))[0];
+			$sernum->part_name = explode('_',$request->get('material'))[1];
+			$sernum->save();
+
+			$response = array(
+				'status' => true,
+				'message' => 'Schedule Succesfully Updated',
+			);
+			return Response::json($response);
+		} catch (\Exception $e) {
+			$response = array(
+					'status' => false,
+					'message' => $e->getMessage(),
+				);
+				return Response::json($response);
+		}
+	}
+
+	public function deleteSerialNumberTrue(Request $request)
+	{
+		try {
+			$sernum = QaOutgoingSerialNumber::where('id',$request->get('id'))->first();
+			$sernum->forceDelete();
+
+			$response = array(
+				'status' => true,
+				'message' => 'Schedule Succesfully Deleted',
+			);
+			return Response::json($response);
+		} catch (\Exception $e) {
+			$response = array(
+					'status' => false,
+					'message' => $e->getMessage(),
+				);
+				return Response::json($response);
+		}
+	}
 	
 
 }

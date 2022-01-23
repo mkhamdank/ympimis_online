@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class QaOutgoingVendor extends Model
 {
     protected $fillable = [
+    	'check_date',
 		'serial_number',
 		'material_number',
 		'material_description',
