@@ -385,6 +385,11 @@ class OutgoingController extends Controller
 					}
 				}
 			}
+			}
+
+			// $updateSchedule = QaOutgoingSerialNumber::where(DB::RAW('DATE_FORMAT(date,"%Y-%m")'),date('Y-m',strtotime($check_date)))->where('material_number',$material_number)->first();
+			// $updateSchedule->qty_actual = $updateSchedule->qty_actual+$qty_check;
+			// $updateSchedule->save();
 
 
 			
