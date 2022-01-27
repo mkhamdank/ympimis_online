@@ -267,6 +267,7 @@ class OutgoingController extends Controller
 			$serial_number = $request->get('serial_number');
 			$material = QaMaterial::where('material_number',$material_number)->first();
 			$outgoings = [];
+			$outgoing_id = [];
 			$outgoings_critical = [];
 			if ($total_ng == 0) {
 				$outgoing = new QaOutgoingVendor([
@@ -307,6 +308,8 @@ class OutgoingController extends Controller
 		            ]);
 
 		            $outgoing->save();
+
+		            array_push($outgoing_id, $outgoing->id);
 		            if (in_array($ng_name[$i], $this->critical_true)) {
 		            	array_push($outgoings_critical, $outgoing);
 		            	$mail_to = [];
@@ -330,6 +333,10 @@ class OutgoingController extends Controller
 				        // ->cc($cc,'CC')
 				        ->bcc($bcc,'BCC')
 				        ->send(new SendEmail($outgoing, 'critical_true'));
+
+				        $outgoing_update = QaOutgoingVendor::where('id',$outgoing->id)->first();
+				        $outgoing_update->lot_status = 'LOT OUT';
+				        $outgoing_update->save();
 		            }
 
 		            if (in_array($ng_name[$i], $this->non_critical_true)) {
@@ -370,6 +377,11 @@ class OutgoingController extends Controller
 				        // ->cc($cc,'CC')
 				        ->bcc($bcc,'BCC')
 				        ->send(new SendEmail($data, 'over_limit_ratio_true'));
+
+				        for ($i=0; $i < count($outgoing_id); $i++) { 
+				        	$outgoing_update = QaOutgoingVendor::where('id',$outgoing_id[$i])->first();
+					        $outgoing_update->lot_status = 'LOT OUT';
+					        $outgoing_update->save();
 					}
 				}
 			}
