@@ -770,6 +770,16 @@
 				point_check_id = [];
 				var index = 0;
 
+				var adacounting = 0;
+
+				for(var i = 0; i < result.point_check.length; i++){
+					if (result.point_check[i].point_check_type == 'FUNCTIONAL CHECK') {
+						if(result.point_check[i].remark == 'counting'){
+							adacounting++;
+						}
+					}
+				}
+
 				for(var i = 0; i < result.point_check.length; i++){
 					if (index % 2 == 0) {
 						backgroundColor = '#f7f7f7';
@@ -816,6 +826,12 @@
 					}
 
 					if (result.point_check[i].point_check_type == 'FUNCTIONAL CHECK') {
+						var funcounting = 0;
+						if (adacounting > 0) {
+							var colspan_result = 'colspan="3"';
+						}else{
+							var colspan_result = '';
+						}
 						if (result.point_check[i].remark == 'checkbox') {
 							tableDataFunctional += '<tr style="border-bottom:2px solid red;background-color:'+backgroundColor+'">';
 							tableDataFunctional += '<td>'+result.point_check[i].point_check_index+'</td>';
@@ -824,7 +840,7 @@
 							tableDataFunctional += '<td>'+result.point_check[i].point_check_lower+'</td>';
 							tableDataFunctional += '<td>'+result.point_check[i].point_check_upper+'</td>';
 							for(var j = 1; j < parseInt($('#qty_check_fun').val())+1; j++){
-								tableDataFunctional += '<td onclick="checkCondition(\''+j+'\',\''+result.point_check[i].id+'\',\''+index_check_box_functional+'\')" style="font-size:20px;border:1px solid black;width:1%;">';
+								tableDataFunctional += '<td '+colspan_result+' onclick="checkCondition(\''+j+'\',\''+result.point_check[i].id+'\',\''+index_check_box_functional+'\')" style="font-size:20px;border:1px solid black;width:1%;">';
 								tableDataFunctional += '<label class="containers">&#9711;';
 								  tableDataFunctional += '<input type="radio" name="condition_'+j+'_'+result.point_check[i].id+'_'+index_check_box_functional+'" id="condition_'+j+'_'+result.point_check[i].id+'_'+index_check_box_functional+'" value="OK">';
 								  tableDataFunctional += '<span class="checkmark" id="checkmarkok_'+j+'_'+result.point_check[i].id+'_'+index_check_box_functional+'"></span>';
@@ -840,6 +856,7 @@
 							tableDataFunctional += '</tr>';
 							point_check_id.push(result.point_check[i].id);
 						}else if(result.point_check[i].remark == 'counting'){
+							funcounting++;
 							tableDataFunctional += '<tr style="border-bottom:2px solid red;background-color:'+backgroundColor+'">';
 							tableDataFunctional += '<td>'+result.point_check[i].point_check_index+'</td>';
 							tableDataFunctional += '<td>'+result.point_check[i].point_check_name+'</td>';
@@ -863,7 +880,7 @@
 							tableDataFunctional += '<td>'+result.point_check[i].point_check_lower+'</td>';
 							tableDataFunctional += '<td>'+result.point_check[i].point_check_upper+'</td>';
 							for(var j = 1; j < parseInt($('#qty_check_fun').val())+1; j++){
-								tableDataFunctional += '<td><input type="number" class="pull-right" name="values_'+j+'_'+result.point_check[i].id+'_'+index_values_functional+'" style="height: 50px;font-size: 2vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="values_'+j+'_'+result.point_check[i].id+'_'+index_values_functional+'" placeholder="'+j+'" onchange="checkValue('+result.point_check[i].point_check_upper+','+result.point_check[i].point_check_lower+','+j+','+result.point_check[i].id+','+index_values_functional+')"></td>';
+								tableDataFunctional += '<td '+colspan_result+'><input type="number" class="pull-right" name="values_'+j+'_'+result.point_check[i].id+'_'+index_values_functional+'" style="height: 50px;font-size: 2vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="values_'+j+'_'+result.point_check[i].id+'_'+index_values_functional+'" placeholder="'+j+'" onchange="checkValue('+result.point_check[i].point_check_upper+','+result.point_check[i].point_check_lower+','+j+','+result.point_check[i].id+','+index_values_functional+')"></td>';
 								index_values_functional++;
 								id_values_functional.push(result.point_check[i].id);
 							}
@@ -871,8 +888,13 @@
 							point_check_id.push(result.point_check[i].id);
 						}
 
-						$('#resultTitleFun').prop('colspan',$('#qty_check_fun').val());
-						$('#titleFun').prop('colspan',parseInt($('#qty_check_fun').val())+5);
+						if (funcounting > 0) {
+							$('#resultTitleFun').prop('colspan',parseInt($('#qty_check_fun').val())*3);
+							$('#titleFun').prop('colspan',(parseInt($('#qty_check_fun').val())+5)*3);
+						}else{
+							$('#resultTitleFun').prop('colspan',$('#qty_check_fun').val());
+							$('#titleFun').prop('colspan',parseInt($('#qty_check_fun').val())+5);
+						}
 					}
 
 					if (result.point_check[i].point_check_type == 'DIMENSIONAL CHECK') {
