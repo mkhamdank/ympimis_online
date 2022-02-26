@@ -197,9 +197,6 @@
 						</td>
 					</tr>
 					<tr>
-						<!-- <td>
-							<input type="text" class="pull-right" name="repair" style="height: 50px;font-size: 2vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="repair" placeholder="Qty Repair" readonly value="0">
-						</td> -->
 						<td>
 							<input type="text" class="pull-right" name="total_ok" style="height: 50px;font-size: 2vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="total_ok" placeholder="Qty OK" readonly value="{{$outgoing[0]->qty_check}}">
 						</td>
@@ -217,26 +214,33 @@
 							<input type="text" class="pull-right" name="ng_ratio" style="height: 50px;font-size: 2vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="ng_ratio" placeholder="NG Ratio (%)" readonly value="0">
 						</td>
 					</tr>
-					<!-- <tr>
-						<td style="background-color: #ffe06e; text-align: center; color: #14213d; padding:0;font-size: 20px;font-weight: bold;width: 50%">
-							RETURN
+				</tbody>
+			</table>
+			<table class="table table-bordered" style="width: 100%; margin-bottom: 5px;border: 0">
+				<tbody>
+					<tr>
+						<td colspan="2" style="background-color: #d1d1d1; text-align: center; color: #14213d; padding:0;font-size: 20px;font-weight: bold;width: 50%">
+							HISTORY DEFECT
 						</td>
-						<td style="background-color: #ffcd9c; text-align: center; color: #14213d; padding:0;font-size: 20px;font-weight: bold;width: 50%">
-							STATUS LOT
+					</tr>
+					<tr>
+						<td style="background-color: #da96ff; text-align: center; color: #14213d; padding:0;font-weight: bold;width: 50%">
+							Defect Name
 						</td>
-					</tr> -->
-					<!-- <tr>
+						<td style="background-color: #ffe06e; text-align: center; color: #14213d; padding:0;font-weight: bold;width: 50%">
+							Qty
+						</td>
+					</tr>
+					@foreach($outgoing as $out)
+					<tr style="background-color: white">
 						<td>
-							<input type="text" class="pull-right" name="return" style="height: 50px;font-size: 2vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="return" placeholder="Qty Return" readonly value="0">
+							{{$out->ng_name}}
 						</td>
 						<td>
-							<select name="status_lot" style="height: 50px;font-size: 2vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="status_lot" data-placeholder="Status Lot">
-								<option value="-">Pilih Status Lot</option>
-								<option value="Lot OK">Lot OK</option>
-								<option value="Lot Out">Lot Out</option>
-							</select>
+							{{$out->ng_qty}}
 						</td>
-					</tr> -->
+					</tr>
+					@endforeach
 				</tbody>
 			</table>
 			<div class="col-xs-12">
