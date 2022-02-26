@@ -74,7 +74,7 @@
             <div class="col-sm-12 col-xs-12" style="text-align: center;">
                 <div class="card">
                     <div class="card-body" style="padding: 0px">
-                        <div class="col-md-12" style="padding: 10px">
+                        <div class="col-md-12" style="padding: 10px;overflow-x: scroll;">
                             <table class="table user-table no-wrap" id="tableKensa">
                                 <thead>
                                     <tr>
@@ -87,6 +87,8 @@
                                         <th style="background-color: #3f50b5;color: white !important;">NG Ratio (%)</th>
                                         <th style="background-color: #3f50b5;color: white !important;">NG Name</th>
                                         <th style="background-color: #3f50b5;color: white !important;">NG Qty</th>
+                                        <th style="background-color: #3f50b5;color: white !important;">Lot Status</th>
+                                        <th style="background-color: #3f50b5;color: white !important;">Recheck Status</th>
                                     </tr>
                                 </thead>
                                 <tbody id="bodyTableKensa">
@@ -129,7 +131,11 @@
                 $("#bodyTableKensa").html('');
                 var bodyTable = '';
                 for (var i = 0; i < result.outgoing.length; i++) {
-                    bodyTable += '<tr>';
+                    var background = '';
+                    if (result.outgoing[i].lot_status == 'LOT OUT') {
+                        background = 'background-color:#ffc4c7';
+                    }
+                    bodyTable += '<tr style="'+background+'">';
                     bodyTable += '<td>'+result.outgoing[i].serial_number+'</td>';
                     bodyTable += '<td>'+result.outgoing[i].material_number+'<br>'+result.outgoing[i].material_description+'</td>';
                     bodyTable += '<td>'+result.outgoing[i].inspector+'</td>';
@@ -139,6 +145,15 @@
                     bodyTable += '<td style="text-align:right">'+result.outgoing[i].ng_ratio+'</td>';
                     bodyTable += '<td>'+result.outgoing[i].ng_name+'</td>';
                     bodyTable += '<td style="text-align:right">'+result.outgoing[i].ng_qty+'</td>';
+                    bodyTable += '<td>'+result.outgoing[i].lot_status+'</td>';
+                    if (result.outgoing[i].lot_status == 'LOT OUT' && result.outgoing[i].recheck_status == 'Checked') {
+                        bodyTable += '<td style="background-color:#dcffc4">'+(result.outgoing[i].recheck_status || '')+'</td>';
+                    }else if(result.outgoing[i].lot_status == 'LOT OUT' && result.outgoing[i].recheck_status == null){
+                        var url = '{{url("index/outgoing/true/input/lot_out/")}}'+'/'+result.outgoing[i].serial_number+'/'+result.outgoing[i].check_date;
+                        bodyTable += '<td><a class="btn btn-primary btn-sm" href="'+url+'">Recheck</a></td>';
+                    }else{
+                        bodyTable += '<td>'+(result.outgoing[i].recheck_status || '')+'</td>';
+                    }
                     bodyTable += '</tr>';
                 }
                 $('#bodyTableKensa').append(bodyTable);

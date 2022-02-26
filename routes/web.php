@@ -223,6 +223,9 @@ Route::group(['nav' => 'S0', 'middleware' => 'permission'], function(){
 	Route::post('index/outgoing/true/confirm', 'OutgoingController@confirmInputTrue');
 	Route::get('fetch/outgoing/true/material', 'OutgoingController@fetchMaterialTrue');
 
+	Route::get('index/outgoing/true/input/lot_out/{serial_number}/{check_date}', 'OutgoingController@indexInputTrueRecheck');
+	Route::post('index/outgoing/true/confirm/recheck', 'OutgoingController@confirmInputTrueRecheck');
+
 	Route::get('index/kensa/true/report', 'OutgoingController@indexReportKensaTrue');
 	Route::get('fetch/kensa/true/report', 'OutgoingController@fetchReportKensaTrue');
 

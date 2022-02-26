@@ -46,43 +46,49 @@
 						<tr>
 							<th style="border:1px solid black;font-weight: bold;background-color: rgb(126,86,134);text-align: left;color: white;">Serial Number</th>
 							<td style="border:1px solid black;text-align: left">
-								{{$data['outgoing_non'][0]['serial_number']}}
+								{{$data['outgoing_non'][0]->serial_number}}
 							</td>
 						</tr>
 						<tr>
 							<th style="border:1px solid black;font-weight: bold;background-color: rgb(126,86,134);text-align: left;color: white;">Material</th>
 							<td style="border:1px solid black;text-align: left">
-								{{$data['outgoing_non'][0]['material_number']}} - {{$data['outgoing_non'][0]['material_description']}}
+								{{$data['outgoing_non'][0]->material_number}} - {{$data['outgoing_non'][0]->material_description}}
 							</td>
 						</tr>
 						<tr>
 							<th style="border:1px solid black;font-weight: bold;background-color: rgb(126,86,134);text-align: left;color: white;">Qty Check</th>
 							<td style="border:1px solid black;text-align: right">
-								{{$data['outgoing_non'][0]['qty_check']}}
+								{{$data['outgoing_non'][0]->qty_check}}
 							</td>
 						</tr>
 						<tr>
 							<th style="border:1px solid black;font-weight: bold;background-color: rgb(126,86,134);text-align: left;color: white;">Total OK</th>
 							<td style="border:1px solid black;text-align: right">
-								{{$data['outgoing_non'][0]['total_ok']}}
+								{{$data['outgoing_non'][0]->total_ok}}
 							</td>
 						</tr>
 						<tr>
 							<th style="border:1px solid black;font-weight: bold;background-color: rgb(126,86,134);text-align: left;color: white;">Total Defect</th>
 							<td style="border:1px solid black;text-align: right">
-								{{$data['outgoing_non'][0]['total_ng']}}
+								{{$data['outgoing_non'][0]->total_ng}}
 							</td>
 						</tr>
 						<tr>
 							<th style="border:1px solid black;font-weight: bold;background-color: rgb(126,86,134);text-align: left;color: white;">Defect Ratio</th>
 							<td style="border:1px solid black;text-align: right">
-								{{$data['outgoing_non'][0]['ng_ratio']}} %
+								{{$data['outgoing_non'][0]->ng_ratio}} %
 							</td>
 						</tr>
 						<tr>
 							<th style="border:1px solid black;font-weight: bold;background-color: rgb(126,86,134);text-align: left;color: white;">Inspector</th>
 							<td style="border:1px solid black;text-align: left">
-								{{$data['outgoing_non'][0]['inspector']}}
+								{{$data['outgoing_non'][0]->inspector}}
+							</td>
+						</tr>
+						<tr>
+							<th style="border:1px solid black;font-weight: bold;background-color: rgb(126,86,134);text-align: left;color: white;">Lot Status</th>
+							<td style="border:1px solid black;text-align: left;color: red">
+								{{$data['outgoing_non'][0]->lot_status}}
 							</td>
 						</tr>
 						
@@ -106,10 +112,10 @@
 						<?php for ($i=0; $i < count($data['outgoing_non']); $i++) {  ?>
 						<tr>
 							<td style="border:1px solid black; font-size: 13px; height: 15;text-align: left">
-								{{$data['outgoing_non'][$i]['ng_name']}}
+								{{$data['outgoing_non'][$i]->ng_name}}
 							</td>
 							<td style="border:1px solid black; font-size: 13px; height: 15;text-align:right;">
-								{{$data['outgoing_non'][$i]['ng_qty']}}
+								{{$data['outgoing_non'][$i]->ng_qty}}
 							</td>
 						</tr>
 						<?php } ?>
@@ -132,18 +138,18 @@
 							<?php for ($i=0; $i < count($data['outgoing_critical']); $i++) {  ?>
 							<tr>
 								<td style="border:1px solid black; font-size: 13px; height: 15;text-align: left">
-									{{$data['outgoing_critical'][$i]['ng_name']}}
+									{{$data['outgoing_critical'][$i]->ng_name}}
 								</td>
 								<td style="border:1px solid black; font-size: 13px; height: 15;text-align:right;">
-									{{$data['outgoing_critical'][$i]['ng_qty']}}
+									{{$data['outgoing_critical'][$i]->ng_qty}}
 								</td>
 							</tr>
 							<?php } ?>
 						</tbody>
 					</table>
 				<?php endif ?>
-				<!-- <span style="font-weight: bold; background-color: orange;">&#8650; <i>Click Here For</i> &#8650;</span><br> -->
-					<!-- <a class="button" href="{{url('index/qa/audit_ng_jelas/handling/')}}">Input Penanganan</a> -->
+				<span style="font-weight: bold; background-color: orange;">&#8650; <i>Click Here For</i> &#8650;</span><br>
+					<a href="{{url('index/outgoing/true/input/lot_out/'.$data['outgoing_non'][0]->serial_number.'/'.$data['outgoing_non'][0]->check_date)}}">Recheck Material</a>
 				<br>
 				<br>
 				<p>

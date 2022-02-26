@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class QaOutgoingVendor extends Model
+class QaOutgoingVendorRecheck extends Model
 {
     protected $fillable = [
     	'check_date',
@@ -26,7 +26,6 @@ class QaOutgoingVendor extends Model
 		'product_index',
 		'product_result',
 		'lot_status',
-		'recheck_status',
 		'created_by',
 	];
 }

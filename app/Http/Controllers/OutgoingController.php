@@ -14,6 +14,7 @@ use Excel;
 use App\QaMaterial;
 use App\ErrorLog;
 use App\QaOutgoingVendor;
+use App\QaOutgoingVendorRecheck;
 use App\QaInspectionLevel;
 use App\QaOutgoingSerialNumber;
 use App\QaOutgoingVendorFinal;
@@ -264,13 +265,16 @@ class OutgoingController extends Controller
 			$ng_name = $request->get('ng_name');
 			$ng_qty = $request->get('ng_qty');
 			$jumlah_ng = $request->get('jumlah_ng');
+			$check_date = $request->get('check_date');
 			$serial_number = $request->get('serial_number');
 			$material = QaMaterial::where('material_number',$material_number)->first();
 			$outgoings = [];
 			$outgoing_id = [];
 			$outgoings_critical = [];
+			$outgoings_non_critical = [];
 			if ($total_ng == 0) {
 				$outgoing = new QaOutgoingVendor([
+					'check_date' => $check_date,
 					'material_number' => $material_number,
 					'material_description' => $material_description,
 					'serial_number' => $serial_number,
@@ -291,6 +295,7 @@ class OutgoingController extends Controller
 			}else{
 				for ($i=0; $i < count($ng_name); $i++) { 
 					$outgoing = new QaOutgoingVendor([
+						'check_date' => $check_date,
 						'material_number' => $material_number,
 						'material_description' => $material_description,
 						'vendor' => $material->vendor,
@@ -311,7 +316,6 @@ class OutgoingController extends Controller
 
 		            array_push($outgoing_id, $outgoing->id);
 		            if (in_array($ng_name[$i], $this->critical_true)) {
-		            	array_push($outgoings_critical, $outgoing);
 		            	$mail_to = [];
 
 		            	array_push($mail_to, 'true.indonesia@yahoo.com');
@@ -329,14 +333,17 @@ class OutgoingController extends Controller
 				        $bcc[0] = 'mokhamad.khamdan.khabibi@music.yamaha.com';
 				        $bcc[1] = 'rio.irvansyah@music.yamaha.com';
 
-				        Mail::to($mail_to)
-				        // ->cc($cc,'CC')
-				        ->bcc($bcc,'BCC')
-				        ->send(new SendEmail($outgoing, 'critical_true'));
-
 				        $outgoing_update = QaOutgoingVendor::where('id',$outgoing->id)->first();
 				        $outgoing_update->lot_status = 'LOT OUT';
 				        $outgoing_update->save();
+
+				        $outgoing_criticals = QaOutgoingVendor::where('id',$outgoing->id)->first();
+				        array_push($outgoings_critical, $outgoing_criticals);
+
+				        Mail::to($mail_to)
+				        // ->cc($cc,'CC')
+				        ->bcc($bcc,'BCC')
+				        ->send(new SendEmail($outgoing_criticals, 'critical_true'));
 		            }
 
 		            if (in_array($ng_name[$i], $this->non_critical_true)) {
@@ -369,29 +376,148 @@ class OutgoingController extends Controller
 				        $bcc[0] = 'mokhamad.khamdan.khabibi@music.yamaha.com';
 				        $bcc[1] = 'rio.irvansyah@music.yamaha.com';
 
+				        for ($i=0; $i < count($outgoing_id); $i++) { 
+				        	$outgoing_update = QaOutgoingVendor::where('id',$outgoing_id[$i])->first();
+					        $outgoing_update->lot_status = 'LOT OUT';
+					        $outgoing_update->save();
+
+					        $outgoing_non_critical = QaOutgoingVendor::where('id',$outgoing_id[$i])->first();
+					        array_push($outgoings_non_critical, $outgoing_non_critical);
+				        }
+
 				        $data = array(
-				        	'outgoing_non' => $outgoings,
+				        	'outgoing_non' => $outgoings_non_critical,
 				        	'outgoing_critical' => $outgoings_critical, );
 
 				        Mail::to($mail_to)
 				        // ->cc($cc,'CC')
 				        ->bcc($bcc,'BCC')
 				        ->send(new SendEmail($data, 'over_limit_ratio_true'));
-
-				        for ($i=0; $i < count($outgoing_id); $i++) { 
-				        	$outgoing_update = QaOutgoingVendor::where('id',$outgoing_id[$i])->first();
-					        $outgoing_update->lot_status = 'LOT OUT';
-					        $outgoing_update->save();
 					}
 				}
-			}
 			}
 
 			// $updateSchedule = QaOutgoingSerialNumber::where(DB::RAW('DATE_FORMAT(date,"%Y-%m")'),date('Y-m',strtotime($check_date)))->where('material_number',$material_number)->first();
 			// $updateSchedule->qty_actual = $updateSchedule->qty_actual+$qty_check;
 			// $updateSchedule->save();
+			
+			$response = array(
+		        'status' => true,
+		        'message' => 'Success Input Data',
+		    );
+		    return Response::json($response);
+		} catch (\Exception $e) {
+			$response = array(
+		        'status' => false,
+		        'message' => $e->getMessage(),
+		    );
+		    return Response::json($response);
+		}
+	}
 
+	public function indexInputTrueRecheck($serial_number,$check_date)
+	{
+		$title = 'Input Recheck Material PT. TRUE INDONESIA';
+		$title_jp = '';
 
+		$ng_lists = DB::SELECT("select * from ng_lists where ng_lists.location = 'outgoing' and remark = 'true'");
+
+		$materials = QaMaterial::where('vendor_shortname','TRUE')->get();
+
+		$outgoing = QaOutgoingVendor::where('serial_number',$serial_number)->where('check_date',$check_date)->get();
+
+		return view('outgoing.true.index_recheck', array(
+			'title' => $title,
+			'title_jp' => $title_jp,
+			'ng_lists' => $ng_lists,
+			'outgoing' => $outgoing,
+			'vendor' => 'PT. TRUE INDONESIA',
+			'inspector' => Auth::user()->name,
+			'materials' => $materials,
+		))->with('page', 'Input Final Inspection TRUE')->with('head', 'Input Final Inspection TRUE');
+	}
+	public function confirmInputTrueRecheck(Request $request)
+	{
+		try {
+			$check_recheck = QaOutgoingVendorRecheck::where('serial_number',$request->get('serial_number'))->first();
+			if (count($check_recheck) > 0) {
+				$response = array(
+			        'status' => false,
+			        'message' => 'Serial Number sudah dilakukan Recheck.',
+			    );
+			    return Response::json($response);
+			}
+			$material_number = $request->get('material_number');
+			$material_description = $request->get('material_description');
+			$qty_check = $request->get('qty_check');
+			$total_ok = $request->get('total_ok');
+			$total_ng = $request->get('total_ng');
+			$ng_ratio = $request->get('ng_ratio');
+			$inspector = $request->get('inspector');
+			$ng_name = $request->get('ng_name');
+			$ng_qty = $request->get('ng_qty');
+			$jumlah_ng = $request->get('jumlah_ng');
+			$check_date = $request->get('check_date');
+			$serial_number = $request->get('serial_number');
+			$material = QaMaterial::where('material_number',$material_number)->first();
+			$outgoings = [];
+			$outgoing_id = [];
+			$outgoings_critical = [];
+			$outgoings_non_critical = [];
+			if ($total_ng == 0) {
+				$outgoing = new QaOutgoingVendorRecheck([
+					'check_date' => $check_date,
+					'material_number' => $material_number,
+					'material_description' => $material_description,
+					'serial_number' => $serial_number,
+					'vendor' => $material->vendor,
+					'vendor_shortname' => $material->vendor_shortname,
+					'hpl' => $material->hpl,
+					'inspector' => $inspector,
+					'qty_check' => $qty_check,
+					'total_ok' => $total_ok,
+					'total_ng' => $total_ng,
+					'ng_ratio' => $ng_ratio,
+					'ng_name' => '-',
+					'ng_qty' => '0',
+					'lot_status' => 'LOT OK',
+	                'created_by' => Auth::user()->id
+	            ]);
+	            $outgoing->save();
+			}else{
+				for ($i=0; $i < count($ng_name); $i++) { 
+					$outgoing = new QaOutgoingVendorRecheck([
+						'check_date' => $check_date,
+						'material_number' => $material_number,
+						'material_description' => $material_description,
+						'vendor' => $material->vendor,
+						'vendor_shortname' => $material->vendor_shortname,
+						'hpl' => $material->hpl,
+						'inspector' => $inspector,
+						'serial_number' => $serial_number,
+						'qty_check' => $qty_check,
+						'total_ok' => $total_ok,
+						'total_ng' => $total_ng,
+						'ng_ratio' => $ng_ratio,
+						'ng_name' => $ng_name[$i],
+						'ng_qty' => $ng_qty[$i],
+		                'created_by' => Auth::user()->id,
+		            ]);
+
+		            $outgoing->save();
+				}
+			}
+
+			$outgoing_check = QaOutgoingVendor::where('serial_number',$serial_number)->get();
+			for ($i=0; $i < count($outgoing_check); $i++) { 
+				$outgoing_checks = QaOutgoingVendor::where('id',$outgoing_check[$i]->id)->first();
+				$outgoing_checks->recheck_status = 'Checked';
+				$outgoing_checks->save();
+			}
+
+			// $updateSchedule = QaOutgoingSerialNumber::where(DB::RAW('DATE_FORMAT(date,"%Y-%m")'),date('Y-m',strtotime($check_date)))->where('material_number',$material_number)->first();
+			// $updateSchedule->qty_actual = $updateSchedule->qty_actual+$qty_check;
+			// $updateSchedule->save();
 			
 			$response = array(
 		        'status' => true,
