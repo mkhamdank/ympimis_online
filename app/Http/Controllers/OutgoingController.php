@@ -265,7 +265,8 @@ class OutgoingController extends Controller
 			$ng_name = $request->get('ng_name');
 			$ng_qty = $request->get('ng_qty');
 			$jumlah_ng = $request->get('jumlah_ng');
-			$check_date = $request->get('check_date');
+			// $check_date = $request->get('check_date');
+			$check_date = date('Y-m-d');
 			$serial_number = $request->get('serial_number');
 			$material = QaMaterial::where('material_number',$material_number)->first();
 			$outgoings = [];
@@ -505,6 +506,87 @@ class OutgoingController extends Controller
 		            ]);
 
 		            $outgoing->save();
+
+		            array_push($outgoing_id, $outgoing->id);
+		            if (in_array($ng_name[$i], $this->critical_true)) {
+		            	// $mail_to = [];
+
+		          //   	array_push($mail_to, 'true.indonesia@yahoo.com');
+		          //   	array_push($mail_to, 'truejhbyun@naver.com');
+		          //   	array_push($mail_to, 'agustina.hayati@music.yamaha.com');
+		          //   	array_push($mail_to, 'ratri.sulistyorini@music.yamaha.com');
+		          //   	array_push($mail_to, 'abdissalam.saidi@music.yamaha.com');
+		          //   	array_push($mail_to, 'noviera.prasetyarini@music.yamaha.com');
+
+				        // $cc = [];
+				        // $cc[0] = 'yayuk.wahyuni@music.yamaha.com';
+				        // $cc[1] = 'imron.faizal@music.yamaha.com';
+
+				        // $bcc = [];
+				        // $bcc[0] = 'mokhamad.khamdan.khabibi@music.yamaha.com';
+				        // $bcc[1] = 'rio.irvansyah@music.yamaha.com';
+
+				        $outgoing_update = QaOutgoingVendorRecheck::where('id',$outgoing->id)->first();
+				        $outgoing_update->lot_status = 'LOT OUT';
+				        $outgoing_update->save();
+
+				        $outgoing_criticals = QaOutgoingVendorRecheck::where('id',$outgoing->id)->first();
+				        array_push($outgoings_critical, $outgoing_criticals);
+
+				        // Mail::to($mail_to)
+				        // // ->cc($cc,'CC')
+				        // ->bcc($bcc,'BCC')
+				        // ->send(new SendEmail($outgoing_criticals, 'critical_true'));
+		            }
+
+		            if (in_array($ng_name[$i], $this->non_critical_true)) {
+		            	array_push($outgoings, $outgoing);
+		            }
+				}
+
+				$total_ng_non = 0;
+				for ($i=0; $i < count($outgoings); $i++) { 
+					$total_ng_non = $total_ng_non + $outgoings[$i]->ng_qty;
+				}
+
+				if ($total_ng_non != 0) {
+					$persen = ($total_ng_non/$qty_check)*100;
+					if ($persen > 5) {
+						// $mail_to = [];
+
+		    //         	array_push($mail_to, 'true.indonesia@yahoo.com');
+		    //         	array_push($mail_to, 'truejhbyun@naver.com');
+		    //         	array_push($mail_to, 'agustina.hayati@music.yamaha.com');
+		    //         	array_push($mail_to, 'ratri.sulistyorini@music.yamaha.com');
+		    //         	array_push($mail_to, 'abdissalam.saidi@music.yamaha.com');
+		    //         	array_push($mail_to, 'noviera.prasetyarini@music.yamaha.com');
+
+				  //       $cc = [];
+				  //       $cc[0] = 'yayuk.wahyuni@music.yamaha.com';
+				  //       $cc[1] = 'imron.faizal@music.yamaha.com';
+
+				  //       $bcc = [];
+				  //       $bcc[0] = 'mokhamad.khamdan.khabibi@music.yamaha.com';
+				  //       $bcc[1] = 'rio.irvansyah@music.yamaha.com';
+
+				        for ($i=0; $i < count($outgoing_id); $i++) { 
+				        	$outgoing_update = QaOutgoingVendorRecheck::where('id',$outgoing_id[$i])->first();
+					        $outgoing_update->lot_status = 'LOT OUT';
+					        $outgoing_update->save();
+
+					        $outgoing_non_critical = QaOutgoingVendorRecheck::where('id',$outgoing_id[$i])->first();
+					        array_push($outgoings_non_critical, $outgoing_non_critical);
+				        }
+
+				        // $data = array(
+				        // 	'outgoing_non' => $outgoings_non_critical,
+				        // 	'outgoing_critical' => $outgoings_critical, );
+
+				        // Mail::to($mail_to)
+				        // // ->cc($cc,'CC')
+				        // ->bcc($bcc,'BCC')
+				        // ->send(new SendEmail($data, 'over_limit_ratio_true'));
+					}
 				}
 			}
 
@@ -794,6 +876,7 @@ class OutgoingController extends Controller
 			if ($total_ng == 0) {
 				$outgoing = new QaOutgoingVendor([
 					'material_number' => $material_number,
+					'check_date' => date('Y-m-d'),
 					'material_description' => $material_description,
 					'serial_number' => $serial_number,
 					'vendor' => $material->vendor,
@@ -813,6 +896,7 @@ class OutgoingController extends Controller
 			}else{
 				for ($i=0; $i < count($ng_name); $i++) { 
 					$outgoing = new QaOutgoingVendor([
+						'check_date' => date('Y-m-d'),
 						'material_number' => $material_number,
 						'material_description' => $material_description,
 						'serial_number' => $serial_number,
@@ -1113,6 +1197,7 @@ class OutgoingController extends Controller
 			$outgoings_critical = [];
 			if ($total_ng == 0) {
 				$outgoing = new QaOutgoingVendor([
+					'check_date' => date('Y-m-d'),
 					'material_number' => $material_number,
 					'material_description' => $material_description,
 					'serial_number' => $serial_number,
@@ -1133,6 +1218,7 @@ class OutgoingController extends Controller
 			}else{
 				for ($i=0; $i < count($ng_name); $i++) { 
 					$outgoing = new QaOutgoingVendor([
+						'check_date' => date('Y-m-d'),
 						'material_number' => $material_number,
 						'material_description' => $material_description,
 						'serial_number' => $serial_number,
