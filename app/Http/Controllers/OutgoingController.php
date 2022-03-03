@@ -458,7 +458,8 @@ class OutgoingController extends Controller
 			$ng_name = $request->get('ng_name');
 			$ng_qty = $request->get('ng_qty');
 			$jumlah_ng = $request->get('jumlah_ng');
-			$check_date = $request->get('check_date');
+			// $check_date = $request->get('check_date');
+			$check_date = date('Y-m-d');
 			$serial_number = $request->get('serial_number');
 			$material = QaMaterial::where('material_number',$material_number)->first();
 			$outgoings = [];
