@@ -202,6 +202,9 @@ Route::group(['nav' => 'S0', 'middleware' => 'permission'], function(){
 	Route::get('fetch/outgoing/arisa/report', 'OutgoingController@fetchReportQcArisa');
 	Route::get('input/outgoing/arisa/so_number', 'OutgoingController@inputSONumberArisa');
 
+	Route::get('index/outgoing/arisa/input/lot_out/{serial_number}/{check_date}', 'OutgoingController@indexInputArisaRecheck');
+	Route::post('index/outgoing/arisa/confirm/recheck', 'OutgoingController@confirmInputArisaRecheck');
+
 	//KBI
 
 	Route::get('index/serial_number/kbi', 'OutgoingController@indexUploadSerialNumberKbi');

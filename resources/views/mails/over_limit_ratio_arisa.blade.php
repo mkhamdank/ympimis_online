@@ -85,6 +85,12 @@
 								{{$data['outgoing_non'][0]['inspector']}}
 							</td>
 						</tr>
+						<tr>
+							<th style="border:1px solid black;font-weight: bold;background-color: rgb(126,86,134);text-align: left;color: white;">Lot Status</th>
+							<td style="border:1px solid black;text-align: left;color: red">
+								{{$data['outgoing_non'][0]->lot_status}}
+							</td>
+						</tr>
 						
 					</thead>
 					<!-- <tbody style="text-align: center;">
@@ -142,8 +148,8 @@
 						</tbody>
 					</table>
 				<?php endif ?>
-				<!-- <span style="font-weight: bold; background-color: orange;">&#8650; <i>Click Here For</i> &#8650;</span><br> -->
-					<!-- <a class="button" href="{{url('index/qa/audit_ng_jelas/handling/')}}">Input Penanganan</a> -->
+				<span style="font-weight: bold; background-color: orange;">&#8650; <i>Click Here For</i> &#8650;</span><br>
+					<a href="{{url('index/outgoing/true/input/lot_out/'.$data['outgoing_non'][0]->serial_number.'/'.$data['outgoing_non'][0]->check_date)}}">Recheck Material</a>
 				<br>
 				<br>
 				<p>

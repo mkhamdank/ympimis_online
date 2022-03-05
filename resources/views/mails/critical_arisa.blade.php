@@ -97,14 +97,20 @@
 								{{$data['inspector']}}
 							</td>
 						</tr>
+						<tr>
+							<th style="border:1px solid black;font-weight: bold;background-color: rgb(126,86,134);text-align: left;color: white;">Lot Status</th>
+							<td style="border:1px solid black;text-align: left;color: red">
+								{{$data['lot_status']}}
+							</td>
+						</tr>
 						
 					</thead>
 					<!-- <tbody style="text-align: center;">
 					</tbody> -->
 				</table>
 				<br>
-				<!-- <span style="font-weight: bold; background-color: orange;">&#8650; <i>Click Here For</i> &#8650;</span><br> -->
-					<!-- <a class="button" href="{{url('index/qa/audit_ng_jelas/handling/')}}">Input Penanganan</a> -->
+				<span style="font-weight: bold; background-color: orange;">&#8650; <i>Click Here For</i> &#8650;</span><br>
+					<a href="{{url('index/outgoing/arisa/input/lot_out/'.$data['serial_number'].'/'.$data['check_date'])}}">Recheck Material</a>
 				<br>
 				<br>
 				<p>

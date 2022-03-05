@@ -873,6 +873,7 @@ class OutgoingController extends Controller
 			$jumlah_ng = $request->get('jumlah_ng');
 			$material = QaMaterial::where('material_number',$material_number)->first();
 			$outgoings = [];
+			$outgoing_id = [];
 			$outgoings_critical = [];
 			if ($total_ng == 0) {
 				$outgoing = new QaOutgoingVendor([
@@ -915,7 +916,7 @@ class OutgoingController extends Controller
 		            ]);
 
 		            $outgoing->save();
-
+		            array_push($outgoing_id, $outgoing->id);
 		            if (in_array($ng_name[$i], $this->critical_arisa)) {
 		            	$mail_to = [];
 
@@ -935,6 +936,10 @@ class OutgoingController extends Controller
 				        $bcc = [];
 				        $bcc[0] = 'mokhamad.khamdan.khabibi@music.yamaha.com';
 				        $bcc[1] = 'rio.irvansyah@music.yamaha.com';
+
+				        $outgoing_update = QaOutgoingVendor::where('id',$outgoing->id)->first();
+				        $outgoing_update->lot_status = 'LOT OUT';
+				        $outgoing_update->save();
 
 				        Mail::to($mail_to)
 				        // ->cc($cc,'CC')
@@ -976,6 +981,15 @@ class OutgoingController extends Controller
 				        $bcc = [];
 				        $bcc[0] = 'mokhamad.khamdan.khabibi@music.yamaha.com';
 				        $bcc[1] = 'rio.irvansyah@music.yamaha.com';
+
+				        for ($i=0; $i < count($outgoing_id); $i++) { 
+				        	$outgoing_update = QaOutgoingVendor::where('id',$outgoing_id[$i])->first();
+					        $outgoing_update->lot_status = 'LOT OUT';
+					        $outgoing_update->save();
+
+					        // $outgoing_non_critical = QaOutgoingVendor::where('id',$outgoing_id[$i])->first();
+					        // array_push($outgoings_non_critical, $outgoing_non_critical);
+				        }
 
 				        $data = array(
 				        	'outgoing_non' => $outgoings,
@@ -2882,6 +2896,196 @@ class OutgoingController extends Controller
 					'message' => $e->getMessage(),
 				);
 				return Response::json($response);
+		}
+	}
+
+	public function indexInputArisaRecheck($serial_number,$check_date)
+	{
+		$title = 'Input Recheck Material PT. ARISAMANDIRI PRATAMA';
+		$title_jp = '';
+
+		$ng_lists = DB::SELECT("select * from ng_lists where ng_lists.location = 'outgoing' and remark = 'arisa'");
+
+		$materials = QaMaterial::where('vendor_shortname','ARISA')->get();
+
+		$outgoing = QaOutgoingVendor::where('serial_number',$serial_number)->where('check_date',$check_date)->get();
+
+		return view('outgoing.arisa.index_recheck', array(
+			'title' => $title,
+			'title_jp' => $title_jp,
+			'ng_lists' => $ng_lists,
+			'outgoing' => $outgoing,
+			'vendor' => 'PT. ARISAMANDIRI PRATAMA',
+			'inspector' => Auth::user()->name,
+			'materials' => $materials,
+		))->with('page', 'Input Final Inspection ARISA')->with('head', 'Input Final Inspection ARISA');
+	}
+
+	public function confirmInputArisaRecheck(Request $request)
+	{
+		try {
+
+			$material_number = $request->get('material_number');
+			$material_description = $request->get('material_description');
+			$qty_check = $request->get('qty_check');
+			$total_ok = $request->get('total_ok');
+			$total_ng = $request->get('total_ng');
+			$ng_ratio = $request->get('ng_ratio');
+			$inspector = $request->get('inspector');
+			$ng_name = $request->get('ng_name');
+			$serial_number = $request->get('serial_number');
+			$ng_qty = $request->get('ng_qty');
+			$jumlah_ng = $request->get('jumlah_ng');
+			$material = QaMaterial::where('material_number',$material_number)->first();
+			$outgoings = [];
+			$outgoing_id = [];
+			$outgoings_critical = [];
+			if ($total_ng == 0) {
+				$outgoing = new QaOutgoingVendorRecheck([
+					'material_number' => $material_number,
+					'check_date' => date('Y-m-d'),
+					'material_description' => $material_description,
+					'serial_number' => $serial_number,
+					'vendor' => $material->vendor,
+					'vendor_shortname' => $material->vendor_shortname,
+					'hpl' => $material->hpl,
+					'inspector' => $inspector,
+					'qty_check' => $qty_check,
+					'total_ok' => $total_ok,
+					'total_ng' => $total_ng,
+					'ng_ratio' => $ng_ratio,
+					'ng_name' => '-',
+					'ng_qty' => '0',
+					'lot_status' => 'LOT OK',
+	                'created_by' => Auth::user()->id
+	            ]);
+	            $outgoing->save();
+			}else{
+				for ($i=0; $i < count($ng_name); $i++) { 
+					$outgoing = new QaOutgoingVendorRecheck([
+						'check_date' => date('Y-m-d'),
+						'material_number' => $material_number,
+						'material_description' => $material_description,
+						'serial_number' => $serial_number,
+						'vendor' => $material->vendor,
+						'vendor_shortname' => $material->vendor_shortname,
+						'hpl' => $material->hpl,
+						'inspector' => $inspector,
+						'qty_check' => $qty_check,
+						'total_ok' => $total_ok,
+						'total_ng' => $total_ng,
+						'ng_ratio' => $ng_ratio,
+						'ng_name' => $ng_name[$i],
+						'ng_qty' => $ng_qty[$i],
+		                'created_by' => Auth::user()->id
+		            ]);
+
+		            $outgoing->save();
+		            array_push($outgoing_id, $outgoing->id);
+		            if (in_array($ng_name[$i], $this->critical_arisa)) {
+		            	// $mail_to = [];
+
+		          //   	array_push($mail_to, 'quality-ars@tigermp.co.id');
+		          //   	// array_push($mail_to, 'suryanti@tigermp.co.id');
+		          //   	// array_push($mail_to, 'achmad.rofiq@tigermp.co.id');
+		          //   	// array_push($mail_to, 'agoes.jupri@tigermp.co.id');
+		          //   	array_push($mail_to, 'agustina.hayati@music.yamaha.com');
+		          //   	array_push($mail_to, 'ratri.sulistyorini@music.yamaha.com');
+		          //   	array_push($mail_to, 'abdissalam.saidi@music.yamaha.com');
+		          //   	array_push($mail_to, 'noviera.prasetyarini@music.yamaha.com');
+
+				        // $cc = [];
+				        // $cc[0] = 'yayuk.wahyuni@music.yamaha.com';
+				        // $cc[1] = 'imron.faizal@music.yamaha.com';
+
+				        // $bcc = [];
+				        // $bcc[0] = 'mokhamad.khamdan.khabibi@music.yamaha.com';
+				        // $bcc[1] = 'rio.irvansyah@music.yamaha.com';
+
+				        $outgoing_update = QaOutgoingVendorRecheck::where('id',$outgoing->id)->first();
+				        $outgoing_update->lot_status = 'LOT OUT';
+				        $outgoing_update->save();
+
+				        // Mail::to($mail_to)
+				        // // ->cc($cc,'CC')
+				        // ->bcc($bcc,'BCC')
+				        // ->send(new SendEmail($outgoing, 'critical_arisa'));
+
+				        array_push($outgoings_critical, $outgoing);
+		            }
+
+		            if (in_array($ng_name[$i], $this->non_critical_arisa)) {
+		            	array_push($outgoings, $outgoing);
+		            }
+				}
+
+
+				$total_ng_non = 0;
+				for ($i=0; $i < count($outgoings); $i++) { 
+					$total_ng_non = $total_ng_non + $outgoings[$i]->ng_qty;
+				}
+
+				if ($total_ng_non != 0) {
+					$persen = ($total_ng_non/$qty_check)*100;
+					if ($persen > 5) {
+						// $mail_to = [];
+
+		          //   	array_push($mail_to, 'quality-ars@tigermp.co.id');
+		          //   	// array_push($mail_to, 'suryanti@tigermp.co.id');
+		          //   	// array_push($mail_to, 'achmad.rofiq@tigermp.co.id');
+		          //   	// array_push($mail_to, 'agoes.jupri@tigermp.co.id');
+		          //   	array_push($mail_to, 'agustina.hayati@music.yamaha.com');
+		          //   	array_push($mail_to, 'ratri.sulistyorini@music.yamaha.com');
+		          //   	array_push($mail_to, 'abdissalam.saidi@music.yamaha.com');
+		          //   	array_push($mail_to, 'noviera.prasetyarini@music.yamaha.com');
+
+				        // $cc = [];
+				        // $cc[0] = 'yayuk.wahyuni@music.yamaha.com';
+				        // $cc[1] = 'imron.faizal@music.yamaha.com';
+
+				        // $bcc = [];
+				        // $bcc[0] = 'mokhamad.khamdan.khabibi@music.yamaha.com';
+				        // $bcc[1] = 'rio.irvansyah@music.yamaha.com';
+
+				        for ($i=0; $i < count($outgoing_id); $i++) { 
+				        	$outgoing_update = QaOutgoingVendorRecheck::where('id',$outgoing_id[$i])->first();
+					        $outgoing_update->lot_status = 'LOT OUT';
+					        $outgoing_update->save();
+
+					        // $outgoing_non_critical = QaOutgoingVendor::where('id',$outgoing_id[$i])->first();
+					        // array_push($outgoings_non_critical, $outgoing_non_critical);
+				        }
+
+				        $data = array(
+				        	'outgoing_non' => $outgoings,
+				        	'outgoing_critical' => $outgoings_critical, );
+
+				        Mail::to($mail_to)
+				        // ->cc($cc,'CC')
+				        ->bcc($bcc,'BCC')
+				        ->send(new SendEmail($data, 'over_limit_ratio_arisa'));
+					}
+				}
+			}
+
+			$outgoing_check = QaOutgoingVendor::where('serial_number',$serial_number)->get();
+			for ($i=0; $i < count($outgoing_check); $i++) { 
+				$outgoing_checks = QaOutgoingVendor::where('id',$outgoing_check[$i]->id)->first();
+				$outgoing_checks->recheck_status = 'Checked';
+				$outgoing_checks->save();
+			}
+			
+			$response = array(
+		        'status' => true,
+		        'message' => 'Success Input Data',
+		    );
+		    return Response::json($response);
+		} catch (\Exception $e) {
+			$response = array(
+		        'status' => false,
+		        'message' => $e->getMessage(),
+		    );
+		    return Response::json($response);
 		}
 	}
 	
