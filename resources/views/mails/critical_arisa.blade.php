@@ -46,61 +46,61 @@
 						<tr>
 							<th style="border:1px solid black;font-weight: bold;background-color: rgb(126,86,134);text-align: left;color: white;">Serial Number</th>
 							<td style="border:1px solid black;text-align: left;">
-								{{$data['serial_number']}}
+								{{$data->serial_number}}
 							</td>
 						</tr>
 						<tr>
 							<th style="border:1px solid black;font-weight: bold;background-color: rgb(126,86,134);text-align: left;color: white;">Material</th>
 							<td style="border:1px solid black;text-align: left;">
-								{{$data['material_number']}} - {{$data['material_description']}}
+								{{$data->material_number}} - {{$data->material_description}}
 							</td>
 						</tr>
 						<tr>
 							<th style="border:1px solid black;font-weight: bold;background-color: rgb(126,86,134);text-align: left;color: white;">Qty Check</th>
 							<td style="border:1px solid black;text-align: right;">
-								{{$data['qty_check']}}
+								{{$data->qty_check}}
 							</td>
 						</tr>
 						<tr>
 							<th style="border:1px solid black;font-weight: bold;background-color: rgb(126,86,134);text-align: left;color: white;">Total OK</th>
 							<td style="border:1px solid black;text-align: right;">
-								{{$data['total_ok']}}
+								{{$data->total_ok}}
 							</td>
 						</tr>
 						<tr>
 							<th style="border:1px solid black;font-weight: bold;background-color: rgb(126,86,134);text-align: left;color: white;">Total Defect</th>
 							<td style="border:1px solid black;text-align: right;">
-								{{$data['total_ng']}}
+								{{$data->total_ng}}
 							</td>
 						</tr>
 						<tr>
 							<th style="border:1px solid black;font-weight: bold;background-color: rgb(126,86,134);text-align: left;color: white;">Defect Ratio</th>
 							<td style="border:1px solid black;text-align: right;">
-								{{$data['ng_ratio']}} %
+								{{$data->ng_ratio}} %
 							</td>
 						</tr>
 						<tr>
 							<th style="border:1px solid black;font-weight: bold;background-color: rgb(126,86,134);text-align: left;color: white;">Defect</th>
 							<td style="border:1px solid black;text-align: left">
-								{{$data['ng_name']}}
+								{{$data->ng_name}}
 							</td>
 						</tr>
 						<tr>
 							<th style="border:1px solid black;font-weight: bold;background-color: rgb(126,86,134);text-align: left;color: white;">Qty Defect</th>
 							<td style="border:1px solid black;text-align: right;">
-								{{$data['ng_qty']}}
+								{{$data->ng_qty}}
 							</td>
 						</tr>
 						<tr>
 							<th style="border:1px solid black;font-weight: bold;background-color: rgb(126,86,134);text-align: left;color: white;">Inspector</th>
 							<td style="border:1px solid black;text-align: left">
-								{{$data['inspector']}}
+								{{$data->inspector}}
 							</td>
 						</tr>
 						<tr>
 							<th style="border:1px solid black;font-weight: bold;background-color: rgb(126,86,134);text-align: left;color: white;">Lot Status</th>
 							<td style="border:1px solid black;text-align: left;color: red">
-								{{$data['lot_status']}}
+								{{$data->lot_status}}
 							</td>
 						</tr>
 						
@@ -110,7 +110,7 @@
 				</table>
 				<br>
 				<span style="font-weight: bold; background-color: orange;">&#8650; <i>Click Here For</i> &#8650;</span><br>
-					<a href="{{url('index/outgoing/arisa/input/lot_out/'.$data['serial_number'].'/'.$data['check_date'])}}">Recheck Material</a>
+					<a href="{{url('index/outgoing/arisa/input/lot_out/'.$data->serial_number.'/'.$data->check_date)}}">Recheck Material</a>
 				<br>
 				<br>
 				<p>

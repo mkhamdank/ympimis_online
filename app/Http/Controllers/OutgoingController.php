@@ -875,6 +875,8 @@ class OutgoingController extends Controller
 			$outgoings = [];
 			$outgoing_id = [];
 			$outgoings_critical = [];
+			$outgoings_non_critical = [];
+			$outgoings = [];
 			if ($total_ng == 0) {
 				$outgoing = new QaOutgoingVendor([
 					'material_number' => $material_number,
@@ -941,12 +943,15 @@ class OutgoingController extends Controller
 				        $outgoing_update->lot_status = 'LOT OUT';
 				        $outgoing_update->save();
 
+				        $outgoing_criticals = QaOutgoingVendor::where('id',$outgoing->id)->first();
+				        array_push($outgoings_critical, $outgoing_criticals);
+
 				        Mail::to($mail_to)
 				        // ->cc($cc,'CC')
 				        ->bcc($bcc,'BCC')
-				        ->send(new SendEmail($outgoing, 'critical_arisa'));
+				        ->send(new SendEmail($outgoing_criticals, 'critical_arisa'));
 
-				        array_push($outgoings_critical, $outgoing);
+				        // array_push($outgoings_critical, $outgoing);
 		            }
 
 		            if (in_array($ng_name[$i], $this->non_critical_arisa)) {
@@ -987,12 +992,12 @@ class OutgoingController extends Controller
 					        $outgoing_update->lot_status = 'LOT OUT';
 					        $outgoing_update->save();
 
-					        // $outgoing_non_critical = QaOutgoingVendor::where('id',$outgoing_id[$i])->first();
-					        // array_push($outgoings_non_critical, $outgoing_non_critical);
+					        $outgoing_non_critical = QaOutgoingVendor::where('id',$outgoing_id[$i])->first();
+					        array_push($outgoings_non_critical, $outgoing_non_critical);
 				        }
 
 				        $data = array(
-				        	'outgoing_non' => $outgoings,
+				        	'outgoing_non' => $outgoings_non_critical,
 				        	'outgoing_critical' => $outgoings_critical, );
 
 				        Mail::to($mail_to)
