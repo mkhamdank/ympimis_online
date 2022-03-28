@@ -85,7 +85,8 @@
                             <table class="table user-table no-wrap" id="tableKensa">
                                 <thead>
                                     <tr>
-                                        <th style="background-color: #3f50b5;color: white !important;color: black">Serial Number</th>
+                                        <th style="background-color: #3f50b5;color: white !important;color: black">SN</th>
+                                        <th style="background-color: #3f50b5;color: white !important;color: black">Date</th>
                                         <th style="background-color: #3f50b5;color: white !important;color: black">Material</th>
                                         <th style="background-color: #3f50b5;color: white !important;color: black">Inspector</th>
                                         <th style="background-color: #3f50b5;color: white !important;color: black">Qty Check</th>
@@ -139,6 +140,7 @@
                 for (var i = 0; i < result.outgoing.length; i++) {
                     bodyTable += '<tr>';
                     bodyTable += '<td>'+result.outgoing[i].serial_number+'</td>';
+                    bodyTable += '<td>'+getFormattedDateTime(new Date(result.outgoing[i].created_at))+'</td>';
                     bodyTable += '<td>'+result.outgoing[i].material_number+'<br>'+result.outgoing[i].material_description+'</td>';
                     bodyTable += '<td>'+result.outgoing[i].inspector+'</td>';
                     bodyTable += '<td>'+result.outgoing[i].qty_check+'</td>';
@@ -231,6 +233,37 @@
             sticky: false,
             time: '3000'
         });
+    }
+
+    function getFormattedDateTime(date) {
+        var year = date.getFullYear();
+
+        var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+          "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+        ];
+
+        var month = (date.getMonth()+1).toString();
+        month = month.length > 1 ? month : '0' + month;
+
+        var day = date.getDate().toString();
+        day = day.length > 1 ? day : '0' + day;
+
+        var hour = date.getHours();
+        if (hour < 10) {
+            hour = "0" + hour;
+        }
+
+        var minute = date.getMinutes();
+        if (minute < 10) {
+            minute = "0" + minute;
+        }
+        var second = date.getSeconds();
+        if (second < 10) {
+            second = "0" + second;
+        }
+        
+        // return day + '-' + monthNames[month] + '-' + year +'<br>'+ hour +':'+ minute +':'+ second;
+        return year+'-'+month+'-'+day;
     }
 </script>
 @endsection

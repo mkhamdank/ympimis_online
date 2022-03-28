@@ -136,10 +136,10 @@
 				Search
 			</button>
 		</div>
-		<div class="col-md-8" style="padding-left: 0px;padding-top: 5px">
+		<div class="col-md-7" style="padding-left: 0px;padding-top: 5px">
 			<div id="container1" style="width: 100%;height: 83vh"></div>
 		</div>
-		<div class="col-md-4" style="padding-left: 0px;padding-top: 5px">
+		<div class="col-md-5" style="padding-left: 0px;padding-top: 5px">
 			<div id="container2" style="width: 100%;height: 83vh"></div>
 		</div>
 	</div>
@@ -263,7 +263,13 @@
 					        type: 'column'
 					    },
 					    title: {
-					        text: 'PARETO DEFECT TRUE<br>'+result.firstMonthTitle+' - '+result.lastMonthTitle
+					        text: 'PARETO DEFECT PT. TRUE',
+					        style:{
+					        	fontWeight:'bold'
+					        }
+					    },
+					    subtitle:{
+					    	text: result.firstMonthTitle+' - '+result.lastMonthTitle
 					    },
 					    tooltip: {
 					        shared: true
@@ -385,91 +391,85 @@
 					    ]
 					});
 
-					var total = 0;
-					var ok = 0;
-					var ng = 0;
+					var categories = [];
+					var ng = [];
 
 					$.each(result.material_status, function(key,value){
-						total = value.total;
-						ng = parseInt(value.ng);
-						ok = parseInt(value.total)-(parseInt(value.ng));
+						categories.push(value.material_description.replace(/(.{14})..+/, "$1&hellip;"));
+						ng.push({y:parseFloat(value.ng_ratio),key:value.material_number});
 					});
 
 					Highcharts.chart('container2', {
 					    chart: {
-					        plotBackgroundColor: null,
-					        plotBorderWidth: null,
-					        plotShadow: false,
-					        type: 'pie'
+					        zoomType: 'xy'
 					    },
 					    title: {
-					        text: 'MATERIAL STATUS'
-					    },
-					    tooltip: {
-					        pointFormat: '{series.name}<br><b>{point.y} Pc(s)<br>{point.percentage:.1f}%</b>'
-					    },
-					    accessibility: {
-					        point: {
-					            valueSuffix: '%',
-					            borderColor: '#8ae'
+					        text: 'Top 5 Worst Material',
+					        style:{
+					        	fontWeight:'bold'
 					        }
 					    },
-					    plotOptions: {
-					        pie: {
-					            dataLabels: {
-					                enabled: true,
-					                connectorColor: '#fff',
-					                format: '<b>{point.name}</b><br>{point.y} Pc(s)<br>{point.percentage:.1f} %',
-					                style:{
-					                	fontSize:'13px'
-					                }
-					            },
-					            point: {
-					                events: {
-					                    click: function () {
-					                    }
-					                }
-					            },
-					            cursor: 'pointer',
-					            borderWidth: 2,
-					            animation:false
-					        }
-					    },credits: {
-							enabled: false
-						},
-					    series: [{
-					        name: 'Qty Material',
-					        colorByPoint: true,
-					        data: [{
-					            name: 'OK',
-					            y: ok,
-					            sliced: true,
-					            selected: true,
-					            colorByPoint: false,
-								color: '#8ae379',
-					        }, {
-					            name: 'NG',
-					            y: ng,
-					            colorByPoint: false,
-								color: '#ff3333',
-					        } ]
+					    subtitle: {
+					        text: result.firstMonthTitle+' - '+result.lastMonthTitle
+					    },
+					    xAxis: [{
+					        categories: categories,
+					        crosshair: true
 					    }],
-					    responsive: {
-					        rules: [{
-					            condition: {
-					                maxWidth: 500
-					            },
-					            chartOptions: {
-					                plotOptions: {
-					                    series: {
-					                        dataLabels: {
-					                            format: '<b>{point.name}</b>'
-					                        }
-					                    }
-					                }
+					    yAxis: [{ 
+					        labels: {
+					            format: '{value}%',
+					            style: {
+					                color: '#fff'
 					            }
-					        }]
-					    }
+					        },
+					        title: {
+					            text: 'NG Rate',
+					            style: {
+					                color: '#fff'
+					            }
+					        }
+					    },],
+					    tooltip: {
+					        shared: true,
+					    },
+					    legend: {
+					        enabled:true
+					    },
+					    credits: {
+						     enabled: false
+						},
+					    plotOptions: {
+							series:{
+								cursor: 'pointer',
+				                point: {
+				                  events: {
+				                    click: function () {
+				                    	showModalDetail(this.category);
+				                    }
+				                  }
+				                },
+								dataLabels: {
+									enabled: true,
+									format: '{point.y} %',
+									style:{
+										fontSize: '13px'
+									}
+								},
+								animation: false,
+								pointPadding: 0.93,
+								groupPadding: 0.93,
+								cursor: 'pointer',
+							}
+						},
+					    series: [
+					    {
+					        name: 'NG Rate',
+					        type: 'column',
+					        data: ng,
+					        color: '#802626'
+
+					    }]
 					});
 				}
 			}

@@ -79,11 +79,12 @@
                 <div class="card">
                     <div class="card-body" style="padding: 0px">
                         <div class="col-md-12" style="padding: 10px;overflow-x: scroll;">
-                            <table class="table table-bordered user-table no-wrap" id="tableKensa">
+                            <table class="table user-table no-wrap" id="tableKensa">
                                 <thead>
                                     <tr>
                                         <th style="background-color: #3f50b5;color: white !important;width: 1%">SO Number</th>
-                                        <th style="background-color: #3f50b5;color: white !important;width: 1%">Final Serial Number</th>
+                                        <th style="background-color: #3f50b5;color: white !important;width: 1%">SN</th>
+                                        <th style="background-color: #3f50b5;color: white !important;width: 1%">Date</th>
                                         <th style="background-color: #3f50b5;color: white !important;width: 2%">Material</th>
                                         <th style="background-color: #3f50b5;color: white !important;width: 1%">Inspector</th>
                                         <th style="background-color: #3f50b5;color: white !important;width: 1%">Point Check Type</th>
@@ -190,6 +191,7 @@
                     bodyTable += '<tr>';
                     bodyTable += '<td>'+(result.outgoing[i].so_number || '')+'</td>';
                     bodyTable += '<td>'+result.outgoing[i].final_serial_number+'</td>';
+                    bodyTable += '<td>'+getFormattedDateTime(new Date(result.outgoing[i].created_at))+'</td>';
                     // var sernum = result.outgoing[i].serial_number.split(',');
                     // bodyTable += '<td>';
                     // for(var j = 0; j < sernum.length;j++){
@@ -202,21 +204,48 @@
                     // bodyTable += '</td>';
                     bodyTable += '<td>'+result.outgoing[i].material_number+'<br>'+result.outgoing[i].material_description+'</td>';
                     bodyTable += '<td>'+result.outgoing[i].inspector+'</td>';
-                    bodyTable += '<td>'+result.outgoing[i].point_check_type+'</td>';
                     bodyTable += '<td>'+result.outgoing[i].qty_check+'</td>';
+                    bodyTable += '<td>'+result.outgoing[i].point_check_type+'</td>';
                     bodyTable += '<td>'+result.outgoing[i].point_check_name+'</td>';
                     bodyTable += '<td>'+result.outgoing[i].point_check_standard+'</td>';
                     bodyTable += '<td>'+result.outgoing[i].point_check_upper+'</td>';
                     bodyTable += '<td>'+result.outgoing[i].point_check_lower+'</td>';
                     bodyTable += '<td>'+result.outgoing[i].point_check_index+'</td>';
-                    if (result.outgoing[i].product_result == 'OK') {
-                        var color = '#91ff78';
-                    }else if(result.outgoing[i].product_result == 'NG'){
-                        var color = '#ff9191';
-                    }else{
-                        var color = 'none';
-                    }
-                    bodyTable += '<td style="background-color:'+color+'">'+result.outgoing[i].product_result+'</td>';
+                    var results = '';
+                    // if (result.outgoing[i].point_check_type == 'APPEARANCE CHECK' || result.outgoing[i].point_check_type == 'FUNCTIONAL CHECK') {
+                        if (result.outgoing[i].product_result == '0' || result.outgoing[i].product_result == 'OK') {
+                            var color = '#91ff78';
+                            results = 'OK';
+                        }else if(result.outgoing[i].product_result == 'NG' || result.outgoing[i].product_result > 0){
+                            if (parseFloat(result.outgoing[i].product_result) >= parseFloat(result.outgoing[i].point_check_lower) && parseFloat(result.outgoing[i].product_result) <= parseFloat(result.outgoing[i].point_check_upper)) {
+                                var color = '#91ff78';
+                                results = result.outgoing[i].product_result;
+                            }else{
+                                var color = '#ff9191';
+                                results = result.outgoing[i].product_result;
+                            }
+                        }else{
+                            results = result.outgoing[i].product_result;
+                            var color = 'none';
+                        }
+                    // }else{
+                    //     if (result.outgoing[i].product_result == 'OK') {
+                    //         var color = '#91ff78';
+                    //         results = result.outgoing[i].product_result;
+                    //     }else if(result.outgoing[i].product_result == 'NG'){
+                    //         if (parseFloat(result.outgoing[i].product_result) >= parseFloat(result.outgoing[i].point_check_lower) && parseFloat(result.outgoing[i].product_result) <= parseFloat(result.outgoing[i].point_check_upper)) {
+                    //             var color = '#91ff78';
+                    //             results = result.outgoing[i].product_result;
+                    //         }else{
+                    //             var color = '#ff9191';
+                    //             results = result.outgoing[i].product_result;
+                    //         }
+                    //     }else{
+                    //         results = result.outgoing[i].product_result;
+                    //         var color = 'none';
+                    //     }
+                    // }
+                    bodyTable += '<td style="background-color:'+color+'">'+results+'</td>';
                     bodyTable += '</tr>';
                     if (result.outgoing[i].so_number == null) {
                         final_serial_number.push(result.outgoing[i].final_serial_number);
@@ -362,6 +391,37 @@
             sticky: false,
             time: '3000'
         });
+    }
+
+    function getFormattedDateTime(date) {
+        var year = date.getFullYear();
+
+        var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+          "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+        ];
+
+        var month = (date.getMonth()+1).toString();
+        month = month.length > 1 ? month : '0' + month;
+
+        var day = date.getDate().toString();
+        day = day.length > 1 ? day : '0' + day;
+
+        var hour = date.getHours();
+        if (hour < 10) {
+            hour = "0" + hour;
+        }
+
+        var minute = date.getMinutes();
+        if (minute < 10) {
+            minute = "0" + minute;
+        }
+        var second = date.getSeconds();
+        if (second < 10) {
+            second = "0" + second;
+        }
+        
+        // return day + '-' + monthNames[month] + '-' + year +'<br>'+ hour +':'+ minute +':'+ second;
+        return year+'-'+month+'-'+day;
     }
 </script>
 @endsection

@@ -32,7 +32,9 @@
 	<div>
 		<center>
 			<img style="width: 24px" src="data:image/png;base64,{{base64_encode(file_get_contents(public_path('yamaha_putih.png')))}}" alt=""><br><br>
-			<span style="font-weight: bold; color: purple; font-size: 24px;">Critical Defect PT. ARISAMANDIRI PRATAMA</span><br>
+			<span style="font-weight: bold; color: purple; font-size: 24px;">Inspection Report PT. ARISAMANDIRI PRATAMA</span><br>
+			<span style="font-weight: bold; color: purple; font-size: 18px;">Production 100% (Critical Defect)</span>
+			<br>
 			<p style="color: black">This is an automatic notification. Please do not reply to this address.</p>
 		</center>
 	</div>
@@ -109,10 +111,10 @@
 					</tbody> -->
 				</table>
 				<br>
-				<span style="font-weight: bold; background-color: orange;">&#8650; <i>Click Here For</i> &#8650;</span><br>
+				<!-- <span style="font-weight: bold; background-color: orange;">&#8650; <i>Click Here For</i> &#8650;</span><br>
 					<a href="{{url('index/outgoing/arisa/input/lot_out/'.$data->serial_number.'/'.$data->check_date)}}">Recheck Material</a>
 				<br>
-				<br>
+				<br> -->
 				<p>
 					<b>Thanks & Regards,</b>
 				</p>

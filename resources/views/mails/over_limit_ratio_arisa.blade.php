@@ -32,7 +32,8 @@
 	<div>
 		<center>
 			<img style="width: 24px" src="data:image/png;base64,{{base64_encode(file_get_contents(public_path('yamaha_putih.png')))}}" alt=""><br><br>
-			<span style="font-weight: bold; color: purple; font-size: 24px;">Non Critical Defect Ratio > 5% PT. ARISAMANDIRI PRATAMA</span><br>
+			<span style="font-weight: bold; color: purple; font-size: 24px;">Inspection Report PT. ARISAMANDIRI PRATAMA</span><br>
+			<span style="font-weight: bold; color: purple; font-size: 18px;">Production 100% (Non Critical Defect)</span><br>
 			<p style="color: black">This is an automatic notification. Please do not reply to this address.</p>
 		</center>
 	</div>
@@ -148,10 +149,10 @@
 						</tbody>
 					</table>
 				<?php endif ?>
-				<span style="font-weight: bold; background-color: orange;">&#8650; <i>Click Here For</i> &#8650;</span><br>
+				<!-- <span style="font-weight: bold; background-color: orange;">&#8650; <i>Click Here For</i> &#8650;</span><br>
 					<a href="{{url('index/outgoing/true/input/lot_out/'.$data['outgoing_non'][0]->serial_number.'/'.$data['outgoing_non'][0]->check_date)}}">Recheck Material</a>
 				<br>
-				<br>
+				<br> -->
 				<p>
 					<b>Thanks & Regards,</b>
 				</p>

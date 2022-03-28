@@ -325,10 +325,12 @@ class OutgoingController extends Controller
 		            	array_push($mail_to, 'ratri.sulistyorini@music.yamaha.com');
 		            	array_push($mail_to, 'abdissalam.saidi@music.yamaha.com');
 		            	array_push($mail_to, 'noviera.prasetyarini@music.yamaha.com');
+		            	array_push($mail_to, 'imbang.prasetyo@music.yamaha.com');
+		            	array_push($mail_to, 'ardianto@music.yamaha.com');
 
 				        $cc = [];
 				        $cc[0] = 'yayuk.wahyuni@music.yamaha.com';
-				        $cc[1] = 'imron.faizal@music.yamaha.com';
+				        // $cc[1] = 'imron.faizal@music.yamaha.com';
 
 				        $bcc = [];
 				        $bcc[0] = 'mokhamad.khamdan.khabibi@music.yamaha.com';
@@ -342,7 +344,7 @@ class OutgoingController extends Controller
 				        array_push($outgoings_critical, $outgoing_criticals);
 
 				        Mail::to($mail_to)
-				        // ->cc($cc,'CC')
+				        ->cc($cc,'CC')
 				        ->bcc($bcc,'BCC')
 				        ->send(new SendEmail($outgoing_criticals, 'critical_true'));
 		            }
@@ -368,10 +370,12 @@ class OutgoingController extends Controller
 		            	array_push($mail_to, 'ratri.sulistyorini@music.yamaha.com');
 		            	array_push($mail_to, 'abdissalam.saidi@music.yamaha.com');
 		            	array_push($mail_to, 'noviera.prasetyarini@music.yamaha.com');
+		            	array_push($mail_to, 'imbang.prasetyo@music.yamaha.com');
+		            	array_push($mail_to, 'ardianto@music.yamaha.com');
 
 				        $cc = [];
 				        $cc[0] = 'yayuk.wahyuni@music.yamaha.com';
-				        $cc[1] = 'imron.faizal@music.yamaha.com';
+				        // $cc[1] = 'imron.faizal@music.yamaha.com';
 
 				        $bcc = [];
 				        $bcc[0] = 'mokhamad.khamdan.khabibi@music.yamaha.com';
@@ -391,7 +395,7 @@ class OutgoingController extends Controller
 				        	'outgoing_critical' => $outgoings_critical, );
 
 				        Mail::to($mail_to)
-				        // ->cc($cc,'CC')
+				        ->cc($cc,'CC')
 				        ->bcc($bcc,'BCC')
 				        ->send(new SendEmail($data, 'over_limit_ratio_true'));
 					}
@@ -930,10 +934,11 @@ class OutgoingController extends Controller
 		            	array_push($mail_to, 'ratri.sulistyorini@music.yamaha.com');
 		            	array_push($mail_to, 'abdissalam.saidi@music.yamaha.com');
 		            	array_push($mail_to, 'noviera.prasetyarini@music.yamaha.com');
+		            	array_push($mail_to, 'eko.prasetyo.wicaksono@music.yamaha.com');
 
 				        $cc = [];
 				        $cc[0] = 'yayuk.wahyuni@music.yamaha.com';
-				        $cc[1] = 'imron.faizal@music.yamaha.com';
+				        // $cc[1] = 'imron.faizal@music.yamaha.com';
 
 				        $bcc = [];
 				        $bcc[0] = 'mokhamad.khamdan.khabibi@music.yamaha.com';
@@ -947,7 +952,7 @@ class OutgoingController extends Controller
 				        array_push($outgoings_critical, $outgoing_criticals);
 
 				        Mail::to($mail_to)
-				        // ->cc($cc,'CC')
+				        ->cc($cc,'CC')
 				        ->bcc($bcc,'BCC')
 				        ->send(new SendEmail($outgoing_criticals, 'critical_arisa'));
 
@@ -978,10 +983,11 @@ class OutgoingController extends Controller
 		            	array_push($mail_to, 'ratri.sulistyorini@music.yamaha.com');
 		            	array_push($mail_to, 'abdissalam.saidi@music.yamaha.com');
 		            	array_push($mail_to, 'noviera.prasetyarini@music.yamaha.com');
+		            	array_push($mail_to, 'eko.prasetyo.wicaksono@music.yamaha.com');
 
 				        $cc = [];
 				        $cc[0] = 'yayuk.wahyuni@music.yamaha.com';
-				        $cc[1] = 'imron.faizal@music.yamaha.com';
+				        // $cc[1] = 'imron.faizal@music.yamaha.com';
 
 				        $bcc = [];
 				        $bcc[0] = 'mokhamad.khamdan.khabibi@music.yamaha.com';
@@ -1001,7 +1007,7 @@ class OutgoingController extends Controller
 				        	'outgoing_critical' => $outgoings_critical, );
 
 				        Mail::to($mail_to)
-				        // ->cc($cc,'CC')
+				        ->cc($cc,'CC')
 				        ->bcc($bcc,'BCC')
 				        ->send(new SendEmail($data, 'over_limit_ratio_arisa'));
 					}
@@ -1667,24 +1673,32 @@ class OutgoingController extends Controller
 	        if ($month_from == "") {
 	             if ($month_to == "") {
 	                  $first = "DATE_FORMAT( NOW(), '%Y-%m' )";
+	                  $firstDate = "DATE_FORMAT( NOW(), '%Y-%m-01' )";
 	                  $last = "DATE_FORMAT( NOW(), '%Y-%m' )";
+	                  $lastDate = "DATE_FORMAT( NOW(), '%Y-%m-%d' )";
 	                  $firstMonthTitle = date('M Y');
 	                  $lastMonthTitle = date('M Y');
 	             }else{
 	                  $first = "DATE_FORMAT( NOW(), '%Y-%m' )";
+	                  $firstDate = "DATE_FORMAT( NOW(), '%Y-%m-01' )";
 	                  $last = "'".$month_to."'";
+	                  $lastDate = "'".$month_to."-".date('d')."'";
 	                  $firstMonthTitle = date('M Y');
 	                  $lastMonthTitle = date('M Y',strtotime($month_to));
 	             }
 	        }else{
 	             if ($month_to == "") {
 	                  $first = "'".$month_from."'";
+	                  $firstDate = "'".$month_from."-01'";
 	                  $last = "DATE_FORMAT( NOW(), '%Y-%m' )";
+	                  $lastDate = "DATE_FORMAT( NOW(), '%Y-%m-%d' )";
 	                  $firstMonthTitle = date('M Y',strtotime($month_from));
 	                  $lastMonthTitle = date('M Y');
 	             }else{
 	                  $first = "'".$month_from."'";
+	                  $firstDate = "'".$month_from."'-01";
 	                  $last = "'".$month_to."'";
+	                  $lastDate = "'".$month_to."-".date('d')."'";
 	                  $firstMonthTitle = date('M Y',strtotime($month_from));
 	                  $lastMonthTitle = date('M Y',strtotime($month_to));
 	             }
@@ -1716,6 +1730,7 @@ class OutgoingController extends Controller
 				DATE_FORMAT( qa_outgoing_vendors.created_at, '%Y-%m' ) >= ".$first." 
 				AND DATE_FORMAT( qa_outgoing_vendors.created_at, '%Y-%m' ) <= ".$last."
 				and vendor_shortname = '".$vendor_shortname."'
+				and ng_name != '-'
 				".$materialin."
 			GROUP BY
 				ng_name 
@@ -1725,33 +1740,45 @@ class OutgoingController extends Controller
 				count_check DESC");
 
 			$material_status = DB::SELECT("SELECT
-				SUM( a.total ) AS total,
-				SUM( a.ng ) AS ng 
-			FROM
-				(
-				SELECT
-					qty_check AS total,
-					0 AS ng 
+					qa_outgoing_vendors.material_number,
+					material_description,
+					sum( ng_qty ) AS qty,
+					a.qty_check,
+					ROUND(( SUM( ng_qty ) / SUM( a.qty_check ) )* 100, 2 ) AS ng_ratio 
 				FROM
-					qa_outgoing_vendors 
+					qa_outgoing_vendors
+					JOIN (
+					SELECT
+						c.material_number,
+						SUM( c.qty_check ) AS qty_check 
+					FROM
+						(
+						SELECT DISTINCT
+							( serial_number ),
+							material_number,
+							DATE( created_at ) AS check_date,
+							( SELECT a.qty_check FROM `qa_outgoing_vendors` AS a WHERE a.serial_number = qa_outgoing_vendors.serial_number LIMIT 1 ) AS qty_check 
+						FROM
+							`qa_outgoing_vendors` 
+						WHERE
+							vendor_shortname = 'TRUE' 
+							AND DATE( created_at ) >= ".$firstDate."
+							AND DATE( created_at ) <= ".$lastDate."
+							AND ng_qty != 0 
+						) c 
+					GROUP BY
+						c.material_number 
+					) a ON a.material_number = qa_outgoing_vendors.material_number 
 				WHERE
-					DATE_FORMAT( created_at, '%Y-%m' ) >= ".$first."
+					vendor_shortname = 'TRUE' 
+					AND DATE_FORMAT( created_at, '%Y-%m' ) >= ".$first."
 					AND DATE_FORMAT( created_at, '%Y-%m' ) <= ".$last." 
-					AND vendor_shortname = '".$vendor_shortname."' 
-					".$materialin."
 				GROUP BY
-					serial_number UNION ALL
-				SELECT
-					0 total,
-					SUM( ng_qty ) AS ng 
-				FROM
-					qa_outgoing_vendors 
-				WHERE
-					DATE_FORMAT( created_at, '%Y-%m' ) >= ".$first."
-					AND DATE_FORMAT( created_at, '%Y-%m' ) <= ".$last." 
-				AND vendor_shortname = '".$vendor_shortname."' 
-				".$materialin."
-				) a");
+					material_number,
+					material_description 
+				ORDER BY
+					ng_ratio DESC 
+					LIMIT 5");
 			$response = array(
 		        'status' => true,
 		        'material_defect' => $material_defect,

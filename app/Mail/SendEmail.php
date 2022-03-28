@@ -54,19 +54,19 @@ class SendEmail extends Mailable
         }
 
          if($this->remark == 'critical_arisa'){
-            return $this->from('mis@ympi.co.id', 'PT. Yamaha Musical Products Indonesia')->subject('Critical Defect PT. ARISAMANDIRI PRATAMA')->view('mails.critical_arisa');
+            return $this->from('mis@ympi.co.id', 'PT. Yamaha Musical Products Indonesia')->subject('Inpection Report (100%) PT. ARISAMANDIRI PRATAMA')->view('mails.critical_arisa');
         }
 
         if($this->remark == 'over_limit_ratio_arisa'){
-            return $this->from('mis@ympi.co.id', 'PT. Yamaha Musical Products Indonesia')->subject('Non Critical Defect Ratio ( > 5%) PT. ARISAMANDIRI PRATAMA')->view('mails.over_limit_ratio_arisa');
+            return $this->from('mis@ympi.co.id', 'PT. Yamaha Musical Products Indonesia')->subject('Inpection Report (100%) PT. ARISAMANDIRI PRATAMA')->view('mails.over_limit_ratio_arisa');
         }
 
         if($this->remark == 'critical_kbi'){
-            return $this->from('mis@ympi.co.id', 'PT. Yamaha Musical Products Indonesia')->subject('Critical Defect PT. KYORAKU BLOWMOLDING INDONESIA')->view('mails.critical_kbi');
+            return $this->from('mis@ympi.co.id', 'PT. Yamaha Musical Products Indonesia')->subject('Inpection Report (100%) PT. KYORAKU BLOWMOLDING INDONESIA')->view('mails.critical_kbi');
         }
 
         if($this->remark == 'over_limit_ratio_kbi'){
-            return $this->from('mis@ympi.co.id', 'PT. Yamaha Musical Products Indonesia')->subject('Non Critical Defect Ratio ( > 5%) PT. KYORAKU BLOWMOLDING INDONESIA')->view('mails.over_limit_ratio_kbi');
+            return $this->from('mis@ympi.co.id', 'PT. Yamaha Musical Products Indonesia')->subject('Inpection Report (100%) PT. KYORAKU BLOWMOLDING INDONESIA')->view('mails.over_limit_ratio_kbi');
         }
 
         if($this->remark == 'payment_request'){

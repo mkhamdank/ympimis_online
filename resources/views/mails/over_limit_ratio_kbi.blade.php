@@ -32,7 +32,8 @@
 	<div>
 		<center>
 			<img style="width: 24px" src="data:image/png;base64,{{base64_encode(file_get_contents(public_path('yamaha_putih.png')))}}" alt=""><br><br>
-			<span style="font-weight: bold; color: purple; font-size: 24px;">Non Critical Defect Ratio > 5% PT. KYORAKU BLOWMOLDING INDONESIA</span><br>
+			<span style="font-weight: bold; color: purple; font-size: 24px;">Inspection Report PT. KYORAKU BLOWMOLDING INDONESIA</span><br>
+			<span style="font-weight: bold; color: purple; font-size: 18px;">Production 100% (Non Critical Defect)</span><br>
 			<p style="color: black">This is an automatic notification. Please do not reply to this address.</p>
 		</center>
 	</div>
