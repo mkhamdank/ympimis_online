@@ -3120,6 +3120,59 @@ class OutgoingController extends Controller
 		    return Response::json($response);
 		}
 	}
+
+	public function indexInputTrueSosialisasi($serial_number,$check_date)
+	{
+		$title = 'Input Recheck Material PT. TRUE INDONESIA';
+		$title_jp = '';
+
+		$outgoing = QaOutgoingVendor::where('serial_number',$serial_number)->where('check_date',$check_date)->get();
+
+		return view('outgoing.true.index_training', array(
+			'title' => $title,
+			'title_jp' => $title_jp,
+			'outgoing' => $outgoing,
+			'serial_number' => $serial_number,
+			'check_date' => $check_date,
+			'vendor' => 'PT. TRUE INDONESIA',
+			'inspector' => Auth::user()->name,
+		))->with('page', 'Input Final Inspection TRUE')->with('head', 'Input Final Inspection TRUE');
+	}
+
+	public function confirmInputTrueSosialisasi(Request $request)
+	{
+		try {
+
+			$filename = "";
+        	$file_destination = 'data_file/true/sosialisasi';
+
+        	$file = $request->file('newAttachment');
+            $filename = 'sosialisasi_true_'.$request->get('serial_number').'_'.date('YmdHisa').'.'.$request->input('extension');
+            $file->move($file_destination, $filename);
+
+            $outgoing = QaOutgoingVendor::where('serial_number',$request->get('serial_number'))->get();
+
+            for ($i=0; $i < count($outgoing); $i++) { 
+            	$update_outgoing = QaOutgoingVendor::where('id',$outgoing[$i]->id)->first();
+            	$update_outgoing->training_image = $filename;
+            	$update_outgoing->training_at = date('Y-m-d H:i:s');
+            	$update_outgoing->training_content = $request->get('training_content');
+            	$update_outgoing->save();
+            }
+
+			$response = array(
+		        'status' => true,
+		        'message' => 'Berhasil Input Sosialisasi',
+		    );
+		    return Response::json($response);
+		} catch (\Exception $e) {
+			$response = array(
+		        'status' => false,
+		        'message' => $e->getMessage(),
+		    );
+		    return Response::json($response);
+		}
+	}
 	
 
 }

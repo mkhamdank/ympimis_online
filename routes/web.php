@@ -229,6 +229,9 @@ Route::group(['nav' => 'S0', 'middleware' => 'permission'], function(){
 	Route::get('index/outgoing/true/input/lot_out/{serial_number}/{check_date}', 'OutgoingController@indexInputTrueRecheck');
 	Route::post('index/outgoing/true/confirm/recheck', 'OutgoingController@confirmInputTrueRecheck');
 
+	Route::get('index/outgoing/true/input/sosialisasi/{serial_number}/{check_date}', 'OutgoingController@indexInputTrueSosialisasi');
+	Route::post('index/outgoing/true/confirm/sosialisasi', 'OutgoingController@confirmInputTrueSosialisasi');
+
 	Route::get('index/kensa/true/report', 'OutgoingController@indexReportKensaTrue');
 	Route::get('fetch/kensa/true/report', 'OutgoingController@fetchReportKensaTrue');
 
