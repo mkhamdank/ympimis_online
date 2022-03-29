@@ -239,11 +239,11 @@
 					</tr>
 					<tr>
 						<td style="background-color: #d1d1d1; text-align: center; color: #14213d; padding:0;font-size: 20px;font-weight: bold;width: 50%">
-							<select style="height: 50px;font-size: 1.7vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d;background-color: green;color: white;font-weight: bold;" id="lot_status" data-placeholder="Lot Status">
+							<!-- <select style="height: 50px;font-size: 1.7vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d;background-color: green;color: white;font-weight: bold;" id="lot_status" data-placeholder="Lot Status">
 								<option value="LOT OK">LOT OK</option>
 								<option value="LOT OUT">LOT OUT</option>
-							</select>
-							<!-- <input type="text" class="pull-right" name="lot_status" style="height: 50px;font-size: 1.7vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d;background-color: green;color: white;font-weight: bold;" id="lot_status" placeholder="Lot Status" readonly="" value="LOT OK"> -->
+							</select> -->
+							<input type="text" class="pull-right" name="lot_status" style="height: 50px;font-size: 1.7vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d;background-color: green;color: white;font-weight: bold;" id="lot_status" placeholder="Lot Status" readonly="" value="LOT OK">
 						</td>
 					</tr>
 				</tbody>
@@ -479,7 +479,10 @@
 	var all_check = 0;
 	var lot_ok = 0;
 	var lot_out = 0;
-	var ng_result = 0;
+	var ng_result_checkbox = 0;
+	var ng_result_counting = 0;
+	var ng_result_value = 0;
+	var ng_result_all = 0;
 
 	jQuery(document).ready(function() {
 
@@ -654,16 +657,18 @@
 
 	function addSerialNumber() {
 
-		if ($('#kensa_serial_number').val() == "") {
+		if ($('#kensa_serial_number').val() == "" || $('#kensa_serial_number').val() == null) {
 			audio_error.play();
 			openErrorGritter('Error!','Input Semua Data.');
 			return false;
 		}
 
-		if($.inArray($('#kensa_serial_number').val().split('_')[0], serial_number) != -1){
-			audio_error.play();
-			openErrorGritter('Error!','Serial Number already exists.');
-			return false;
+		if (serial_number.length > 0 || $('#kensa_serial_number').val() != null) {
+			if($.inArray($('#kensa_serial_number').val().split('_')[0], serial_number) != -1){
+				audio_error.play();
+				openErrorGritter('Error!','Serial Number already exists.');
+				return false;
+			}
 		}
 
 		var serial_numbers = $('#kensa_serial_number').val().split('_')[0];
@@ -794,13 +799,13 @@
 							tableDataAppearance += '<td>'+result.point_check[i].point_check_standard+'</td>';
 							tableDataAppearance += '<td>'+result.point_check[i].point_check_lower+'</td>';
 							tableDataAppearance += '<td>'+result.point_check[i].point_check_upper+'</td>';
-							tableDataAppearance += '<td onclick="checkCondition(0,\''+result.point_check[i].id+'\',\''+index_check_box_appearance+'\')" style="font-size:20px;border:1px solid black;width:1%;">';
+							tableDataAppearance += '<td style="font-size:20px;border:1px solid black;width:1%;">';
 							tableDataAppearance += '<label class="containers">&#9711;';
-							  tableDataAppearance += '<input type="radio" name="condition_0_'+result.point_check[i].id+'_'+index_check_box_appearance+'" id="condition_0_'+result.point_check[i].id+'_'+index_check_box_appearance+'" value="OK">';
+							  tableDataAppearance += '<input type="radio" class="messageCheckbox" name="condition_0_'+result.point_check[i].id+'_'+index_check_box_appearance+'" id="condition_0_'+result.point_check[i].id+'_'+index_check_box_appearance+'" value="OK" onclick="checkCondition(0,\''+result.point_check[i].id+'\',\''+index_check_box_appearance+'\',\''+result.point_check[i].remark+'\')">';
 							  tableDataAppearance += '<span class="checkmark" id="checkmarkok_0_'+result.point_check[i].id+'_'+index_check_box_appearance+'"></span>';
 							tableDataAppearance += '</label>';
 							tableDataAppearance += '<label class="containers">&#9747;';
-							  tableDataAppearance += '<input type="radio" name="condition_0_'+result.point_check[i].id+'_'+index_check_box_appearance+'" id="condition_0_'+result.point_check[i].id+'_'+index_check_box_appearance+'" value="NG">';
+							  tableDataAppearance += '<input type="radio" class="messageCheckbox" name="condition_0_'+result.point_check[i].id+'_'+index_check_box_appearance+'" id="condition_0_'+result.point_check[i].id+'_'+index_check_box_appearance+'" value="NG" onclick="checkCondition(0,\''+result.point_check[i].id+'\',\''+index_check_box_appearance+'\',\''+result.point_check[i].remark+'\')">';
 							  tableDataAppearance += '<span class="checkmark" id="checkmarkng_0_'+result.point_check[i].id+'_'+index_check_box_appearance+'"></span>';
 							tableDataAppearance += '</label>';
 							tableDataAppearance += '</td>';
@@ -816,7 +821,7 @@
 							tableDataAppearance += '<td>'+result.point_check[i].point_check_lower+'</td>';
 							tableDataAppearance += '<td>'+result.point_check[i].point_check_upper+'</td>';
 							tableDataAppearance += '<td id="minus" onclick="minus(0,'+parseInt(result.point_check[i].id)+','+index_counting_appearance+')" style="background-color: rgb(255,204,255); font-weight: bold; font-size: 45px; cursor: pointer;" class="unselectable">-</td>';
-							tableDataAppearance += '<td style="font-weight: bold; font-size: 45px; background-color: rgb(100,100,100); color: yellow;"><span id="count_0_'+parseInt(result.point_check[i].id)+'_'+index_counting_appearance+'">0</span></td>';
+							tableDataAppearance += '<td style="font-weight: bold; font-size: 45px; background-color: rgb(100,100,100); color: yellow;"><span class="countingCheck" id="count_0_'+parseInt(result.point_check[i].id)+'_'+index_counting_appearance+'">0</span></td>';
 							tableDataAppearance += '<td id="plus" onclick="plus(0,'+parseInt(result.point_check[i].id)+','+index_counting_appearance+')" style="background-color: rgb(204,255,255); font-weight: bold; font-size: 45px; cursor: pointer;" class="unselectable">+</td>';
 							tableDataAppearance += '</tr>';
 							index_counting_appearance++;
@@ -840,13 +845,13 @@
 							tableDataFunctional += '<td>'+result.point_check[i].point_check_lower+'</td>';
 							tableDataFunctional += '<td>'+result.point_check[i].point_check_upper+'</td>';
 							for(var j = 1; j < parseInt($('#qty_check_fun').val())+1; j++){
-								tableDataFunctional += '<td '+colspan_result+' onclick="checkCondition(\''+j+'\',\''+result.point_check[i].id+'\',\''+index_check_box_functional+'\')" style="font-size:20px;border:1px solid black;width:1%;">';
+								tableDataFunctional += '<td '+colspan_result+' style="font-size:20px;border:1px solid black;width:1%;">';
 								tableDataFunctional += '<label class="containers">&#9711;';
-								  tableDataFunctional += '<input type="radio" name="condition_'+j+'_'+result.point_check[i].id+'_'+index_check_box_functional+'" id="condition_'+j+'_'+result.point_check[i].id+'_'+index_check_box_functional+'" value="OK">';
+								  tableDataFunctional += '<input class="messageCheckbox" type="radio" name="condition_'+j+'_'+result.point_check[i].id+'_'+index_check_box_functional+'" id="condition_'+j+'_'+result.point_check[i].id+'_'+index_check_box_functional+'" value="OK" onclick="checkCondition(\''+j+'\',\''+result.point_check[i].id+'\',\''+index_check_box_functional+'\',\''+result.point_check[i].remark+'\')">';
 								  tableDataFunctional += '<span class="checkmark" id="checkmarkok_'+j+'_'+result.point_check[i].id+'_'+index_check_box_functional+'"></span>';
 								tableDataFunctional += '</label>';
 								tableDataFunctional += '<label class="containers">&#9747;';
-								  tableDataFunctional += '<input type="radio" name="condition_'+j+'_'+result.point_check[i].id+'_'+index_check_box_functional+'" id="condition_'+j+'_'+result.point_check[i].id+'_'+index_check_box_functional+'" value="NG">';
+								  tableDataFunctional += '<input class="messageCheckbox" type="radio" name="condition_'+j+'_'+result.point_check[i].id+'_'+index_check_box_functional+'" id="condition_'+j+'_'+result.point_check[i].id+'_'+index_check_box_functional+'" value="NG" onclick="checkCondition(\''+j+'\',\''+result.point_check[i].id+'\',\''+index_check_box_functional+'\',\''+result.point_check[i].remark+'\')">';
 								  tableDataFunctional += '<span class="checkmark" id="checkmarkng_'+j+'_'+result.point_check[i].id+'_'+index_check_box_functional+'"></span>';
 								tableDataFunctional += '</label>';
 								tableDataFunctional += '</td>';
@@ -865,7 +870,7 @@
 							tableDataFunctional += '<td>'+result.point_check[i].point_check_upper+'</td>';
 							for(var j = 1; j < parseInt($('#qty_check_fun').val())+1;j++){
 								tableDataFunctional += '<td id="minus" onclick="minus('+j+','+parseInt(result.point_check[i].id)+','+index_counting_functional+')" style="background-color: rgb(255,204,255); font-weight: bold; font-size: 45px; cursor: pointer;" class="unselectable">-</td>';
-								tableDataFunctional += '<td style="font-weight: bold; font-size: 45px; background-color: rgb(100,100,100); color: yellow;"><span id="count_'+j+'_'+parseInt(result.point_check[i].id)+'_'+index_counting_functional+'">0</span></td>';
+								tableDataFunctional += '<td style="font-weight: bold; font-size: 45px; background-color: rgb(100,100,100); color: yellow;"><span class="countingCheck" id="count_'+j+'_'+parseInt(result.point_check[i].id)+'_'+index_counting_functional+'">0</span></td>';
 								tableDataFunctional += '<td id="plus" onclick="plus('+j+','+parseInt(result.point_check[i].id)+','+index_counting_functional+')" style="background-color: rgb(204,255,255); font-weight: bold; font-size: 45px; cursor: pointer;" class="unselectable">+</td>';
 								index_counting_functional++;
 								id_counting_functional.push(result.point_check[i].id);
@@ -880,7 +885,7 @@
 							tableDataFunctional += '<td>'+result.point_check[i].point_check_lower+'</td>';
 							tableDataFunctional += '<td>'+result.point_check[i].point_check_upper+'</td>';
 							for(var j = 1; j < parseInt($('#qty_check_fun').val())+1; j++){
-								tableDataFunctional += '<td '+colspan_result+'><input type="number" class="pull-right" name="values_'+j+'_'+result.point_check[i].id+'_'+index_values_functional+'" style="height: 50px;font-size: 2vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="values_'+j+'_'+result.point_check[i].id+'_'+index_values_functional+'" placeholder="'+j+'" onchange="checkValue('+result.point_check[i].point_check_upper+','+result.point_check[i].point_check_lower+','+j+','+result.point_check[i].id+','+index_values_functional+')"></td>';
+								tableDataFunctional += '<td '+colspan_result+'><input type="number" class="pull-right valueCheck" name="values_'+j+'_'+result.point_check[i].id+'_'+index_values_functional+'" style="height: 50px;font-size: 2vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="values_'+j+'_'+result.point_check[i].id+'_'+index_values_functional+'" placeholder="'+j+'" onchange="checkValue('+result.point_check[i].point_check_upper+','+result.point_check[i].point_check_lower+','+j+','+result.point_check[i].id+','+index_values_functional+')"></td>';
 								index_values_functional++;
 								id_values_functional.push(result.point_check[i].id);
 							}
@@ -903,10 +908,10 @@
 							tableDataDimensional += '<td>'+result.point_check[i].point_check_index+'</td>';
 							tableDataDimensional += '<td>'+result.point_check[i].point_check_name+'</td>';
 							tableDataDimensional += '<td>'+result.point_check[i].point_check_standard+'</td>';
-							tableDataDimensional += '<td>'+result.point_check[i].point_check_lower+'</td>';
-							tableDataDimensional += '<td>'+result.point_check[i].point_check_upper+'</td>';
+							tableDataDimensional += '<td class="valueCheckLower">'+result.point_check[i].point_check_lower+'</td>';
+							tableDataDimensional += '<td class="valueCheckUpper">'+result.point_check[i].point_check_upper+'</td>';
 							for(var j = 1; j < parseInt($('#qty_check_dim').val())+1; j++){
-								tableDataDimensional += '<td><input type="number" class="pull-right " name="values_'+j+'_'+result.point_check[i].id+'_'+index_values_dimensional+'" style="height: 50px;font-size: 2vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="values_'+j+'_'+result.point_check[i].id+'_'+index_values_dimensional+'" placeholder="'+j+'" onchange="checkValue('+result.point_check[i].point_check_upper+','+result.point_check[i].point_check_lower+','+j+','+result.point_check[i].id+','+index_values_dimensional+')"></td>';
+								tableDataDimensional += '<td><input type="number" class="pull-right valueCheck" name="values_'+j+'_'+result.point_check[i].id+'_'+index_values_dimensional+'" style="height: 50px;font-size: 2vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="values_'+j+'_'+result.point_check[i].id+'_'+index_values_dimensional+'" placeholder="'+j+'" onchange="checkValue('+result.point_check[i].point_check_upper+','+result.point_check[i].point_check_lower+','+j+','+result.point_check[i].id+','+index_values_dimensional+')"></td>';
 								index_values_dimensional++;
 								id_values_dimensional.push(result.point_check[i].id);
 							}
@@ -948,43 +953,62 @@
 		$('#modalProduct').modal('hide');
 	}
 
-	function checkCondition(count,id,index) {
+	function checkCondition(count,id,index,check_type) {
 		var result_check = '';
+		var checkedValue = []; 
+		var inputElements = document.getElementsByClassName('messageCheckbox');
+		for(var i=0; inputElements[i]; ++i){
+		      if(inputElements[i].checked){
+		           checkedValue.push(inputElements[i].value);
+		      }
+		}
+		if (checkedValue.join(',').match(/NG/gi)) {
+	   		ng_result_checkbox++;
+	    }else{
+	    	ng_result_checkbox = 0;
+	    }
 		$("input[name='condition_"+count+"_"+id+"_"+index+"']:checked").each(function (i) {
             result_check = $(this).val();
+            // console.log($(this).val());
         });
-        console.log(result_check);
+        // console.log(result_check);
         if (result_check == 'OK') {
         	document.getElementById('checkmarkok_'+count+'_'+id+'_'+index).style.backgroundColor = "#1ed44e";
         	document.getElementById('checkmarkng_'+count+'_'+id+'_'+index).style.backgroundColor = "#fff";
-        	if (ng_result < 0) {
-        		ng_result = 0;
-        	}else{
-        		ng_result--;
-        	}
-        	console.log(ng_result);
-        	console.log(lot_ok);
-        	if (ng_result > lot_ok) {
-        		document.getElementById('lot_status').style.backgroundColor = "red";
-				document.getElementById('lot_status').style.color = "white";
-				$("#lot_status").val('LOT OUT').trigger('change');
-        	}else{
-        		document.getElementById('lot_status').style.backgroundColor = "green";
-				document.getElementById('lot_status').style.color = "white";
-				$("#lot_status").val('LOT OK').trigger('change');
-        	}
+        	// if (ng_result < 0) {
+        	// 	ng_result = 0;
+        	// }else{
+        	// 	ng_result--;
+        	// }
+        	// if (ng_result > lot_ok) {
+    //     		document.getElementById('lot_status').style.backgroundColor = "red";
+				// document.getElementById('lot_status').style.color = "white";
+				// $("#lot_status").val('LOT OUT');
+        	// }else{
+    //     		document.getElementById('lot_status').style.backgroundColor = "green";
+				// document.getElementById('lot_status').style.color = "white";
+				// $("#lot_status").val('LOT OK');
+        	// }
         }else if (result_check == 'NG') {
         	document.getElementById('checkmarkok_'+count+'_'+id+'_'+index).style.backgroundColor = "#fff";
         	document.getElementById('checkmarkng_'+count+'_'+id+'_'+index).style.backgroundColor = "#d41e1e";
-        	ng_result++;
-        	if (ng_result > lot_ok) {
-        		document.getElementById('lot_status').style.backgroundColor = "red";
-				document.getElementById('lot_status').style.color = "white";
-				$("#lot_status").val('LOT OUT').trigger('change');
-        	}
-        	console.log(ng_result);
-        	console.log(lot_ok);
+        	// ng_result++;
+        	// if (ng_result > lot_ok) {
+    //     		document.getElementById('lot_status').style.backgroundColor = "red";
+				// document.getElementById('lot_status').style.color = "white";
+				// $("#lot_status").val('LOT OUT');
+        	// }
         }
+   //      if (ng_result_checkbox > 0) {
+   //      	document.getElementById('lot_status').style.backgroundColor = "red";
+			// document.getElementById('lot_status').style.color = "white";
+			// $("#lot_status").val('LOT OUT');
+   //      }else{
+   //      	document.getElementById('lot_status').style.backgroundColor = "green";
+			// document.getElementById('lot_status').style.color = "white";
+			// $("#lot_status").val('LOT OK');
+   //      }
+   			checkAll();
 	}
 
 	function checkQty(id) {
@@ -996,29 +1020,62 @@
 		var val = $('#values_'+number+'_'+id+'_'+index).val();
 		if (parseFloat(val) >= parseFloat(lower) && parseFloat(val) <= parseFloat(upper)) {
 			document.getElementById('values_'+number+'_'+id+'_'+index).style.backgroundColor = '#a0ff9e';
-			if (ng_result < 0) {
-        		ng_result = 0;
-        	}else{
-        		ng_result--;
-        	}
-        	if (ng_result > lot_ok) {
-        		document.getElementById('lot_status').style.backgroundColor = "red";
-				document.getElementById('lot_status').style.color = "white";
-				$("#lot_status").val('LOT OUT').trigger('change');
-        	}else{
-        		document.getElementById('lot_status').style.backgroundColor = "green";
-				document.getElementById('lot_status').style.color = "white";
-				$("#lot_status").val('LOT OK').trigger('change');
-        	}
+			// if (ng_result < 0) {
+   //      		ng_result = 0;
+   //      	}else{
+   //      		ng_result--;
+   //      	}
+   //      	if (ng_result > 0) {
+   //      		document.getElementById('lot_status').style.backgroundColor = "red";
+			// 	document.getElementById('lot_status').style.color = "white";
+			// 	$("#lot_status").val('LOT OUT');
+   //      	}else{
+   //      		document.getElementById('lot_status').style.backgroundColor = "green";
+			// 	document.getElementById('lot_status').style.color = "white";
+			// 	$("#lot_status").val('LOT OK');
+   //      	}
 		}else{
 			document.getElementById('values_'+number+'_'+id+'_'+index).style.backgroundColor = '#ff9e9e';
-			ng_result++;
-        	if (ng_result > lot_ok) {
-        		document.getElementById('lot_status').style.backgroundColor = "red";
-				document.getElementById('lot_status').style.color = "white";
-				$("#lot_status").val('LOT OUT').trigger('change');
-        	}
+			// ng_result++;
+   //      	if (ng_result > 0) {
+   //      		document.getElementById('lot_status').style.backgroundColor = "red";
+			// 	document.getElementById('lot_status').style.color = "white";
+			// 	$("#lot_status").val('LOT OUT');
+   //      	}
 		}
+		var countValues = document.getElementsByClassName('valueCheck');
+		var countValuesUpper = document.getElementsByClassName('valueCheckUpper');
+		var countValuesLower = document.getElementsByClassName('valueCheckLower');
+		// console.log(countValuesLower.length);
+		// console.log(countValues.length);
+		ng_result_value = 0;
+		var index = 0;
+		for(var i = 0; i < countValues.length;i++){
+			var lowers = 0;
+			var uppers = 0;
+			if (i % 5 == 0 && i != 0) {
+				index++;
+			}
+			// console.log(i % 5);
+			if (countValues[i].value.length != 0) {
+				if (parseFloat(countValues[i].value) >= parseFloat(countValuesLower[index].innerHTML) && parseFloat(countValues[i].value) <= parseFloat(countValuesUpper[index].innerHTML)) {
+
+				}else{
+					ng_result_value++;
+				}
+			}
+		}
+
+		// if (ng_result_value > 0) {
+		// 	document.getElementById('lot_status').style.backgroundColor = "red";
+		// 	document.getElementById('lot_status').style.color = "white";
+		// 	$("#lot_status").val('LOT OUT');
+		// }else{
+		//      document.getElementById('lot_status').style.backgroundColor = "green";
+		// 	document.getElementById('lot_status').style.color = "white";
+		// 	$("#lot_status").val('LOT OK');
+		// }
+		checkAll();
 	}
 
 	function plus(counts,id,index){
@@ -1026,16 +1083,20 @@
 		if ($('#material_description').text() == "-") {
 			openErrorGritter('Error!','Isi Semua Data.');
 		}else{
-			// $('#total_ok').val(parseInt($('#total_ok').val())-1);
-			// $('#total_ng').val(parseInt($('#total_ng').val())+1);
-			// $('#ng_ratio').val(((parseInt($('#total_ng').val())/parseInt($('#qty_check').val()))*100).toFixed(1));
 			$('#count_'+counts+'_'+id+'_'+index).text(parseInt(count)+1);
-			ng_result++;
-        	if (ng_result > lot_ok) {
-        		document.getElementById('lot_status').style.backgroundColor = "red";
-				document.getElementById('lot_status').style.color = "white";
-				$("#lot_status").val('LOT OUT').trigger('change');
-        	}
+
+			var countValue = document.getElementsByClassName('countingCheck');
+			ng_result_counting = 0;
+			for(var i = 0; i < countValue.length;i++){
+				ng_result_counting = ng_result_counting + parseInt(countValue[i].innerHTML);
+			}
+
+			// if (ng_result_counting > lot_ok) {
+			// 	document.getElementById('lot_status').style.backgroundColor = "red";
+			// 	document.getElementById('lot_status').style.color = "white";
+			// 	$("#lot_status").val('LOT OUT');
+			// }
+			checkAll();
 		}
 	}
 
@@ -1050,21 +1111,35 @@
 				// $('#total_ng').val(parseInt($('#total_ng').val())-1);
 				// $('#ng_ratio').val(((parseInt($('#total_ng').val())/parseInt($('#qty_check').val()))*100).toFixed(1));
 				$('#count_'+counts+'_'+id+'_'+index).text(parseInt(count)-1);
-				if (ng_result < 0) {
-        			ng_result = 0;
-	        	}else{
-	        		ng_result--;
-	        	}
-	        	if (ng_result > lot_ok) {
-	        		document.getElementById('lot_status').style.backgroundColor = "red";
-					document.getElementById('lot_status').style.color = "white";
-					$("#lot_status").val('LOT OUT').trigger('change');
-	        	}else{
-	        		document.getElementById('lot_status').style.backgroundColor = "green";
-					document.getElementById('lot_status').style.color = "white";
-					$("#lot_status").val('LOT OK').trigger('change');
-	        	}
+				var countValue = document.getElementsByClassName('countingCheck');
+				ng_result_counting = 0;
+				for(var i = 0; i < countValue.length;i++){
+					ng_result_counting = ng_result_counting + parseInt(countValue[i].innerHTML);
+				}
+
+				// if (ng_result_counting > lot_ok) {
+				// 	document.getElementById('lot_status').style.backgroundColor = "red";
+				// 	document.getElementById('lot_status').style.color = "white";
+				// 	$("#lot_status").val('LOT OUT');
+				// }else{
+				// 	document.getElementById('lot_status').style.backgroundColor = "green";
+				// 	document.getElementById('lot_status').style.color = "white";
+				// 	$("#lot_status").val('LOT OK');
+				// }
+				checkAll();
 			}
+		}
+	}
+
+	function checkAll() {
+		if (ng_result_counting > lot_ok || ng_result_value > 0 || ng_result_checkbox > 0) {
+			document.getElementById('lot_status').style.backgroundColor = "red";
+			document.getElementById('lot_status').style.color = "white";
+			$("#lot_status").val('LOT OUT');
+		}else{
+			document.getElementById('lot_status').style.backgroundColor = "green";
+			document.getElementById('lot_status').style.color = "white";
+			$("#lot_status").val('LOT OK');
 		}
 	}
 
