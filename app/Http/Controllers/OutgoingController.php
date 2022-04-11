@@ -819,11 +819,11 @@ class OutgoingController extends Controller
 			        ->send(new SendEmail($lot_out_detail, 'lot_out_arisa'));
 				}
 			// }
-			// $response = array(
-		 //        'status' => true,
-		 //        'message' => 'Success Input Data'
-		 //    );
-		 //    return Response::json($response);
+			$response = array(
+		        'status' => true,
+		        'message' => 'Success Input Data'
+		    );
+		    return Response::json($response);
 		} catch (\Exception $e) {
 			$response = array(
 		        'status' => false,
