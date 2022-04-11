@@ -730,8 +730,12 @@ class OutgoingController extends Controller
 
 			$material = QaMaterial::where('material_number',$material_number)->first();
 
+			$lot_out_detail = [];
+
 			for ($i=0; $i < count($result_check); $i++) { 
 				$point_check = QaOutgoingPointCheck::where('id',$result_check[$i]['point_check_id'])->first();
+				$inspection = QaInspectionLevel::where('remark','ARISA')->where('sample_size',$qty_check_appearance)->first();
+				$outgoings = QaOutgoingVendor::where('serial_number',$final_serial_number)->first();
 
 				if ($point_check->point_check_type == 'APPEARANCE CHECK') {
 					$qty_check = $qty_check_appearance;
@@ -764,7 +768,23 @@ class OutgoingController extends Controller
 	            ]);
 
 	            $outgoing->save();
-				
+
+	            $lot_out_details = array(
+					'material_number' => $material_number,
+					'material_description' => $material_description,
+					'vendor' => $material->vendor,
+					'vendor_shortname' => $material->vendor_shortname,
+					'hpl' => $material->hpl,
+					'qty_check' => $qty_check,
+					'final_serial_number' => $final_serial_number,
+					'lot_status' => $lot_status,
+					'check_date' =>$outgoings->check_date,
+					'point_check' => $point_check->point_check_name,
+					'product_index' => $result_check[$i]['product_index'],
+					'product_result' => $result_check[$i]['result'],
+				);
+
+				array_push($lot_out_detail,$lot_out_details);
 			}
 
 			// for ($j=0; $j < count($serial_number_for); $j++) { 
@@ -775,12 +795,35 @@ class OutgoingController extends Controller
 					$final_update->lot_status = $lot_status;
 					$final_update->save();
 				}
+
+				if ($lot_status == 'LOT OUT') {
+					$mail_to = [];
+
+	            	array_push($mail_to, 'quality-ars@tigermp.co.id');
+	            	array_push($mail_to, 'agustina.hayati@music.yamaha.com');
+	            	array_push($mail_to, 'ratri.sulistyorini@music.yamaha.com');
+	            	array_push($mail_to, 'abdissalam.saidi@music.yamaha.com');
+	            	array_push($mail_to, 'noviera.prasetyarini@music.yamaha.com');
+	            	array_push($mail_to, 'eko.prasetyo.wicaksono@music.yamaha.com');
+
+			        $cc = [];
+			        $cc[0] = 'yayuk.wahyuni@music.yamaha.com';
+
+			        $bcc = [];
+			        $bcc[0] = 'mokhamad.khamdan.khabibi@music.yamaha.com';
+			        $bcc[1] = 'rio.irvansyah@music.yamaha.com';
+
+			        Mail::to($mail_to)
+			        ->cc($cc,'CC')
+			        ->bcc($bcc,'BCC')
+			        ->send(new SendEmail($lot_out_detail, 'lot_out_arisa'));
+				}
 			// }
-			$response = array(
-		        'status' => true,
-		        'message' => 'Success Input Data'
-		    );
-		    return Response::json($response);
+			// $response = array(
+		 //        'status' => true,
+		 //        'message' => 'Success Input Data'
+		 //    );
+		 //    return Response::json($response);
 		} catch (\Exception $e) {
 			$response = array(
 		        'status' => false,

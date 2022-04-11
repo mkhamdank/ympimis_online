@@ -57,6 +57,10 @@ class SendEmail extends Mailable
             return $this->from('mis@ympi.co.id', 'PT. Yamaha Musical Products Indonesia')->subject('Inpection Report (100%) PT. ARISAMANDIRI PRATAMA')->view('mails.critical_arisa');
         }
 
+        if($this->remark == 'lot_out_arisa'){
+            return $this->from('mis@ympi.co.id', 'PT. Yamaha Musical Products Indonesia')->subject('Lot Out Report PT. ARISAMANDIRI PRATAMA')->view('mails.lot_out_arisa');
+        }
+
         if($this->remark == 'over_limit_ratio_arisa'){
             return $this->from('mis@ympi.co.id', 'PT. Yamaha Musical Products Indonesia')->subject('Inpection Report (100%) PT. ARISAMANDIRI PRATAMA')->view('mails.over_limit_ratio_arisa');
         }

@@ -882,8 +882,8 @@
 							tableDataFunctional += '<td>'+result.point_check[i].point_check_index+'</td>';
 							tableDataFunctional += '<td>'+result.point_check[i].point_check_name+'</td>';
 							tableDataFunctional += '<td>'+result.point_check[i].point_check_standard+'</td>';
-							tableDataFunctional += '<td>'+result.point_check[i].point_check_lower+'</td>';
-							tableDataFunctional += '<td>'+result.point_check[i].point_check_upper+'</td>';
+							tableDataFunctional += '<td class="valueCheckLower">'+result.point_check[i].point_check_lower+'</td>';
+							tableDataFunctional += '<td class="valueCheckUpper">'+result.point_check[i].point_check_upper+'</td>';
 							for(var j = 1; j < parseInt($('#qty_check_fun').val())+1; j++){
 								tableDataFunctional += '<td '+colspan_result+'><input type="number" class="pull-right valueCheck" name="values_'+j+'_'+result.point_check[i].id+'_'+index_values_functional+'" style="height: 50px;font-size: 2vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="values_'+j+'_'+result.point_check[i].id+'_'+index_values_functional+'" placeholder="'+j+'" onchange="checkValue('+result.point_check[i].point_check_upper+','+result.point_check[i].point_check_lower+','+j+','+result.point_check[i].id+','+index_values_functional+')"></td>';
 								index_values_functional++;
