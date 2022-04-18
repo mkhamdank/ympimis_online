@@ -288,7 +288,7 @@
 									enabled: true,
 									format: '{point.y:,.0f}',
 									style:{
-										fontSize: '10px'
+										fontSize: '15px'
 									}
 								},
 								animation: false,
@@ -311,7 +311,7 @@
 									enabled: true,
 									format: '{point.y:,.0f}%',
 									style:{
-										fontSize: '10px'
+										fontSize: '15px'
 									}
 								},
 								lineWidth: 3,
@@ -335,7 +335,10 @@
 					        },
 					        
 					        labels: {
-					            format: "{value}"
+					            format: "{value}",
+					            style:{
+					            	fontSize:'15px'
+					            }
 					        }
 					    }, {
 					        title: {
@@ -348,7 +351,10 @@
 					        opposite: true,
 					        labels: {
 					            format: "{value}%"
-					        }
+					        },
+					        style:{
+				            	fontSize:'15px'
+				            }
 					    },],
 					    series: [{
 					        type: 'pareto',
@@ -395,53 +401,89 @@
 					var ng = [];
 
 					$.each(result.material_status, function(key,value){
-						categories.push(value.material_description.replace(/(.{14})..+/, "$1&hellip;"));
+						categories.push(value.material_description);
 						ng.push({y:parseFloat(value.ng_ratio),key:value.material_number});
 					});
 
 					Highcharts.chart('container2', {
-					    chart: {
-					        zoomType: 'xy'
-					    },
-					    title: {
-					        text: 'Top 5 Worst Material',
-					        style:{
+						chart: {
+							type:'bar',
+							options3d: {
+								enabled: true,
+								alpha: 15,
+								beta: 15,
+								depth: 50,
+								viewDistance: 25
+							}
+						},
+						title: {
+							text: 'Top 5 Worst Material',
+							        style:{
 					        	fontWeight:'bold'
 					        }
-					    },
-					    subtitle: {
+						},
+						    subtitle: {
 					        text: result.firstMonthTitle+' - '+result.lastMonthTitle
 					    },
-					    xAxis: [{
-					        categories: categories,
-					        crosshair: true
-					    }],
-					    yAxis: [{ 
-					        labels: {
-					            format: '{value}%',
-					            style: {
-					                color: '#fff'
-					            }
-					        },
-					        title: {
-					            text: 'NG Rate',
-					            style: {
-					                color: '#fff'
-					            }
-					        }
-					    },],
-					    tooltip: {
-					        shared: true,
-					    },
-					    legend: {
-					        enabled:true
-					    },
-					    credits: {
-						     enabled: false
+						credits: {
+							enabled: false
 						},
-					    plotOptions: {
-							series:{
-								cursor: 'pointer',
+						xAxis: {
+							tickInterval: 1,
+							gridLineWidth: 1,
+							gridLineColor: 'white',
+							categories: categories,
+							crosshair: true,
+							labels:{
+								style:{
+									color: 'white',
+									fontWeight:'bold',
+									fontSize:'20px'
+								}
+							}
+						},
+						yAxis: [{
+							title: {
+								text: ''
+							},
+							gridLineColor: 'white',
+							gridLineWidth: 0,
+							labels:{
+								style:{
+									fontSize:'20px'
+								}
+							}
+						}],
+						legend: {
+							enabled: false,
+							borderWidth: 1
+						},
+						tooltip: {
+							headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+							pointFormat: '<tr><td style="color:white;padding:0;font-size: 16px;font-weight:bold;">{series.name} :  </td>' +
+							'<td style="padding:0;font-size:16px;"><b>{point.y:.1f} %</b></td></tr>',
+							footerFormat: '</table>',
+							shared: true,
+							useHTML: true
+						},
+						plotOptions: {
+							column: {
+								pointPadding: 0.93,
+								groupPadding: 0.93,
+								borderWidth: 0.8,
+								edgeColor: '#212121',
+								// cursor: 'pointer',
+								point: {
+									events: {
+										click: function () {
+											modalChartProgress(this.category);
+										}
+									}
+								}
+							},
+							series: {
+								borderWidth: 0,
+								// cursor: 'pointer',
 				                point: {
 				                  events: {
 				                    click: function () {
@@ -449,28 +491,102 @@
 				                    }
 				                  }
 				                },
-								dataLabels: {
+				                dataLabels: {
 									enabled: true,
 									format: '{point.y} %',
 									style:{
-										fontSize: '13px'
-									}
+										fontSize: '30px'
+									},
+									inside:true
 								},
 								animation: false,
 								pointPadding: 0.93,
 								groupPadding: 0.93,
-								cursor: 'pointer',
+								// cursor: 'pointer',
 							}
 						},
-					    series: [
-					    {
-					        name: 'NG Rate',
-					        type: 'column',
-					        data: ng,
-					        color: '#802626'
-
-					    }]
+						series: [{
+							name: 'Ratio NG',
+							type: 'column',
+							stack: 'NG',
+							data: ng,
+							color: '#e3942d'
+						}]
 					});
+
+
+					// Highcharts.chart('container2', {
+					//     chart: {
+					//         zoomType: 'xy'
+					//     },
+					//     title: {
+					//         text: 'Top 5 Worst Material',
+					//         style:{
+					//         	fontWeight:'bold'
+					//         }
+					//     },
+					//     subtitle: {
+					//         text: result.firstMonthTitle+' - '+result.lastMonthTitle
+					//     },
+					//     xAxis: [{
+					//         categories: categories,
+					//         crosshair: true
+					//     }],
+					//     yAxis: [{ 
+					//         labels: {
+					//             format: '{value}%',
+					//             style: {
+					//                 color: '#fff'
+					//             }
+					//         },
+					//         title: {
+					//             text: 'NG Rate',
+					//             style: {
+					//                 color: '#fff'
+					//             }
+					//         }
+					//     },],
+					//     tooltip: {
+					//         shared: true,
+					//     },
+					//     legend: {
+					//         enabled:true
+					//     },
+					//     credits: {
+					// 	     enabled: false
+					// 	},
+					//     plotOptions: {
+					// 		series:{
+					// 			cursor: 'pointer',
+				 //                point: {
+				 //                  events: {
+				 //                    click: function () {
+				 //                    	showModalDetail(this.category);
+				 //                    }
+				 //                  }
+				 //                },
+					// 			dataLabels: {
+					// 				enabled: true,
+					// 				format: '{point.y} %',
+					// 				style:{
+					// 					fontSize: '13px'
+					// 				}
+					// 			},
+					// 			animation: false,
+					// 			pointPadding: 0.93,
+					// 			groupPadding: 0.93,
+					// 			cursor: 'pointer',
+					// 		}
+					// 	},
+					//     series: [
+					//     {
+					//         name: 'NG Rate',
+					//         type: 'column',
+					//         data: ng,
+					//         color: '#802626'
+
+					//     }]
+					// });
 				}
 			}
 		});

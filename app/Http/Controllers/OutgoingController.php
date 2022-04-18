@@ -973,19 +973,19 @@ class OutgoingController extends Controller
 		            	// array_push($mail_to, 'suryanti@tigermp.co.id');
 		            	// array_push($mail_to, 'achmad.rofiq@tigermp.co.id');
 		            	// array_push($mail_to, 'agoes.jupri@tigermp.co.id');
-		            	array_push($mail_to, 'agustina.hayati@music.yamaha.com');
-		            	array_push($mail_to, 'ratri.sulistyorini@music.yamaha.com');
-		            	array_push($mail_to, 'abdissalam.saidi@music.yamaha.com');
-		            	array_push($mail_to, 'noviera.prasetyarini@music.yamaha.com');
-		            	array_push($mail_to, 'eko.prasetyo.wicaksono@music.yamaha.com');
+		            	// array_push($mail_to, 'agustina.hayati@music.yamaha.com');
+		            	// array_push($mail_to, 'ratri.sulistyorini@music.yamaha.com');
+		            	// array_push($mail_to, 'abdissalam.saidi@music.yamaha.com');
+		            	// array_push($mail_to, 'noviera.prasetyarini@music.yamaha.com');
+		            	// array_push($mail_to, 'eko.prasetyo.wicaksono@music.yamaha.com');
 
 				        $cc = [];
-				        $cc[0] = 'yayuk.wahyuni@music.yamaha.com';
+				        // $cc[0] = 'yayuk.wahyuni@music.yamaha.com';
 				        // $cc[1] = 'imron.faizal@music.yamaha.com';
 
 				        $bcc = [];
 				        $bcc[0] = 'mokhamad.khamdan.khabibi@music.yamaha.com';
-				        $bcc[1] = 'rio.irvansyah@music.yamaha.com';
+				        // $bcc[1] = 'rio.irvansyah@music.yamaha.com';
 
 				        $outgoing_update = QaOutgoingVendor::where('id',$outgoing->id)->first();
 				        $outgoing_update->lot_status = 'LOT OUT';
@@ -1022,19 +1022,19 @@ class OutgoingController extends Controller
 		            	// array_push($mail_to, 'suryanti@tigermp.co.id');
 		            	// array_push($mail_to, 'achmad.rofiq@tigermp.co.id');
 		            	// array_push($mail_to, 'agoes.jupri@tigermp.co.id');
-		            	array_push($mail_to, 'agustina.hayati@music.yamaha.com');
-		            	array_push($mail_to, 'ratri.sulistyorini@music.yamaha.com');
-		            	array_push($mail_to, 'abdissalam.saidi@music.yamaha.com');
-		            	array_push($mail_to, 'noviera.prasetyarini@music.yamaha.com');
-		            	array_push($mail_to, 'eko.prasetyo.wicaksono@music.yamaha.com');
+		            	// array_push($mail_to, 'agustina.hayati@music.yamaha.com');
+		            	// array_push($mail_to, 'ratri.sulistyorini@music.yamaha.com');
+		            	// array_push($mail_to, 'abdissalam.saidi@music.yamaha.com');
+		            	// array_push($mail_to, 'noviera.prasetyarini@music.yamaha.com');
+		            	// array_push($mail_to, 'eko.prasetyo.wicaksono@music.yamaha.com');
 
 				        $cc = [];
-				        $cc[0] = 'yayuk.wahyuni@music.yamaha.com';
+				        // $cc[0] = 'yayuk.wahyuni@music.yamaha.com';
 				        // $cc[1] = 'imron.faizal@music.yamaha.com';
 
 				        $bcc = [];
 				        $bcc[0] = 'mokhamad.khamdan.khabibi@music.yamaha.com';
-				        $bcc[1] = 'rio.irvansyah@music.yamaha.com';
+				        // $bcc[1] = 'rio.irvansyah@music.yamaha.com';
 
 				        for ($i=0; $i < count($outgoing_id); $i++) { 
 				        	$outgoing_update = QaOutgoingVendor::where('id',$outgoing_id[$i])->first();
@@ -1804,7 +1804,7 @@ class OutgoingController extends Controller
 						FROM
 							`qa_outgoing_vendors` 
 						WHERE
-							vendor_shortname = 'TRUE' 
+							vendor_shortname = '".$vendor_shortname."' 
 							AND DATE( created_at ) >= ".$firstDate."
 							AND DATE( created_at ) <= ".$lastDate."
 							AND ng_qty != 0 
@@ -1813,7 +1813,7 @@ class OutgoingController extends Controller
 						c.material_number 
 					) a ON a.material_number = qa_outgoing_vendors.material_number 
 				WHERE
-					vendor_shortname = 'TRUE' 
+					vendor_shortname = '".$vendor_shortname."' 
 					AND DATE_FORMAT( created_at, '%Y-%m' ) >= ".$first."
 					AND DATE_FORMAT( created_at, '%Y-%m' ) <= ".$last." 
 				GROUP BY
