@@ -266,7 +266,7 @@
 							<th style="width: 2%; background-color: rgb(220,220,220); padding:0;font-size: 20px;" >Standard</th>
 							<th style="width: 1%; background-color: rgb(220,220,220); padding:0;font-size: 20px;" >Lower</th>
 							<th style="width: 1%; background-color: rgb(220,220,220); padding:0;font-size: 20px;" >Upper</th>
-							<th colspan="5" style="width: 5%; background-color: rgb(220,220,220); padding:0;font-size: 20px;" >Result</th>
+							<th colspan="5" style="width: 5%; background-color: rgb(220,220,220); padding:0;font-size: 20px;" >Qty Check</th>
 						</tr>
 					</thead>
 					<tbody id="bodyTableAppearance" style="background-color: white;color: black">
