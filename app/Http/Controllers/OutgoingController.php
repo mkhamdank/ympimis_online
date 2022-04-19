@@ -788,13 +788,13 @@ class OutgoingController extends Controller
 			}
 
 			// for ($j=0; $j < count($serial_number_for); $j++) { 
-				$final = QaOutgoingVendor::where('serial_number',$serial_number_for)->get();
-				for ($k=0; $k < count($final); $k++) { 
-					$final_update = QaOutgoingVendor::where('id',$final[$k]->id)->first();
-					$final_update->qa_final_status = 'Checked';
-					$final_update->lot_status = $lot_status;
-					$final_update->save();
-				}
+				// $final = QaOutgoingVendor::where('serial_number',$serial_number_for)->get();
+				// for ($k=0; $k < count($final); $k++) { 
+				// 	$final_update = QaOutgoingVendor::where('id',$final[$k]->id)->first();
+				// 	$final_update->qa_final_status = 'Checked';
+				// 	$final_update->lot_status = $lot_status;
+				// 	$final_update->save();
+				// }
 
 				if ($lot_status == 'LOT OUT') {
 					$mail_to = [];
@@ -987,9 +987,9 @@ class OutgoingController extends Controller
 				        $bcc[0] = 'mokhamad.khamdan.khabibi@music.yamaha.com';
 				        // $bcc[1] = 'rio.irvansyah@music.yamaha.com';
 
-				        $outgoing_update = QaOutgoingVendor::where('id',$outgoing->id)->first();
-				        $outgoing_update->lot_status = 'LOT OUT';
-				        $outgoing_update->save();
+				        // $outgoing_update = QaOutgoingVendor::where('id',$outgoing->id)->first();
+				        // $outgoing_update->lot_status = 'LOT OUT';
+				        // $outgoing_update->save();
 
 				        $outgoing_criticals = QaOutgoingVendor::where('id',$outgoing->id)->first();
 				        array_push($outgoings_critical, $outgoing_criticals);
@@ -1037,9 +1037,9 @@ class OutgoingController extends Controller
 				        // $bcc[1] = 'rio.irvansyah@music.yamaha.com';
 
 				        for ($i=0; $i < count($outgoing_id); $i++) { 
-				        	$outgoing_update = QaOutgoingVendor::where('id',$outgoing_id[$i])->first();
-					        $outgoing_update->lot_status = 'LOT OUT';
-					        $outgoing_update->save();
+				        	// $outgoing_update = QaOutgoingVendor::where('id',$outgoing_id[$i])->first();
+					        // $outgoing_update->lot_status = 'LOT OUT';
+					        // $outgoing_update->save();
 
 					        $outgoing_non_critical = QaOutgoingVendor::where('id',$outgoing_id[$i])->first();
 					        array_push($outgoings_non_critical, $outgoing_non_critical);
@@ -1076,18 +1076,49 @@ class OutgoingController extends Controller
 		$title = 'Report Production Check PT. ARISA';
 		$page = 'Report Production Check ARISA';
 		$title_jp = '';
+		$materials = QaMaterial::where('vendor_shortname','TRUE')->get();
 
 		return view('outgoing.arisa.report_kensa_arisa', array(
 			'title' => $title,
 			'title_jp' => $title_jp,
+			'materials' => $materials,
 			'vendor' => 'PT. ARISAMANDIRI PRATAMA',
 		))->with('page', $page)->with('head', $page);
 	}
 
-	public function fetchReportKensaArisa()
+	public function fetchReportKensaArisa(Request $request)
 	{
 		try {
-			$outgoing = QaOutgoingVendor::where('vendor_shortname','ARISA')->orderby('qa_outgoing_vendors.created_at','desc')->get();
+			$date_from = $request->get('date_from');
+	        $date_to = $request->get('date_to');
+	        if ($date_from == "") {
+	             if ($date_to == "") {
+	                  $first = date('Y-m-d',strtotime('-2 months'));
+	                  $last = date('Y-m-d');
+	             }else{
+	                  $first = date('Y-m-d',strtotime('-2 months'));
+	                  $last = $date_to;
+	             }
+	        }else{
+	             if ($date_to == "") {
+	                  $first = $date_from;
+	                  $last = date('Y-m-d');
+	             }else{
+	                  $first = $date_from;
+	                  $last = $date_to;
+	             }
+	        }
+
+			$outgoing = QaOutgoingVendor::select('qa_outgoing_vendors.*','qa_outgoing_vendors.created_at as created')->where('qa_outgoing_vendors.vendor_shortname','ARISA')
+			->where(DB::RAW('DATE(qa_outgoing_vendors.created_at)'),'>=',$first)
+			->where(DB::RAW('DATE(qa_outgoing_vendors.created_at)'),'<=',$last);
+
+			if($request->get('material') != null){
+	          $materials =  explode(",", $request->get('material'));
+	          $outgoing = $outgoing->whereIn('qa_outgoing_vendors.material_number',$materials);
+	        }
+
+	        $outgoing = $outgoing->orderby('qa_outgoing_vendors.created_at','desc')->get();
 
 			$response = array(
 		        'status' => true,
@@ -1109,20 +1140,58 @@ class OutgoingController extends Controller
 		$page = 'Report QC Final Check ARISA';
 		$title_jp = '';
 
+		$materials = QaMaterial::where('vendor_shortname','ARISA')->get();
+
 		return view('outgoing.arisa.report_qc_arisa', array(
 			'title' => $title,
 			'title_jp' => $title_jp,
+			'materials' => $materials,
 			'vendor' => 'PT. ARISAMANDIRI PRATAMA',
 		))->with('page', $page)->with('head', $page);
 	}
 
-	public function fetchReportQcArisa()
+	public function fetchReportQcArisa(Request $request)
 	{
 		try {
-			$outgoing = QaOutgoingVendorFinal::where('qa_outgoing_vendor_finals.vendor_shortname','ARISA')
+
+			$date_from = $request->get('date_from');
+	        $date_to = $request->get('date_to');
+	        if ($date_from == "") {
+	             if ($date_to == "") {
+	                  $first = date('Y-m-d',strtotime('-2 months'));
+	                  $last = date('Y-m-d');
+	             }else{
+	                  $first = date('Y-m-d',strtotime('-2 months'));
+	                  $last = $date_to;
+	             }
+	        }else{
+	             if ($date_to == "") {
+	                  $first = $date_from;
+	                  $last = date('Y-m-d');
+	             }else{
+	                  $first = $date_from;
+	                  $last = $date_to;
+	             }
+	        }
+
+			$outgoing = QaOutgoingVendorFinal::select('qa_outgoing_vendor_finals.*','qa_outgoing_point_checks.*','qa_outgoing_vendor_finals.created_at as created')->where('qa_outgoing_vendor_finals.vendor_shortname','ARISA')
 			->join('qa_outgoing_point_checks','qa_outgoing_point_checks.id','qa_outgoing_vendor_finals.point_check_id')
-			->orderby('qa_outgoing_vendor_finals.created_at','desc')
-			->get();
+			->where(DB::RAW('DATE(qa_outgoing_vendor_finals.created_at)'),'>=',$first)
+			->where(DB::RAW('DATE(qa_outgoing_vendor_finals.created_at)'),'<=',$last);
+
+			if($request->get('material') != null){
+	          $materials =  explode(",", $request->get('material'));
+	          // for ($i=0; $i < count($materials); $i++) {
+	          //   $material = $material."'".$materials[$i]."'";
+	          //   if($i != (count($materials)-1)){
+	          //     $material = $material.',';
+	          //   }
+	          // }
+	          // $materialin = " and `material_number` in (".$material.") ";
+	          $outgoing = $outgoing->whereIn('qa_outgoing_vendor_finals.material_number',$materials);
+	        }
+
+	        $outgoing = $outgoing->orderby('qa_outgoing_vendor_finals.created_at','desc')->get();
 			// $allchecks = [];
 			// for ($i=0; $i < count($outgoing); $i++) { 
 			// 	$sernum = explode(',', $outgoing[$i]->serial_number);
@@ -1405,17 +1474,49 @@ class OutgoingController extends Controller
 		$page = 'Report Production Check KBI';
 		$title_jp = '';
 
+		$materials = QaMaterial::where('vendor_shortname','KYORAKU')->get();
+
 		return view('outgoing.kbi.report_kensa_kbi', array(
 			'title' => $title,
 			'title_jp' => $title_jp,
+			'materials' => $materials,
 			'vendor' => 'PT. KBI',
 		))->with('page', $page)->with('head', $page);
 	}
 
-	public function fetchReportKensaKbi()
+	public function fetchReportKensaKbi(Request $request)
 	{
 		try {
-			$outgoing = QaOutgoingVendor::where('vendor_shortname','KYORAKU')->get();
+			$date_from = $request->get('date_from');
+	        $date_to = $request->get('date_to');
+	        if ($date_from == "") {
+	             if ($date_to == "") {
+	                  $first = date('Y-m-d',strtotime('-2 months'));
+	                  $last = date('Y-m-d');
+	             }else{
+	                  $first = date('Y-m-d',strtotime('-2 months'));
+	                  $last = $date_to;
+	             }
+	        }else{
+	             if ($date_to == "") {
+	                  $first = $date_from;
+	                  $last = date('Y-m-d');
+	             }else{
+	                  $first = $date_from;
+	                  $last = $date_to;
+	             }
+	        }
+
+			$outgoing = QaOutgoingVendor::select('qa_outgoing_vendors.*','qa_outgoing_vendors.created_at as created')->where('qa_outgoing_vendors.vendor_shortname','KYORAKU')
+			->where(DB::RAW('DATE(qa_outgoing_vendors.created_at)'),'>=',$first)
+			->where(DB::RAW('DATE(qa_outgoing_vendors.created_at)'),'<=',$last);
+
+			if($request->get('material') != null){
+	          $materials =  explode(",", $request->get('material'));
+	          $outgoing = $outgoing->whereIn('qa_outgoing_vendors.material_number',$materials);
+	        }
+
+	        $outgoing = $outgoing->orderby('qa_outgoing_vendors.created_at','desc')->get();
 
 			$response = array(
 		        'status' => true,
@@ -1437,17 +1538,50 @@ class OutgoingController extends Controller
 		$page = 'Report Production Check TRUE';
 		$title_jp = '';
 
+		$materials = QaMaterial::where('vendor_shortname','TRUE')->get();
+
 		return view('outgoing.true.report_kensa_true', array(
 			'title' => $title,
 			'title_jp' => $title_jp,
+			'materials' => $materials,
 			'vendor' => 'PT. TRUE',
 		))->with('page', $page)->with('head', $page);
 	}
 
-	public function fetchReportKensaTrue()
+	public function fetchReportKensaTrue(Request $request)
 	{
 		try {
-			$outgoing = QaOutgoingVendor::where('vendor_shortname','TRUE')->orderby('qa_outgoing_vendors.created_at','desc')->get();
+
+			$date_from = $request->get('date_from');
+	        $date_to = $request->get('date_to');
+	        if ($date_from == "") {
+	             if ($date_to == "") {
+	                  $first = date('Y-m-d',strtotime('-2 months'));
+	                  $last = date('Y-m-d');
+	             }else{
+	                  $first = date('Y-m-d',strtotime('-2 months'));
+	                  $last = $date_to;
+	             }
+	        }else{
+	             if ($date_to == "") {
+	                  $first = $date_from;
+	                  $last = date('Y-m-d');
+	             }else{
+	                  $first = $date_from;
+	                  $last = $date_to;
+	             }
+	        }
+
+			$outgoing = QaOutgoingVendor::select('qa_outgoing_vendors.*','qa_outgoing_vendors.created_at as created')->where('qa_outgoing_vendors.vendor_shortname','TRUE')
+			->where(DB::RAW('DATE(qa_outgoing_vendors.created_at)'),'>=',$first)
+			->where(DB::RAW('DATE(qa_outgoing_vendors.created_at)'),'<=',$last);
+
+			if($request->get('material') != null){
+	          $materials =  explode(",", $request->get('material'));
+	          $outgoing = $outgoing->whereIn('qa_outgoing_vendors.material_number',$materials);
+	        }
+
+	        $outgoing = $outgoing->orderby('qa_outgoing_vendors.created_at','desc')->get();
 
 			$response = array(
 		        'status' => true,

@@ -54,6 +54,17 @@
     th{
         color: white;
     }
+    .datepicker-days > table > thead >tr>th,
+    .datepicker-months > table > thead>tr>th,
+    .datepicker-years > table > thead>tr>th,
+    .datepicker-decades > table > thead>tr>th,
+    .datepicker-centuries > table > thead>tr>th{
+        background-color: white;
+        color: #999 !important;
+    }
+    .loading{
+        display: none;
+    }
 </style>
 @stop
 @section('header')
@@ -75,6 +86,50 @@
             </p>
         </div>
         <div class="row" style="padding: 5px">
+            <div class="col-sm-12 col-xs-12" style="text-align: center;">
+                <div class="card">
+                    <div class="card-body" style="padding: 0px">
+                       <h4 style="padding: 0px">Filter</h4>
+                            <div class="col-md-4" style="padding-left: 5px;text-align: left;display: inline-block;">
+                                <label>Date From</label>
+                                <div class="input-group date">
+                                    <div class="input-group-addon bg-green" style="border: none; background-color: #469937; color: white;">
+                                        <i class="fa fa-calendar" style="padding: 10px"></i>
+                                    </div>
+                                    <input type="text" class="form-control datepicker" id="date_from" name="date_from" placeholder="Select Date From">
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="padding-left: 5px;text-align: left;display: inline-block;">
+                                <label>Date To</label>
+                                <div class="input-group date">
+                                    <div class="input-group-addon bg-green" style="border: none; background-color: #469937; color: white;">
+                                        <i class="fa fa-calendar" style="padding: 10px"></i>
+                                    </div>
+                                    <input type="text" class="form-control datepicker" id="date_to" name="date_to" placeholder="Select Date To">
+                                </div>
+                            </div>
+                            <div class="col-md-8" style="padding-left: 5px;text-align: left;display: inline-block;padding-top: 10px">
+                                <label>Material</label>
+                                <div class="form-group">
+                                    <select class="form-control select2" multiple="multiple" id='materialSelect' onchange="changeMaterial()" data-placeholder="Select Material" style="width: 100%;color: black !important">
+                                        @foreach($materials as $material)
+                                        <option value="{{$material->material_number}}">{{$material->material_number}} - {{$material->material_description}}</option>
+                                        @endforeach
+                                    </select>
+                                    <input type="text" name="material" id="material" style="color: black !important" hidden>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <button class="btn btn-primary col-sm-14" onclick="fetchData()">Search</button>
+                                    <!-- <button class="btn btn-success"><i class="fa fa-download"></i> Export Excel Without Merge</button> -->
+                                    <!-- <input class="btn btn-success" type="submit" name="publish" value="Export Excel Without Merge">
+                                    <input class="btn btn-warning" type="submit" name="save" value="Export Excel With Merge"> -->
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
             <div class="col-sm-12 col-xs-12" style="text-align: center;">
                 <div class="card">
                     <div class="card-body" style="padding: 0px">
@@ -170,17 +225,35 @@
         }
     });
     jQuery(document).ready(function() {
+        $('.select2').select2();
         fetchData();
         $('#final_serial_number').select2({
             dropdownParent: $("#divSerialNumber"),
             allowClear:true
         });
+        $('.datepicker').datepicker({
+            <?php $tgl_max = date('Y-m-d') ?>
+            autoclose: true,
+            format: "yyyy-mm-dd",
+            todayHighlight: true,   
+            endDate: '<?php echo $tgl_max ?>'
+        });
     });
+
+    function changeMaterial() {
+        $("#material").val($("#materialSelect").val());
+    }
 
     var audio_error = new Audio('{{ url("sounds/error.mp3") }}');
 
     function fetchData() {
-        $.get('{{ url("fetch/outgoing/arisa/report") }}',  function(result, status, xhr){
+        $('#loading').show();
+        var data = {
+            material:$('#material').val(),
+            date_from:$('#date_from').val(),
+            date_to:$('#date_to').val(),
+        }
+        $.get('{{ url("fetch/outgoing/arisa/report") }}',data,  function(result, status, xhr){
             if(result.status){
                 $('#tableKensa').DataTable().clear();
                 $('#tableKensa').DataTable().destroy();
@@ -191,7 +264,7 @@
                     bodyTable += '<tr>';
                     bodyTable += '<td>'+(result.outgoing[i].so_number || '')+'</td>';
                     bodyTable += '<td>'+result.outgoing[i].final_serial_number+'</td>';
-                    bodyTable += '<td>'+getFormattedDateTime(new Date(result.outgoing[i].created_at))+'</td>';
+                    bodyTable += '<td>'+getFormattedDateTime(new Date(result.outgoing[i].created))+'</td>';
                     // var sernum = result.outgoing[i].serial_number.split(',');
                     // bodyTable += '<td>';
                     // for(var j = 0; j < sernum.length;j++){
@@ -317,7 +390,7 @@
                 });
                 $('#loading').hide();
             }else{
-                openErrorGritter('Error!','Failed Get Data');
+                openErrorGritter('Error!',result.message);
             }
         });
     }

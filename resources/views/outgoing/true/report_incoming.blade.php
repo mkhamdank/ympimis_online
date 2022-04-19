@@ -101,7 +101,7 @@
                                     <div class="input-group-addon bg-green" style="border: none; background-color: #469937; color: white;">
                                         <i class="fa fa-calendar" style="padding: 10px"></i>
                                     </div>
-                                    <input type="text" class="form-control datepicker" id="date_from" name="date_from" placeholder="Select Date To">
+                                    <input type="text" class="form-control datepicker" id="date_to" name="date_to" placeholder="Select Date To">
                                 </div>
                             </div>
                             <div class="col-md-4" style="padding-left: 5px;text-align: left;display: inline-block;padding-top: 10px">
@@ -210,6 +210,8 @@
         var data = {
             vendor:'{{$vendor_name}}',
             material:$('#material').val(),
+            date_from:$('#date_from').val(),
+            date_to:$('#date_to').val(),
             inspection_level:$('#inspection_level').val(),
         }
         $.get('{{ url("fetch/incoming/true/report") }}',data,  function(result, status, xhr){
