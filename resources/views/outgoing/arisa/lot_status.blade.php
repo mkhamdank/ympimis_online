@@ -146,7 +146,6 @@
 				<thead style="background-color: rgb(126,86,134);">
 					<tr>
 						<th style="border: 1px solid black; font-size: 1vw; padding-top: 2px; padding-bottom: 2px;color: white; width: 1%">QC SN</th>
-						<th style="border: 1px solid black; font-size: 1vw; padding-top: 2px; padding-bottom: 2px;color: white; width: 1%">Production SN</th>
 						<th style="border: 1px solid black; font-size: 1vw; padding-top: 2px; padding-bottom: 2px;color: white; width: 3%">Material</th>
 						<th style="border: 1px solid black; font-size: 1vw; padding-top: 2px; padding-bottom: 2px;color: white; width: 2%">PIC</th>
 						<th style="border: 1px solid black; font-size: 1vw; padding-top: 2px; padding-bottom: 2px;color: white; width: 1%">Status</th>
@@ -271,7 +270,6 @@
 
 						body_lot += '<tr>';
 						body_lot += '<td style="background-color:'+color+';font-size: 1vw; padding-top: 2px; padding-bottom: 2px;">'+value2.final_serial_number+'</td>';
-						body_lot += '<td style="background-color:'+color+';font-size: 1vw; padding-top: 2px; padding-bottom: 2px;">'+value2.serial_number+'</td>';
 						body_lot += '<td style="background-color:'+color+';font-size: 1vw; padding-top: 2px; padding-bottom: 2px;">'+value2.material_number+' - '+value2.material_description+'</td>';
 						body_lot += '<td style="background-color:'+color+';font-size: 1vw; padding-top: 2px; padding-bottom: 2px;">'+value2.inspector.replace(/(.{14})..+/, "$1&hellip;")+'</td>';
 						body_lot += '<td style="background-color:'+color+';font-size: 1vw; padding-top: 2px; padding-bottom: 2px;">'+value2.lot_status+'</td>';
