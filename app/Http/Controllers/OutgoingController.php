@@ -2127,12 +2127,12 @@ class OutgoingController extends Controller
 
 	        if ($date_from == "") {
 	             if ($date_to == "") {
-	                  $first = "DATE(NOW())";
+	                  $first = "'".date('Y-m-d',strtotime("-1 months"))."'";
 	                  $last = "DATE(NOW())";
 	                  $date = date('Y-m-d');
 	                  $monthTitle = date("d M Y", strtotime($date));
 	             }else{
-	                  $first = "DATE(NOW())";
+	                  $first = "'".date('Y-m-d',strtotime("-1 months"))."'";;
 	                  $last = "'".$date_to."'";
 	                  $date = date('Y-m-d');
 	                  $monthTitle = date("d M Y", strtotime($date)).' to '.date("d M Y", strtotime($date_to));
@@ -2165,14 +2165,6 @@ class OutgoingController extends Controller
 				WHERE
 					qa_outgoing_point_checks.vendor_shortname = '".$vendor_shortname."'
 					".$materialin." UNION ALL
-				SELECT DISTINCT
-					( part_category ),
-					0 AS count_ok,
-					0 AS count_out 
-				FROM
-					qa_outgoing_point_checks 
-				WHERE
-					qa_outgoing_point_checks.vendor_shortname = '".$vendor_shortname."' UNION ALL
 				SELECT
 					qa_outgoing_point_checks.part_category,
 				IF
@@ -2184,6 +2176,8 @@ class OutgoingController extends Controller
 					JOIN qa_outgoing_point_checks ON qa_outgoing_vendor_finals.point_check_id = qa_outgoing_point_checks.id 
 				WHERE
 					qa_outgoing_point_checks.vendor_shortname = '".$vendor_shortname."' 
+					AND qa_outgoing_vendor_finals.created_at >= ".$first."
+					AND qa_outgoing_vendor_finals.created_at <= ".$last."
 					".$materialin_ng."
 				GROUP BY
 					qa_outgoing_point_checks.part_category,
@@ -2205,13 +2199,17 @@ class OutgoingController extends Controller
 					qa_outgoing_vendor_finals 
 				WHERE
 					qa_outgoing_vendor_finals.vendor_shortname = 'ARISA' 
+					AND qa_outgoing_vendor_finals.created_at >= ".$first."
+					AND qa_outgoing_vendor_finals.created_at <= ".$last."
 					".$materialin_ng."
 				GROUP BY
 					final_serial_number,
 					material_number,
 					material_description,
 					qa_outgoing_vendor_finals.lot_status,
-					qa_outgoing_vendor_finals.inspector");
+					qa_outgoing_vendor_finals.inspector
+				ORDER BY
+					lot_status DESC");
 
 			$response = array(
 		        'status' => true,
