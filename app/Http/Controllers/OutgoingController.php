@@ -1384,23 +1384,23 @@ class OutgoingController extends Controller
 		            	array_push($mail_to, 'qa.claim@kyoraku.co.id');
 		            	array_push($mail_to, 'ujang@kyoraku.co.id');
 		            	array_push($mail_to, 'ginting@kyoraku.co.id');
-		            	array_push($mail_to, 'agustina.hayati@music.yamaha.com');
-		            	array_push($mail_to, 'ratri.sulistyorini@music.yamaha.com');
-		            	array_push($mail_to, 'abdissalam.saidi@music.yamaha.com');
-		            	array_push($mail_to, 'noviera.prasetyarini@music.yamaha.com');
+		            	// array_push($mail_to, 'agustina.hayati@music.yamaha.com');
+		            	// array_push($mail_to, 'ratri.sulistyorini@music.yamaha.com');
+		            	// array_push($mail_to, 'abdissalam.saidi@music.yamaha.com');
+		            	// array_push($mail_to, 'noviera.prasetyarini@music.yamaha.com');
 
 				        $cc = [];
-				        $cc[0] = 'yayuk.wahyuni@music.yamaha.com';
-				        $cc[1] = 'imron.faizal@music.yamaha.com';
+				        // $cc[0] = 'yayuk.wahyuni@music.yamaha.com';
+				        // $cc[1] = 'imron.faizal@music.yamaha.com';
 
 				        $bcc = [];
 				        $bcc[0] = 'mokhamad.khamdan.khabibi@music.yamaha.com';
 				        $bcc[1] = 'rio.irvansyah@music.yamaha.com';
 
-				        Mail::to('mokhamad.khamdan.khabibi@music.yamaha.com')
-				        ->cc($cc,'CC')
-				        ->bcc($bcc,'BCC')
-				        ->send(new SendEmail($outgoing, 'critical_kbi'));
+				        // Mail::to($mail_to)
+				        // // ->cc($cc,'CC')
+				        // ->bcc($bcc,'BCC')
+				        // ->send(new SendEmail($outgoing, 'critical_kbi'));
 
 				        array_push($outgoings_critical, $outgoing);
 		            }
@@ -1424,15 +1424,15 @@ class OutgoingController extends Controller
 		            	array_push($mail_to, 'qs@kyoraku.co.id');
 		            	array_push($mail_to, 'qa.claim@kyoraku.co.id');
 		            	array_push($mail_to, 'ujang@kyoraku.co.id');
-		            	array_push($mail_to, 'ginting@kyoraku.co.id');
-		            	array_push($mail_to, 'agustina.hayati@music.yamaha.com');
-		            	array_push($mail_to, 'ratri.sulistyorini@music.yamaha.com');
-		            	array_push($mail_to, 'abdissalam.saidi@music.yamaha.com');
-		            	array_push($mail_to, 'noviera.prasetyarini@music.yamaha.com');
+		            	// array_push($mail_to, 'ginting@kyoraku.co.id');
+		            	// array_push($mail_to, 'agustina.hayati@music.yamaha.com');
+		            	// array_push($mail_to, 'ratri.sulistyorini@music.yamaha.com');
+		            	// array_push($mail_to, 'abdissalam.saidi@music.yamaha.com');
+		            	// array_push($mail_to, 'noviera.prasetyarini@music.yamaha.com');
 
 				        $cc = [];
-				        $cc[0] = 'yayuk.wahyuni@music.yamaha.com';
-				        $cc[1] = 'imron.faizal@music.yamaha.com';
+				        // $cc[0] = 'yayuk.wahyuni@music.yamaha.com';
+				        // $cc[1] = 'imron.faizal@music.yamaha.com';
 
 				        $bcc = [];
 				        $bcc[0] = 'mokhamad.khamdan.khabibi@music.yamaha.com';
@@ -1442,10 +1442,10 @@ class OutgoingController extends Controller
 				        	'outgoing_non' => $outgoings,
 				        	'outgoing_critical' => $outgoings_critical, );
 
-				        Mail::to('mokhamad.khamdan.khabibi@music.yamaha.com')
-				        ->cc($cc,'CC')
-				        ->bcc($bcc,'BCC')
-				        ->send(new SendEmail($data, 'over_limit_ratio_kbi'));
+				        // Mail::to($mail_to)
+				        // // ->cc($cc,'CC')
+				        // ->bcc($bcc,'BCC')
+				        // ->send(new SendEmail($data, 'over_limit_ratio_kbi'));
 					}
 				}
 			}
