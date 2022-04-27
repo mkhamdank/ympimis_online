@@ -53,7 +53,23 @@
 	}
 
 	#ngList2 {
-		height:454px;
+		height:576px;
+		overflow-y: scroll;
+		/*padding-top: 5px;*/
+	}
+	#ngList3 {
+		height:576px;
+		overflow-y: scroll;
+		/*padding-top: 5px;*/
+	}
+	#ngList4 {
+		height:576px;
+		overflow-y: scroll;
+		/*padding-top: 5px;*/
+	}
+
+	#ngList {
+		height:576px;
 		overflow-y: scroll;
 		/*padding-top: 5px;*/
 	}
@@ -87,40 +103,62 @@
 	<input type="hidden" id="incoming_check_code" value="">
 	
 	<div class="row" style="padding-left: 10px; padding-right: 10px;">
-		<div class="col-md-6" style="padding-right: 0; padding-left: 0">
+		<div class="col-md-12" style="padding-right: 0; padding-left: 0">
 			<table class="table table-bordered" style="width: 100%; margin-bottom: 2px;" border="1">
 				<tbody>
 					<tr>
-						<th style=" background-color: #d1d1d1; text-align: center; color: #14213d; padding:0;font-size: 15px;">Date</th>
-						<th style=" background-color: #d1d1d1; text-align: center; color: #14213d; padding:0;font-size: 15px;">Inspector</th>
+						<th style=" background-color: #d1d1d1; text-align: center; color: #14213d; padding:0;font-size: 14px;width: 1%;">Date</th>
+						<th style=" background-color: #d1d1d1; text-align: center; color: #14213d; padding:0;font-size: 14px;width: 1%">Inspector</th>
+						<th colspan="2" style=" background-color: #d1d1d1; text-align: center; color: #14213d; padding:0;font-size: 14px;width: 3%">Serial Number</th>
+						<td style="background-color: #d1d1d1; text-align: center; color: #14213d; padding:0;font-size: 14px;font-weight: bold;width: 2%">
+							PART NO.
+						</td>
+						<td style="background-color: #d1d1d1; text-align: center; color: #14213d; padding:0;font-size: 14px;font-weight: bold;width: 2%">
+							PART NAME
+						</td>
+						<td colspan="3" style="background-color: #d1d1d1; text-align: center; color: #14213d; padding:0;font-size: 12px;font-weight: bold;width: 3%">
+							TAMBAHAN CEK MATERIAL PENGGANTI NG
+						</td>
+						<td style="background-color: #d1d1d1; text-align: center; color: #14213d; padding:0;font-size: 14px;font-weight: bold;width: 1%">
+							ACTION
+						</td>
+						
 					</tr>
 					<tr>
-						<td style="background-color: #fca311; color: #14213d; text-align: center; font-size:15px;" id="date">{{date("Y-m-d")}}</td>
-						<td style="background-color: #14213d; color: #fff; text-align: center; font-size:15px;" id="op">{{$inspector}}</td>
+						<td style="background-color: #fca311; color: #14213d; text-align: center; font-size:12px;padding-left: 2px;padding-right: 2px" id="date">{{date("Y-m-d")}}</td>
+						<td style="background-color: #14213d; color: #fff; text-align: center; font-size:12px;" id="op">{{$inspector}}</td>
+						<td colspan="2" style="background-color: #fca311; color: #14213d; text-align: center; font-size:15px;"><input type="text" id="serial_number" placeholder="Scan Serial Number Here . . ." style="width: 100%;text-align: center;font-size: 15px;padding: 5px"></td>
+						<td id="material_number" style="background-color: #fca311; text-align: center; color: #14213d; font-size: 15px;">-
+						</td>
+						<td id="material_description" style="background-color: #fca311; text-align: center; color: #14213d; font-size: 15px;">-
+						</td>
+						<td id="minus" onclick="minusPengganti('pengganti')" style="background-color: rgb(255,204,255); font-weight: bold; font-size: 22px; cursor: pointer;" class="unselectable">-</td>
+						<td style="font-weight: bold; font-size: 22px; background-color: rgb(100,100,100); color: yellow;"><span id="pengganti">0</span></td>
+						<td id="plus" onclick="plusPengganti('pengganti')" style="background-color: rgb(204,255,255); font-weight: bold; font-size: 22px; cursor: pointer;" class="unselectable">+</td>
+						<td>
+							<button class="btn btn-danger" id="btn_cancel" onclick="cancelAll()" style="font-size: 14px;font-weight: bold;width: 100%">
+								CANCEL
+							</button>
+						</td>
 					</tr>
-					<tr>
+					<!-- <tr>
 						<th colspan="2" style=" background-color: #d1d1d1; text-align: center; color: #14213d; padding:0;font-size: 15px;">Serial Number</th>
 					</tr>
 					<tr>
 						<td colspan="2" style="background-color: #fca311; color: #14213d; text-align: center; font-size:15px;"><input type="text" id="serial_number" placeholder="Scan Serial Number Here . . ." style="width: 100%;text-align: center;font-size: 20px;padding: 5px"></td>
-					</tr>
+					</tr> -->
 					
 				</tbody>
 			</table>
-			<table class="table table-bordered" style="width: 100%; margin-bottom: 5px;border: 0">
+			<!-- <table class="table table-bordered" style="width: 100%; margin-bottom: 5px;border: 0">
 				<tbody>
 					<tr>
 						<td style="background-color: #d1d1d1; text-align: center; color: #14213d; padding:0;font-size: 14px;font-weight: bold;">
 							PART NO.
 						</td>
-						<td style="background-color: #d1d1d1; text-align: center; color: #14213d; padding:0;font-size: 14px;font-weight: bold;">
-							PART NAME
-						</td>
 					</tr>
 					<tr>
 						<td id="material_number" style="background-color: #fca311; text-align: center; color: #14213d; font-size: 20px;">-
-						</td>
-						<td id="material_description" style="background-color: #fca311; text-align: center; color: #14213d; font-size: 20px;">-
 						</td>
 					</tr>
 				</tbody>
@@ -128,8 +166,33 @@
 			<table class="table table-bordered" style="width: 100%; margin-bottom: 5px;border: 0">
 				<tbody>
 					<tr>
-						<td style="background-color: #d1d1d1; text-align: center; color: #14213d; padding:0;font-size: 15px;font-weight: bold;">
+						<td style="background-color: #d1d1d1; text-align: center; color: #14213d; padding:0;font-size: 14px;font-weight: bold;">
+							PART NAME
+						</td>
+					</tr>
+					<tr>
+						<td id="material_description" style="background-color: #fca311; text-align: center; color: #14213d; font-size: 20px;">-
+						</td>
+					</tr>
+				</tbody>
+			</table> -->
+			<table class="table table-bordered" style="width: 100%; margin-bottom: 5px;border: 0">
+				<tbody>
+					<tr>
+						<td style="background-color: #d1d1d1; text-align: center; color: #14213d; padding:0;font-size: 15px;font-weight: bold;width: 1%">
 							QTY
+						</td>
+						<td style="background-color: #da96ff; text-align: center; color: #14213d; padding:0;font-size: 15px;font-weight: bold;width: 1%">
+							QTY OK
+						</td>
+						<td style="background-color: #ffe06e; text-align: center; color: #14213d; padding:0;font-size: 15px;font-weight: bold;width: 1%">
+							QTY NG
+						</td>
+						<td style="background-color: #ff8c8c; text-align: center; color: #14213d; padding:0;font-size: 15px;font-weight: bold;width: 1%">
+							NG RATIO (%)
+						</td>
+						<td style="background-color: #d1d1d1; text-align: center; color: #14213d; padding:0;font-size: 15px;font-weight: bold;width: 2%">
+							ACTION
 						</td>
 					</tr>
 					<tr>
@@ -137,127 +200,164 @@
 							<input type="number" class="pull-right numpad2" name="qty_rec" style="height: 50px;font-size: 2vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="qty_rec" placeholder="Quantity Recieve">
 						</td> -->
 						<td>
-							<input type="number" class="pull-right" name="qty_check" style="height: 40px;font-size: 1.5vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="qty_check" placeholder="Quantity Check" onchange="checkQty(this.value);" readonly="">
+							<input type="number" class="pull-right" name="qty_check" style="height: 30px;font-size: 1.5vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="qty_check" placeholder="Quantity Check" onchange="checkQty(this.value);" readonly="">
+						</td>
+						<td>
+							<input type="text" class="pull-right" name="total_ok" style="height: 30px;font-size: 1.5vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="total_ok" placeholder="Qty OK" readonly value="0">
+						</td>
+						<td>
+							<input type="text" class="pull-right" name="total_ng" style="height: 30px;font-size: 1.5vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="total_ng" placeholder="Qty NG" readonly value="0">
+						</td>
+						<td>
+							<input type="text" class="pull-right" name="ng_ratio" style="height: 30px;font-size: 1.5vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="ng_ratio" placeholder="NG Ratio (%)" readonly value="0">
+						</td>
+						<td>
+							<button class="btn btn-success" id="btn_confirm" onclick="confirmNgLog()" style="font-size: 14px;font-weight: bold;width: 100%">
+								CONFIRM
+							</button>
 						</td>
 					</tr>
 				</tbody>
 			</table>
-			<table class="table table-bordered" style="width: 100%; margin-bottom: 5px;border: 0">
-				<tbody>
-					<!-- <tr>
-						<td style="background-color: #d1d1d1; text-align: center; color: #14213d; padding:0;font-size: 20px;font-weight: bold;width: 50%">
-							INVOICE NUMBER
-						</td>
-						<td style="background-color: #d1d1d1; text-align: center; color: #14213d; padding:0;font-size: 20px;font-weight: bold;width: 50%">
-							INSPECTION LEVEL
-						</td>
-					</tr> -->
-					<!-- <tr>
-						<td>
-							<input type="text" class="pull-right" name="invoice" style="height: 50px;font-size: 2vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="invoice" placeholder="Invoice">
-						</td>
-						<td>
-							
-						</td>
-					</tr> -->
-					<tr>
-						<td colspan="2" style="background-color: #d1d1d1; text-align: center; color: #14213d; padding:0;font-size: 20px;font-weight: bold;width: 50%">
-							RESULT
-						</td>
-					</tr>
-					<tr>
-						<!-- <td style="background-color: #80e5ff; text-align: center; color: #14213d; padding:0;font-size: 20px;font-weight: bold;width: 50%">
-							REPAIR
-						</td> -->
-						<td style="background-color: #da96ff; text-align: center; color: #14213d; padding:0;font-size: 20px;font-weight: bold;width: 50%">
-							QTY OK
-						</td>
-						<td style="background-color: #ffe06e; text-align: center; color: #14213d; padding:0;font-size: 20px;font-weight: bold;width: 50%">
-							QTY NG
-						</td>
-					</tr>
-					<tr>
-						<!-- <td>
-							<input type="text" class="pull-right" name="repair" style="height: 50px;font-size: 2vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="repair" placeholder="Qty Repair" readonly value="0">
-						</td> -->
-						<td>
-							<input type="text" class="pull-right" name="total_ok" style="height: 50px;font-size: 2vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="total_ok" placeholder="Qty OK" readonly value="0">
-						</td>
-						<td>
-							<input type="text" class="pull-right" name="total_ng" style="height: 50px;font-size: 2vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="total_ng" placeholder="Qty NG" readonly value="0">
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2" style="background-color: #ff8c8c; text-align: center; color: #14213d; padding:0;font-size: 20px;font-weight: bold;width: 50%">
-							NG RATIO (%)
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<input type="text" class="pull-right" name="ng_ratio" style="height: 50px;font-size: 2vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="ng_ratio" placeholder="NG Ratio (%)" readonly value="0">
-						</td>
-					</tr>
-					<!-- <tr>
-						<td style="background-color: #ffe06e; text-align: center; color: #14213d; padding:0;font-size: 20px;font-weight: bold;width: 50%">
-							RETURN
-						</td>
-						<td style="background-color: #ffcd9c; text-align: center; color: #14213d; padding:0;font-size: 20px;font-weight: bold;width: 50%">
-							STATUS LOT
-						</td>
-					</tr> -->
-					<!-- <tr>
-						<td>
-							<input type="text" class="pull-right" name="return" style="height: 50px;font-size: 2vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="return" placeholder="Qty Return" readonly value="0">
-						</td>
-						<td>
-							<select name="status_lot" style="height: 50px;font-size: 2vw;width: 100%;text-align: center;vertical-align: middle;color: #14213d" id="status_lot" data-placeholder="Status Lot">
-								<option value="-">Pilih Status Lot</option>
-								<option value="Lot OK">Lot OK</option>
-								<option value="Lot Out">Lot Out</option>
-							</select>
-						</td>
-					</tr> -->
-				</tbody>
-			</table>
-			
 		</div>
-
-		<div class="col-md-6" style="padding-right: 0;">
-			<!-- <div class="row" style="padding-left: 15px;padding-right: 15px">
-				<button class="btn btn-info pull-right" onclick="fetchDetailRecord()" style="width: 100%;font-weight: bold;font-size: 20px">Record</button>
-			</div> -->
-			<div id="ngList2">
+		<div class="col-md-3" style="padding-right: 0px;padding-left: 0px">
+			<div id="ngList">
 				<table class="table table-bordered" style="width: 100%; margin-bottom: 2px;" border="1" id="tableNgList">
 					<thead>
 						<tr>
-							<th style="width: 10%; background-color: rgb(220,220,220); padding:0;font-size: 20px;" >#</th>
-							<th style="width: 65%; background-color: rgb(220,220,220); padding:0;font-size: 20px;" >NG Name</th>
-							<th style="width: 10%; background-color: rgb(220,220,220); padding:0;font-size: 20px;" >#</th>
-							<th style="width: 15%; background-color: rgb(220,220,220); padding:0;font-size: 20px;" >Count</th>
+							<th style="width: 15%; background-color: rgb(220,220,220); padding:0;font-size: 15px;" >#</th>
+							<th style="width: 55%; background-color: rgb(220,220,220); padding:0;font-size: 15px;" >NG Name</th>
+							<th style="width: 15%; background-color: rgb(220,220,220); padding:0;font-size: 15px;" >#</th>
+							<th style="width: 15%; background-color: rgb(220,220,220); padding:0;font-size: 15px;" >Qty</th>
 						</tr>
 					</thead>
 					<tbody id="bodyTableNgList">
 						<?php $no = 1; ?>
-						<input type="hidden" name="ng_list_count" id="ng_list_coung" value="{{count($ng_lists)}}">
-						@foreach($ng_lists as $nomor => $ng_list)
-						<?php if ($no % 2 === 0 ) {
-							$color = 'style="background-color: #fffcb7"';
-						} else {
-							$color = 'style="background-color: #ffd8b7"';
-						}
-						?>
-						<input type="hidden" id="loop" value="{{$loop->count}}">
-						<tr <?php echo $color ?>>
-							<td id="minus" onclick="minus({{$nomor+1}})" style="background-color: rgb(255,204,255); font-weight: bold; font-size: 45px; cursor: pointer;" class="unselectable">-</td>
-							<td id="ng{{$nomor+1}}" style="font-size: 20px;">{{ $ng_list->ng_name }}</td>
-							<td id="plus" onclick="plus({{$nomor+1}})" style="background-color: rgb(204,255,255); font-weight: bold; font-size: 45px; cursor: pointer;" class="unselectable">+</td>
-							<td style="font-weight: bold; font-size: 45px; background-color: rgb(100,100,100); color: yellow;"><span id="count{{$nomor+1}}">0</span></td>
-						</tr>
-						<?php $no+=1; ?>
-						@endforeach
+						<input type="hidden" name="ng_list_count" id="ng_list_count" value="{{count($ng_lists)}}">
+						<?php for ($i=0; $i < 12; $i++) { ?>
+							<?php if ($no % 2 === 0 ) {
+								$color = 'style="background-color: #fffcb7"';
+							} else {
+								$color = 'style="background-color: #ffd8b7"';
+							}
+							?>
+							<tr <?php echo $color ?>>
+								<td id="minus" onclick="minus({{$i+1}})" style="background-color: rgb(255,204,255); font-weight: bold; font-size: 30px; cursor: pointer;" class="unselectable">-</td>
+								<td id="ng{{$i+1}}" style="font-size: 15px;">{{ $ng_lists[$i]->ng_name }}</td>
+								<td id="plus" onclick="plus({{$i+1}})" style="background-color: rgb(204,255,255); font-weight: bold; font-size: 30px; cursor: pointer;" class="unselectable">+</td>
+								<td style="font-weight: bold; font-size: 30px; background-color: rgb(100,100,100); color: yellow;"><span id="count{{$i+1}}">0</span></td>
+							</tr>
+							<?php $no+=1; ?>
+						<?php } ?>
 					</tbody>
 				</table>
 			</div>
+		</div>
+		<div class="col-md-3" style="padding-right: 0px;height: ">
+			<div id="ngList2">
+				<table class="table table-bordered" style="width: 100%; margin-bottom: 2px;" border="1" id="tableNgList">
+					<thead>
+						<tr>
+							<th style="width: 15%; background-color: rgb(220,220,220); padding:0;font-size: 15px;" >#</th>
+							<th style="width: 55%; background-color: rgb(220,220,220); padding:0;font-size: 15px;" >NG Name</th>
+							<th style="width: 15%; background-color: rgb(220,220,220); padding:0;font-size: 15px;" >#</th>
+							<th style="width: 15%; background-color: rgb(220,220,220); padding:0;font-size: 15px;" >Qty</th>
+						</tr>
+					</thead>
+					<tbody id="bodyTableNgList">
+						<?php $no = 1; ?>
+						<input type="hidden" name="ng_list_count" id="ng_list_count" value="{{count($ng_lists)}}">
+						<?php for ($i=12; $i < 24; $i++) { ?>
+							<?php if ($no % 2 === 0 ) {
+								$color = 'style="background-color: #fffcb7"';
+							} else {
+								$color = 'style="background-color: #ffd8b7"';
+							}
+							?>
+							<tr <?php echo $color ?>>
+								<td id="minus" onclick="minus({{$i+1}})" style="background-color: rgb(255,204,255); font-weight: bold; font-size: 30px; cursor: pointer;" class="unselectable">-</td>
+								<td id="ng{{$i+1}}" style="font-size: 15px;">{{ $ng_lists[$i]->ng_name }}</td>
+								<td id="plus" onclick="plus({{$i+1}})" style="background-color: rgb(204,255,255); font-weight: bold; font-size: 30px; cursor: pointer;" class="unselectable">+</td>
+								<td style="font-weight: bold; font-size: 30px; background-color: rgb(100,100,100); color: yellow;"><span id="count{{$i+1}}">0</span></td>
+							</tr>
+							<?php $no+=1; ?>
+						<?php } ?>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="col-md-3" style="padding-right: 0px;height: ">
+			<div id="ngList3">
+				<table class="table table-bordered" style="width: 100%; margin-bottom: 2px;" border="1" id="tableNgList">
+					<thead>
+						<tr>
+							<th style="width: 15%; background-color: rgb(220,220,220); padding:0;font-size: 15px;" >#</th>
+							<th style="width: 55%; background-color: rgb(220,220,220); padding:0;font-size: 15px;" >NG Name</th>
+							<th style="width: 15%; background-color: rgb(220,220,220); padding:0;font-size: 15px;" >#</th>
+							<th style="width: 15%; background-color: rgb(220,220,220); padding:0;font-size: 15px;" >Qty</th>
+						</tr>
+					</thead>
+					<tbody id="bodyTableNgList">
+						<?php $no = 1; ?>
+						<input type="hidden" name="ng_list_count" id="ng_list_count" value="{{count($ng_lists)}}">
+						<?php for ($i=24; $i < 36; $i++) { ?>
+							<?php if ($no % 2 === 0 ) {
+								$color = 'style="background-color: #fffcb7"';
+							} else {
+								$color = 'style="background-color: #ffd8b7"';
+							}
+							?>
+							<tr <?php echo $color ?>>
+								<td id="minus" onclick="minus({{$i+1}})" style="background-color: rgb(255,204,255); font-weight: bold; font-size: 30px; cursor: pointer;" class="unselectable">-</td>
+								<td id="ng{{$i+1}}" style="font-size: 15px;">{{ $ng_lists[$i]->ng_name }}</td>
+								<td id="plus" onclick="plus({{$i+1}})" style="background-color: rgb(204,255,255); font-weight: bold; font-size: 30px; cursor: pointer;" class="unselectable">+</td>
+								<td style="font-weight: bold; font-size: 30px; background-color: rgb(100,100,100); color: yellow;"><span id="count{{$i+1}}">0</span></td>
+							</tr>
+							<?php $no+=1; ?>
+						<?php } ?>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="col-md-3" style="padding-right: 0px;height: ">
+			<div id="ngList4">
+				<table class="table table-bordered" style="width: 100%; margin-bottom: 2px;" border="1" id="tableNgList">
+					<thead>
+						<tr>
+							<th style="width: 15%; background-color: rgb(220,220,220); padding:0;font-size: 15px;" >#</th>
+							<th style="width: 55%; background-color: rgb(220,220,220); padding:0;font-size: 15px;" >NG Name</th>
+							<th style="width: 15%; background-color: rgb(220,220,220); padding:0;font-size: 15px;" >#</th>
+							<th style="width: 15%; background-color: rgb(220,220,220); padding:0;font-size: 15px;" >Qty</th>
+						</tr>
+					</thead>
+					<tbody id="bodyTableNgList">
+						<?php $no = 1; ?>
+						<input type="hidden" name="ng_list_count" id="ng_list_count" value="{{count($ng_lists)}}">
+						<?php for ($i=36; $i < 50; $i++) { ?>
+							<?php if ($no % 2 === 0 ) {
+								$color = 'style="background-color: #fffcb7"';
+							} else {
+								$color = 'style="background-color: #ffd8b7"';
+							}
+							?>
+							<tr <?php echo $color ?>>
+								<td id="minus" onclick="minus({{$i+1}})" style="background-color: rgb(255,204,255); font-weight: bold; font-size: 30px; cursor: pointer;" class="unselectable">-</td>
+								<td id="ng{{$i+1}}" style="font-size: 15px;">{{ $ng_lists[$i]->ng_name }}</td>
+								<td id="plus" onclick="plus({{$i+1}})" style="background-color: rgb(204,255,255); font-weight: bold; font-size: 30px; cursor: pointer;" class="unselectable">+</td>
+								<td style="font-weight: bold; font-size: 30px; background-color: rgb(100,100,100); color: yellow;"><span id="count{{$i+1}}">0</span></td>
+							</tr>
+							<?php $no+=1; ?>
+						<?php } ?>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		
+
+		<div class="col-md-12" style="padding-right: 0;">
+			<!-- <div class="row" style="padding-left: 15px;padding-right: 15px">
+				<button class="btn btn-info pull-right" onclick="fetchDetailRecord()" style="width: 100%;font-weight: bold;font-size: 20px">Record</button>
+			</div> -->
 			<!-- <div id="ngTemp">
 				<table class="table table-bordered" style="width: 100%; margin-bottom: 2px;" border="1">
 					<thead>
@@ -274,7 +374,7 @@
 				</table>
 			</div> -->
 
-			<div class="row">
+			<!-- <div class="row">
 				<div class="col-md-6" style="padding: 0px;padding-top: 10px;padding-right: 5px;padding-left: 10px">
 					<button class="btn btn-danger" id="btn_cancel" onclick="cancelAll()" style="font-size: 25px;font-weight: bold;width: 100%">
 						CANCEL
@@ -285,7 +385,7 @@
 						CONFIRM
 					</button>
 				</div>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </div>
@@ -507,7 +607,8 @@
 		$('#total_ok').val('0');
 		$('#total_ng').val('0');
 		$('#ng_ratio').val('0');
-		var jumlah_ng = '{{$nomor+1}}';
+		$('#pengganti').html('0');
+		var jumlah_ng = '{{count($ng_lists)}}';
 		for (var i = 1; i <= jumlah_ng; i++ ) {
 			$('#count'+i).html(0);
 		}
@@ -564,7 +665,7 @@
 	function plus(id){
 		var count = $('#count'+id).text();
 		if ($('#material_description').text() == "-" || $('#qty_check').val() == "") {
-			openErrorGritter('Error!','Isi Semua Data.');
+			openErrorGritter('Error!','Scan Serial Number First!.');
 		}else{
 			$('#total_ok').val(parseInt($('#total_ok').val())-1);
 			$('#total_ng').val(parseInt($('#total_ng').val())+1);
@@ -576,7 +677,7 @@
 	function minus(id){
 		var count = $('#count'+id).text();
 		if ($('#material_description').text() == "-" || $('#qty_check').val() == "") {
-			openErrorGritter('Error!','Isi Semua Data.');
+			openErrorGritter('Error!','Scan Serial Number First!.');
 		}else{
 			if(count > 0)
 			{
@@ -584,6 +685,33 @@
 				$('#total_ng').val(parseInt($('#total_ng').val())-1);
 				$('#ng_ratio').val(((parseInt($('#total_ng').val())/parseInt($('#qty_check').val()))*100).toFixed(1));
 				$('#count'+id).text(parseInt(count)-1);
+			}
+		}
+	}
+
+	function plusPengganti(id){
+		var pengganti = $('#pengganti').text();
+		if ($('#material_description').text() == "-" || $('#qty_check').val() == "") {
+			openErrorGritter('Error!','Scan Serial Number First!.');
+		}else{
+			$('#qty_check').val(parseInt($('#qty_check').val())+1);
+			$('#total_ok').val(parseInt($('#total_ok').val())+1);
+			$('#ng_ratio').val(((parseInt($('#total_ng').val())/parseInt($('#qty_check').val()))*100).toFixed(1));
+			$('#pengganti').text(parseInt(pengganti)+1);
+		}
+	}
+
+	function minusPengganti(id){
+		var pengganti = $('#pengganti').text();
+		if ($('#material_description').text() == "-" || $('#qty_check').val() == "") {
+			openErrorGritter('Error!','Scan Serial Number First!.');
+		}else{
+			if(pengganti > 0)
+			{
+				$('#qty_check').val(parseInt($('#qty_check').val())-1);
+				$('#total_ok').val(parseInt($('#total_ok').val())-1);
+				$('#ng_ratio').val(((parseInt($('#total_ng').val())/parseInt($('#qty_check').val()))*100).toFixed(1));
+				$('#pengganti').text(parseInt(pengganti)-1);
 			}
 		}
 	}
@@ -666,7 +794,7 @@
 
 			var ng_name = [];
 			var ng_qty = [];
-			var jumlah_ng = '{{$nomor+1}}';
+			var jumlah_ng = '{{count($ng_lists)}}';
 			for (var i = 1; i <= jumlah_ng; i++ ) {
 				if ($('#count'+i).text() != 0) {
 					ng_name.push($('#ng'+i).text());

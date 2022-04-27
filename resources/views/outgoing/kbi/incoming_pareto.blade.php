@@ -12,7 +12,7 @@
     }
 
     tbody>tr>td{
-        /*text-align:center;*/
+        text-align:center;
     }
     tfoot>tr>th{
         text-align:center;
@@ -136,10 +136,10 @@
 				Search
 			</button>
 		</div>
-		<div class="col-md-8" style="padding-left: 0px;padding-top: 5px">
+		<div class="col-md-7" style="padding-left: 0px;padding-top: 5px">
 			<div id="container1" style="width: 100%;height: 83vh"></div>
 		</div>
-		<div class="col-md-4" style="padding-left: 0px;padding-top: 5px">
+		<div class="col-md-5" style="padding-left: 0px;padding-top: 5px">
 			<div id="container2" style="width: 100%;height: 83vh"></div>
 		</div>
 	</div>
@@ -154,16 +154,20 @@
 				<div class="modal-body table-responsive no-padding" style="min-height: 100px">
 					<center><h3 style="font-weight: bold;color:black ;font-size: 20px" id="judul_detail"></h3></center>
 					<div class="col-md-12" id="bodyDetail">
-			          <table class="table user-table no-wrap table-striped" style="font-size:15px" id="tableDetail">
+			          <table class="table user-table no-wrap" style="font-size:15px" id="tableDetail">
 			          	<thead style="background-color: #3f50b5;color: white !important">
 			          		<tr>
 			          			<th style="background-color: #3f50b5;color: white !important">Date</th>
+			          			<th style="background-color: #3f50b5;color: white !important">Serial Number</th>
 			          			<th style="background-color: #3f50b5;color: white !important">Material</th>
+			          			<th style="background-color: #3f50b5;color: white !important">HPL</th>
 			          			<th style="background-color: #3f50b5;color: white !important">Qty Check</th>
+			          			<th style="background-color: #3f50b5;color: white !important">Total OK</th>
+			          			<th style="background-color: #3f50b5;color: white !important">Total NG</th>
+			          			<th style="background-color: #3f50b5;color: white !important">NG Ratio</th>
 			          			<th style="background-color: #3f50b5;color: white !important">Defect</th>
 			          			<th style="background-color: #3f50b5;color: white !important">Qty NG</th>
-			          			<th style="background-color: #3f50b5;color: white !important">Status</th>
-			          			<th style="background-color: #3f50b5;color: white !important">Note</th>
+			          			<th style="background-color: #3f50b5;color: white !important">Inspector</th>
 			          		</tr>
 			          	</thead>
 			          	<tbody id="bodyTableDetail">
@@ -259,7 +263,13 @@
 					        type: 'column'
 					    },
 					    title: {
-					        text: 'PARETO DEFECT PT. KBI<br>'+result.firstMonthTitle+' - '+result.lastMonthTitle
+					        text: 'PARETO INCOMING PT. KBI',
+					        style:{
+					        	fontWeight:'bold'
+					        }
+					    },
+					    subtitle:{
+					    	text: result.firstMonthTitle+' - '+result.lastMonthTitle
 					    },
 					    tooltip: {
 					        shared: true
@@ -278,7 +288,7 @@
 									enabled: true,
 									format: '{point.y:,.0f}',
 									style:{
-										fontSize: '10px'
+										fontSize: '15px'
 									}
 								},
 								animation: false,
@@ -301,7 +311,7 @@
 									enabled: true,
 									format: '{point.y:,.0f}%',
 									style:{
-										fontSize: '10px'
+										fontSize: '15px'
 									}
 								},
 								lineWidth: 3,
@@ -325,7 +335,10 @@
 					        },
 					        
 					        labels: {
-					            format: "{value}"
+					            format: "{value}",
+					            style:{
+					            	fontSize:'15px'
+					            }
 					        }
 					    }, {
 					        title: {
@@ -338,7 +351,10 @@
 					        opposite: true,
 					        labels: {
 					            format: "{value}%"
-					        }
+					        },
+					        style:{
+				            	fontSize:'15px'
+				            }
 					    },],
 					    series: [{
 					        type: 'pareto',
@@ -381,92 +397,196 @@
 					    ]
 					});
 
-					var total = 0;
-					var ok = 0;
-					var ng = 0;
+					var categories = [];
+					var ng = [];
 
-					$.each(result.material_status, function(key,value){
-						total = value.total;
-						ng = parseInt(value.ng);
-						ok = parseInt(value.total)-(parseInt(value.ng));
+					$.each(result.top_5, function(key,value){
+						categories.push(value.material_description);
+						ng.push({y:parseFloat(value.ratio),key:value.material_number});
 					});
 
 					Highcharts.chart('container2', {
-					    chart: {
-					        plotBackgroundColor: null,
-					        plotBorderWidth: null,
-					        plotShadow: false,
-					        type: 'pie'
-					    },
-					    title: {
-					        text: 'MATERIAL STATUS'
-					    },
-					    tooltip: {
-					        pointFormat: '{series.name}<br><b>{point.y} Pc(s)<br>{point.percentage:.1f}%</b>'
-					    },
-					    accessibility: {
-					        point: {
-					            valueSuffix: '%',
-					            borderColor: '#8ae'
+						chart: {
+							type:'bar',
+							options3d: {
+								enabled: true,
+								alpha: 15,
+								beta: 15,
+								depth: 50,
+								viewDistance: 25
+							}
+						},
+						title: {
+							text: 'Top 5 Worst Material',
+							        style:{
+					        	fontWeight:'bold'
 					        }
+						},
+						    subtitle: {
+					        text: result.firstMonthTitle+' - '+result.lastMonthTitle
 					    },
-					    plotOptions: {
-					        pie: {
-					            dataLabels: {
-					                enabled: true,
-					                connectorColor: '#fff',
-					                format: '<b>{point.name}</b><br>{point.y} Pc(s)<br>{point.percentage:.1f} %',
-					                style:{
-					                	fontSize:'13px'
-					                }
-					            },
-					            point: {
-					                events: {
-					                    click: function () {
-					                    }
-					                }
-					            },
-					            cursor: 'pointer',
-					            borderWidth: 2,
-					            animation:false
-					        }
-					    },credits: {
+						credits: {
 							enabled: false
 						},
-					    series: [{
-					        name: 'Qty Material',
-					        colorByPoint: true,
-					        data: [{
-					            name: 'OK',
-					            y: ok,
-					            sliced: true,
-					            selected: true,
-					            colorByPoint: false,
-								color: '#8ae379',
-					        }, {
-					            name: 'NG',
-					            y: ng,
-					            colorByPoint: false,
-								color: '#ff3333',
-					        } ]
-					    }],
-					    responsive: {
-					        rules: [{
-					            condition: {
-					                maxWidth: 500
-					            },
-					            chartOptions: {
-					                plotOptions: {
-					                    series: {
-					                        dataLabels: {
-					                            format: '<b>{point.name}</b>'
-					                        }
-					                    }
-					                }
-					            }
-					        }]
-					    }
+						xAxis: {
+							tickInterval: 1,
+							gridLineWidth: 1,
+							gridLineColor: 'white',
+							categories: categories,
+							crosshair: true,
+							labels:{
+								style:{
+									color: 'white',
+									fontWeight:'bold',
+									fontSize:'20px'
+								}
+							}
+						},
+						yAxis: [{
+							title: {
+								text: ''
+							},
+							gridLineColor: 'white',
+							gridLineWidth: 0,
+							labels:{
+								style:{
+									fontSize:'20px'
+								}
+							}
+						}],
+						legend: {
+							enabled: false,
+							borderWidth: 1
+						},
+						tooltip: {
+							headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+							pointFormat: '<tr><td style="color:white;padding:0;font-size: 16px;font-weight:bold;">{series.name} :  </td>' +
+							'<td style="padding:0;font-size:16px;"><b>{point.y:.1f} %</b></td></tr>',
+							footerFormat: '</table>',
+							shared: true,
+							useHTML: true
+						},
+						plotOptions: {
+							column: {
+								pointPadding: 0.93,
+								groupPadding: 0.93,
+								borderWidth: 0.8,
+								edgeColor: '#212121',
+								// cursor: 'pointer',
+								point: {
+									events: {
+										click: function () {
+											modalChartProgress(this.category);
+										}
+									}
+								}
+							},
+							series: {
+								borderWidth: 0,
+								// cursor: 'pointer',
+				                point: {
+				                  events: {
+				                    click: function () {
+				                    	showModalDetail(this.category);
+				                    }
+				                  }
+				                },
+				                dataLabels: {
+									enabled: true,
+									format: '{point.y} %',
+									style:{
+										fontSize: '30px'
+									},
+									inside:true
+								},
+								animation: false,
+								pointPadding: 0.93,
+								groupPadding: 0.93,
+								// cursor: 'pointer',
+							}
+						},
+						series: [{
+							name: 'Ratio NG',
+							type: 'column',
+							stack: 'NG',
+							data: ng,
+							color: '#e3942d'
+						}]
 					});
+
+
+					// Highcharts.chart('container2', {
+					//     chart: {
+					//         zoomType: 'xy'
+					//     },
+					//     title: {
+					//         text: 'Top 5 Worst Material',
+					//         style:{
+					//         	fontWeight:'bold'
+					//         }
+					//     },
+					//     subtitle: {
+					//         text: result.firstMonthTitle+' - '+result.lastMonthTitle
+					//     },
+					//     xAxis: [{
+					//         categories: categories,
+					//         crosshair: true
+					//     }],
+					//     yAxis: [{ 
+					//         labels: {
+					//             format: '{value}%',
+					//             style: {
+					//                 color: '#fff'
+					//             }
+					//         },
+					//         title: {
+					//             text: 'NG Rate',
+					//             style: {
+					//                 color: '#fff'
+					//             }
+					//         }
+					//     },],
+					//     tooltip: {
+					//         shared: true,
+					//     },
+					//     legend: {
+					//         enabled:true
+					//     },
+					//     credits: {
+					// 	     enabled: false
+					// 	},
+					//     plotOptions: {
+					// 		series:{
+					// 			cursor: 'pointer',
+				 //                point: {
+				 //                  events: {
+				 //                    click: function () {
+				 //                    	showModalDetail(this.category);
+				 //                    }
+				 //                  }
+				 //                },
+					// 			dataLabels: {
+					// 				enabled: true,
+					// 				format: '{point.y} %',
+					// 				style:{
+					// 					fontSize: '13px'
+					// 				}
+					// 			},
+					// 			animation: false,
+					// 			pointPadding: 0.93,
+					// 			groupPadding: 0.93,
+					// 			cursor: 'pointer',
+					// 		}
+					// 	},
+					//     series: [
+					//     {
+					//         name: 'NG Rate',
+					//         type: 'column',
+					//         data: ng,
+					//         color: '#802626'
+
+					//     }]
+					// });
 				}
 			}
 		});
@@ -494,12 +614,16 @@
 					$.each(result.details, function(key,value){
 						bodyDetail += '<tr>';
 						bodyDetail += '<td>'+value.created+'</td>';
+						bodyDetail += '<td>'+value.serial_number+'</td>';
 						bodyDetail += '<td>'+value.material_number+' - '+value.material_description+'</td>';
-						bodyDetail += '<td style="text-align:right">'+value.qty_check+'</td>';
+						bodyDetail += '<td>'+value.hpl+'</td>';
+						bodyDetail += '<td>'+value.qty_check+'</td>';
+						bodyDetail += '<td>'+value.total_ok+'</td>';
+						bodyDetail += '<td>'+value.total_ng+'</td>';
+						bodyDetail += '<td>'+value.ng_ratio+'</td>';
 						bodyDetail += '<td>'+value.ng_name+'</td>';
-						bodyDetail += '<td style="text-align:right">'+value.qty_ng+'</td>';
-						bodyDetail += '<td>'+value.status_ng+'</td>';
-						bodyDetail += '<td>'+(value.note_ng || "")+'</td>';
+						bodyDetail += '<td>'+value.ng_qty+'</td>';
+						bodyDetail += '<td>'+value.inspector+'</td>';
 						bodyDetail += '</tr>';
 					});
 

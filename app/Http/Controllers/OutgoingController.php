@@ -1275,7 +1275,7 @@ class OutgoingController extends Controller
 		$page = 'Production Check KBI';
 		$title_jp = '';
 
-		$ng_lists = DB::SELECT("select * from ng_lists where ng_lists.location = 'outgoing' and remark = 'kbi'");
+		$ng_lists = DB::SELECT("select * from ng_lists where ng_lists.location = 'outgoing' and remark = 'kbi' order by ng_name");
 
 		$materials = QaMaterial::where('vendor_shortname','KYORAKU')->get();
 
@@ -2669,10 +2669,32 @@ class OutgoingController extends Controller
 					AND DATE_FORMAT( created_at, '%Y-%m' ) <= ".$last."
 				AND vendor = '".$vendor_shortname."' ".$materialin." 
 				) a");
+
+			$top_5 = DB::connection('ympimis')->select("SELECT
+				material_number,
+				material_description,
+				sum( qty_check ) AS qty_check,
+				sum( qty_ng ) AS qty_ng,
+				(
+				sum( qty_ng )/ sum( qty_check ))* 100 AS ratio,
+				GROUP_CONCAT( ng_name ) 
+			FROM
+				qa_incoming_ng_logs 
+			WHERE
+				material_description IS NOT NULL 
+				AND DATE_FORMAT( created_at, '%Y-%m' ) >= ".$first."
+				AND DATE_FORMAT( created_at, '%Y-%m' ) <= ".$last."
+				AND vendor = '".$vendor_shortname."' ".$materialin." 
+			GROUP BY
+				material_number,
+				material_description 
+			ORDER BY
+				ratio DESC");
 			$response = array(
 		        'status' => true,
 		        'material_defect' => $material_defect,
 		        'material_status' => $material_status,
+		        'top_5' => $top_5,
 		        'firstMonthTitle' => $firstMonthTitle,
 		        'lastMonthTitle' => $lastMonthTitle,
 		    );
