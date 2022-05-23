@@ -429,7 +429,7 @@
 		$('#ng_ratio').val('0');
 		// $('#target').html('');
 		// $('#sisa_target').html('');
-		$('#serial_number').html('');
+		// $('#serial_number').html('');
 		var jumlah_ng = '{{$nomor+1}}';
 		for (var i = 1; i <= jumlah_ng; i++ ) {
 			// for (var j = 0; j < ng_name.length; j++ ) {
