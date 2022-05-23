@@ -20,7 +20,7 @@
                         <h4 class="card-title"><span style="font-size: 20px; color: #0e691e;"><i class="fa fa-angle-double-down"></i> Process <i class="fa fa-angle-double-down"></i></span></h4>
                         <div class="text-end">
                             <?php if (Auth::user()->role_code == 'TRUE' || Auth::user()->role_code == 'MIS'): ?>
-                                <a href="{{ url('/index/outgoing/true/input') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: #0e691e;background-color: white;color: #094a05">Input Vendor Final Inspection PT. TRUE</a>
+                                <a href="{{ url('/index/outgoing/true/input') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: #0e691e;background-color: white;color: #094a05">Input VFI PT. TRUE</a>
                             <?php endif ?>
                             <?php if (Auth::user()->role_code == 'MIS' || Auth::user()->role_code == 'E - Purchasing'): ?>
                                 <a href="{{ url('/index/serial_number/true') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: #0e691e;background-color: white;color: #094a05">Upload Serial Number PT. TRUE</a>
@@ -33,6 +33,9 @@
                                 <a href="{{ url('/index/serial_number/kbi') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: #0e691e;background-color: white;color: #094a05">Upload Serial Number PT. KBI</a>
                                 <a href="{{ url('/index/kensa/kbi') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: #0e691e;background-color: white;color: #094a05">Production Check KBI</a>
                                 <!-- <a href="{{ url('/index/outgoing/arisa/input') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: green;background-color: green">QC Final Check ARISA</a> -->
+                            <?php endif ?>
+                            <?php if (Auth::user()->role_code == 'CRESTEC' || Auth::user()->role_code == 'MIS'): ?>
+                                <a href="{{ url('/index/outgoing/crestec/input') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: #0e691e;background-color: white;color: #094a05">Input VFI PT. CRESTEC INDONESIA</a>
                             <?php endif ?>
                         </div>
                     </div>
@@ -57,6 +60,10 @@
                                 <a href="{{ url('/index/outgoing/ng_rate/kbi') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: #e61010;background-color: #fff;color: #4a0505 ">Production NG Rate KBI</a>
                                 <a href="{{ url('/index/outgoing/pareto/kbi') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: #e61010;background-color: #fff;color: #4a0505 ">Production Pareto KBI</a>
                             <?php endif ?>
+                            <?php if (Auth::user()->role_code == 'CRESTEC' || Auth::user()->role_code == 'MIS' || Auth::user()->role_code == 'E - Purchasing'): ?>
+                                <a href="{{ url('/index/outgoing/ng_rate/crestec') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: #e61010;background-color: #fff;color: #4a0505 ">Production NG Rate PT. CRESTEC INDONESIA</a>
+                                <a href="{{ url('/index/outgoing/pareto/crestec') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: #e61010;background-color: #fff;color: #4a0505 ">Production Pareto PT. CRESTEC INDONESIA</a>
+                            <?php endif ?>
                         </div>
                         <br>
                         <br>
@@ -74,6 +81,10 @@
                                 <a href="{{ url('/index/incoming/pareto/kbi') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: white;color: #4a085e">Pareto Incoming Check PT. KBI</a>
                                 <a href="{{ url('/index/incoming/ng_rate/kbi') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: white;color: #4a085e">NG Rate Incoming Check PT. KBI</a>
                                 <!-- <a href="{{ url('/index/outgoing/arisa/report') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: purple">Report QC Final ARISA</a> -->
+                            <?php endif ?>
+                            <?php if (Auth::user()->role_code == 'CRESTEC' || Auth::user()->role_code == 'MIS' || Auth::user()->role_code == 'E - Purchasing'): ?>
+                                <a href="{{ url('/index/incoming/pareto/crestec') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: white;color: #4a085e">Pareto Incoming Check PT. CRESTEC</a>
+                                <a href="{{ url('/index/incoming/ng_rate/crestec') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: white;color: #4a085e">NG Rate Incoming Check PT. CRESTEC</a>
                             <?php endif ?>
                         </div>
                     </div>
@@ -96,6 +107,9 @@
                                 <a href="{{ url('/index/kensa/kbi/report') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: white;color: #4a085e">Report Production Check KBI</a>
                                 <!-- <a href="{{ url('/index/outgoing/arisa/report') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: purple">Report QC Final ARISA</a> -->
                             <?php endif ?>
+                            <?php if (Auth::user()->role_code == 'CRESTEC' || Auth::user()->role_code == 'MIS' || Auth::user()->role_code == 'E - Purchasing'): ?>
+                                <a href="{{ url('/index/kensa/crestec/report') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: white;color: #4a085e">Report Production Check PT. CRESTEC</a>
+                            <?php endif ?>
                         </div>
                         <br>
                         <br>
@@ -111,6 +125,9 @@
                             <?php if (Auth::user()->role_code == 'KBI' || Auth::user()->role_code == 'MIS' || Auth::user()->role_code == 'E - Purchasing'): ?>
                                 <a href="{{ url('/index/incoming/kbi/report') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: white;color: #4a085e">Report Incoming Check KBI</a>
                                 <!-- <a href="{{ url('/index/outgoing/arisa/report') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: purple">Report QC Final ARISA</a> -->
+                            <?php endif ?>
+                            <?php if (Auth::user()->role_code == 'CRESTEC' || Auth::user()->role_code == 'MIS' || Auth::user()->role_code == 'E - Purchasing'): ?>
+                                <a href="{{ url('/index/incoming/crestec/report') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: white;color: #4a085e">Report Incoming Check PT. CRESTEC INDONESIA</a>
                             <?php endif ?>
                         </div>
                     </div>

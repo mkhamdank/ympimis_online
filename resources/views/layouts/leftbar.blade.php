@@ -37,29 +37,6 @@
                 </li>
                 @endif
 
-                @if(in_array('S0', $navs))
-                @if(Auth::user()->role_code == 'MIS' || Auth::user()->role_code == 'E - Purchasing')
-                @if(isset($page) && $page == "Outgoing True")<li class="sidebar-item active">@else<li class="sidebar-item">@endif
-                  <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ url('/index/outgoing/true') }}"><i class="fa fa-book"></i> <span class="hide-menu">Vendor Final Inspection</span></a>
-                </li>
-                @endif
-                @if(Auth::user()->role_code == 'TRUE' || Auth::user()->role_code == 'MIS')
-                @if(isset($page) && $page == "Outgoing True")<li class="sidebar-item active">@else<li class="sidebar-item">@endif
-                  <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ url('/index/outgoing/true') }}"><i class="fa fa-book"></i> <span class="hide-menu">VFI PT. TRUE</span></a>
-                </li>
-                @endif
-                @if(Auth::user()->role_code == 'KBI' || Auth::user()->role_code == 'MIS')
-                @if(isset($page) && $page == "Outgoing KBI")<li class="sidebar-item active">@else<li class="sidebar-item">@endif
-                  <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ url('/index/outgoing/kbi') }}"><i class="fa fa-book"></i> <span class="hide-menu">VFI KBI</span></a>
-                </li>
-                @endif
-                @if(Auth::user()->role_code == 'ARISA' || Auth::user()->role_code == 'MIS')
-                @if(isset($page) && $page == "Outgoing ARISA")<li class="sidebar-item active">@else<li class="sidebar-item">@endif
-                  <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ url('/index/outgoing/arisa') }}"><i class="fa fa-book"></i> <span class="hide-menu">VFI ARISA</span></a>
-                </li>
-                @endif
-                @endif
-
                 @if(in_array('S1', $navs))
                 
                 @if(isset($page) && $page == "Invoice Data")<li class="sidebar-item active">@else<li class="sidebar-item">@endif
@@ -96,6 +73,36 @@
                 </li>
 
                 @endif
+
+                @if(in_array('S0', $navs))
+                @if(Auth::user()->role_code == 'MIS' || Auth::user()->role_code == 'E - Purchasing')
+                @if(isset($page) && $page == "Outgoing True")<li class="sidebar-item active">@else<li class="sidebar-item">@endif
+                  <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ url('/index/outgoing/true') }}"><i class="fa fa-book"></i> <span class="hide-menu">Vendor Final Inspection</span></a>
+                </li>
+                @endif
+                @if(Auth::user()->role_code == 'TRUE' || Auth::user()->role_code == 'MIS')
+                @if(isset($page) && $page == "Outgoing True")<li class="sidebar-item active">@else<li class="sidebar-item">@endif
+                  <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ url('/index/outgoing/true') }}"><i class="fa fa-book"></i> <span class="hide-menu">VFI PT. TRUE</span></a>
+                </li>
+                @endif
+                @if(Auth::user()->role_code == 'KBI' || Auth::user()->role_code == 'MIS')
+                @if(isset($page) && $page == "Outgoing KBI")<li class="sidebar-item active">@else<li class="sidebar-item">@endif
+                  <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ url('/index/outgoing/kbi') }}"><i class="fa fa-book"></i> <span class="hide-menu">VFI KBI</span></a>
+                </li>
+                @endif
+                @if(Auth::user()->role_code == 'ARISA' || Auth::user()->role_code == 'MIS')
+                @if(isset($page) && $page == "Outgoing ARISA")<li class="sidebar-item active">@else<li class="sidebar-item">@endif
+                  <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ url('/index/outgoing/arisa') }}"><i class="fa fa-book"></i> <span class="hide-menu">VFI ARISA</span></a>
+                </li>
+                @endif
+                @if(Auth::user()->role_code == 'CRESTEC' || Auth::user()->role_code == 'MIS')
+                @if(isset($page) && $page == "Outgoing Crestec")<li class="sidebar-item active">@else<li class="sidebar-item">@endif
+                  <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ url('/index/outgoing/crestec') }}"><i class="fa fa-book"></i> <span class="hide-menu">VFI PT. CRESTEC INDONESIA</span></a>
+                </li>
+                @endif
+                @endif
+
+                
 
             </ul>
 

@@ -221,7 +221,6 @@ Route::group(['nav' => 'S0', 'middleware' => 'permission'], function(){
 	Route::get('fetch/kensa/kbi/report', 'OutgoingController@fetchReportKensaKbi');
 
 	//TRUE
-
 	Route::get('index/outgoing/true/input', 'OutgoingController@indexInputTrue');
 	Route::post('index/outgoing/true/confirm', 'OutgoingController@confirmInputTrue');
 	Route::get('fetch/outgoing/true/material', 'OutgoingController@fetchMaterialTrue');
@@ -241,6 +240,14 @@ Route::group(['nav' => 'S0', 'middleware' => 'permission'], function(){
 	Route::get('download/serial_number/true', 'OutgoingController@downloadSerialNumberTrue');
 	Route::get('update/serial_number/true', 'OutgoingController@updateSerialNumberTrue');
 	Route::get('delete/serial_number/true', 'OutgoingController@deleteSerialNumberTrue');
+
+	//CRESTEC
+	Route::get('index/outgoing/crestec/input', 'OutgoingController@indexInputCrestec');
+	Route::post('index/outgoing/crestec/confirm', 'OutgoingController@confirmInputCrestec');
+	Route::get('fetch/outgoing/crestec/material', 'OutgoingController@fetchMaterialCrestec');
+
+	Route::get('index/kensa/crestec/report', 'OutgoingController@indexReportKensaCrestec');
+	Route::get('fetch/kensa/crestec/report', 'OutgoingController@fetchReportKensaCrestec');
 });
 
 Route::get('index/outgoing/ng_rate/{vendor}', 'OutgoingController@indexNgRate');
