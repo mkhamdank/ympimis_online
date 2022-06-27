@@ -2560,6 +2560,15 @@ class OutgoingController extends Controller
 			$materials = QaMaterial::where('vendor_shortname','KYORAKU')->get();
 		}
 
+		if ($vendor == 'crestec') {
+			$title = 'Pareto Incoming Check PT. CRESTEC INDONESIA';
+			$page = 'Pareto Incoming Check PT. CRESTEC INDONESIA';
+			$title_jp = '';
+			$vendor_name = 'PT. CRESTEC INDONESIA';
+			$view = 'outgoing.crestec.incoming_pareto';
+			$materials = QaMaterial::where('vendor_shortname','CRESTEC')->get();
+		}
+
 		return view($view, array(
 			'title' => $title,
 			'title_jp' => $title_jp,
@@ -2579,6 +2588,9 @@ class OutgoingController extends Controller
 			}
 			if ($vendor == 'kbi') {
 				$vendor_shortname = 'KYORAKU BLOWMOLDING INDONESIA';
+			}
+			if ($vendor == 'crestec') {
+				$vendor_shortname = 'CRESTEC INDONESIA PT';
 			}
 
 			$first_month_ng = DB::SELECT("SELECT
@@ -2763,6 +2775,9 @@ class OutgoingController extends Controller
 			if ($vendor == 'kbi') {
 				$vendor_shortname = 'KYORAKU BLOWMOLDING INDONESIA';
 			}
+			if ($vendor == 'crestec') {
+				$vendor_shortname = 'CRESTEC INDONESIA PT';
+			}
 
 			$month_from = $request->get('month_from');
 	        $month_to = $request->get('month_to');
@@ -2862,6 +2877,15 @@ class OutgoingController extends Controller
 			$materials = QaMaterial::where('vendor_shortname','KBI')->get();
 		}
 
+		if ($vendor == 'crestec') {
+			$title = 'Incoming NG Rate PT. CRESTEC INDONESIA';
+			$page = 'Incoming NG Rate PT. CRESTEC INDONESIA';
+			$title_jp = '';
+			$vendor_name = 'PT. CRESTEC INDONESIA';
+			$view = 'outgoing.crestec.incoming_ng_rate';
+			$materials = QaMaterial::where('vendor_shortname','CRESTEC')->get();
+		}
+
 		return view($view, array(
 			'title' => $title,
 			'title_jp' => $title_jp,
@@ -2881,6 +2905,10 @@ class OutgoingController extends Controller
 			}
 			if ($vendor == 'kbi') {
 				$vendor_shortname = 'KYORAKU BLOWMOLDING INDONESIA';
+			}
+
+			if ($vendor == 'crestec') {
+				$vendor_shortname = 'CRESTEC INDONESIA PT';
 			}
 
 			$date_from = $request->get('date_from');
@@ -2968,6 +2996,9 @@ class OutgoingController extends Controller
 			}
 			if ($vendor == 'kbi') {
 				$vendor_shortname = 'KYORAKU BLOWMOLDING INDONESIA';
+			}
+			if ($vendor == 'crestec') {
+				$vendor_shortname = 'CRESTEC INDONESIA PT';
 			}
 
 	        $material = '';
