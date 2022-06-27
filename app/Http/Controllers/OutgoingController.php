@@ -201,6 +201,10 @@ class OutgoingController extends Controller
 			$title = 'Vendor Final Inspection - PT. CRESTEC INDONESIA';
 			$page = 'Vendor Final Inspection - CRESTEC INDONESIA';
 			$title_jp = '';
+		}else if ($vendor == 'lti') {
+			$title = 'Vendor Final Inspection - PT. LIMA TEKNO INDONESIA';
+			$page = 'Vendor Final Inspection - LTI';
+			$title_jp = '';
 		}
 
 		if (Auth::user()->role_code == strtoupper($vendor) || Auth::user()->role_code == 'MIS' || Auth::user()->role_code == 'E - Purchasing') {

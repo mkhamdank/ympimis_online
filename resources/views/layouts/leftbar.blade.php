@@ -85,6 +85,7 @@
                   <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ url('/index/outgoing/true') }}"><i class="fa fa-book"></i> <span class="hide-menu">VFI PT. TRUE</span></a>
                 </li>
                 @endif
+
                 @if(Auth::user()->role_code == 'KBI' || Auth::user()->role_code == 'MIS')
                 @if(isset($page) && $page == "Outgoing KBI")<li class="sidebar-item active">@else<li class="sidebar-item">@endif
                   <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ url('/index/outgoing/kbi') }}"><i class="fa fa-book"></i> <span class="hide-menu">VFI KBI</span></a>
@@ -101,8 +102,19 @@
                 </li>
                 @endif
                 @endif
+        @if(Auth::user()->role_code == 'LTI' || Auth::user()->role_code == 'MIS')
+        @if(isset($page) && $page == "Outgoing LTI")<li class="sidebar-item active">@else<li class="sidebar-item">@endif
+          <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ url('/index/outgoing/lti') }}"><i class="fa fa-book"></i> <span class="hide-menu">VFI PT. LTI</span></a>
+        </li>
+        @endif
 
                 
+        <!-- @if(Auth::user()->role_code == 'FA-Check1' || Auth::user()->role_code == 'MIS')
+        @if(isset($page) && $page == "Fixed Asset")<li class="sidebar-item active">@else<li class="sidebar-item">@endif
+          <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ url('/index/fixed_asset') }}"><i class="fa fa-cubes"></i> <span class="hide-menu">Fixed Asset</span></a>
+        </li>
+        @endif -->
+
 
             </ul>
 

@@ -37,6 +37,9 @@
                             <?php if (Auth::user()->role_code == 'CRESTEC' || Auth::user()->role_code == 'MIS'): ?>
                                 <a href="{{ url('/index/outgoing/crestec/input') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: #0e691e;background-color: white;color: #094a05">Input VFI PT. CRESTEC INDONESIA</a>
                             <?php endif ?>
+                            <?php if (Auth::user()->role_code == 'LTI' || Auth::user()->role_code == 'MIS'): ?>
+                                <a href="{{ url('/index/outgoing/lti/input') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: #0e691e;background-color: white;color: #094a05">Input VFI PT. LTI</a>
+                            <?php endif ?>
                         </div>
                     </div>
                 </div>
@@ -64,6 +67,10 @@
                                 <a href="{{ url('/index/outgoing/ng_rate/crestec') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: #e61010;background-color: #fff;color: #4a0505 ">Production NG Rate PT. CRESTEC INDONESIA</a>
                                 <a href="{{ url('/index/outgoing/pareto/crestec') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: #e61010;background-color: #fff;color: #4a0505 ">Production Pareto PT. CRESTEC INDONESIA</a>
                             <?php endif ?>
+                            <?php if (Auth::user()->role_code == 'LTI' || Auth::user()->role_code == 'MIS' || Auth::user()->role_code == 'E - Purchasing'): ?>
+                                <a href="{{ url('/index/outgoing/ng_rate/lti') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: #e61010;background-color: #fff;color: #4a0505 ">Production NG Rate PT. LTI</a>
+                                <a href="{{ url('/index/outgoing/pareto/lti') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: #e61010;background-color: #fff;color: #4a0505 ">Production Pareto PT. LTI</a>
+                            <?php endif ?>
                         </div>
                         <br>
                         <br>
@@ -83,8 +90,13 @@
                                 <!-- <a href="{{ url('/index/outgoing/arisa/report') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: purple">Report QC Final ARISA</a> -->
                             <?php endif ?>
                             <?php if (Auth::user()->role_code == 'CRESTEC' || Auth::user()->role_code == 'MIS' || Auth::user()->role_code == 'E - Purchasing'): ?>
-                                <a href="{{ url('/index/incoming/pareto/crestec') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: white;color: #4a085e">Pareto Incoming Check PT. CRESTEC</a>
-                                <a href="{{ url('/index/incoming/ng_rate/crestec') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: white;color: #4a085e">NG Rate Incoming Check PT. CRESTEC</a>
+                                <a href="{{ url('/index/incoming/pareto/crestec') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: white;color: #4a085e">Pareto Incoming Check PT. CRESTEC INDONESIA</a>
+                                <a href="{{ url('/index/incoming/ng_rate/crestec') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: white;color: #4a085e">NG Rate Incoming Check PT. CRESTEC INDONESIA</a>
+                            <?php endif ?>
+
+                            <?php if (Auth::user()->role_code == 'LTI' || Auth::user()->role_code == 'MIS' || Auth::user()->role_code == 'E - Purchasing'): ?>
+                                <a href="{{ url('/index/incoming/pareto/lti') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: white;color: #4a085e">Pareto Incoming Check PT. LTI</a>
+                                <a href="{{ url('/index/incoming/ng_rate/lti') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: white;color: #4a085e">NG Rate Incoming Check PT. LTI</a>
                             <?php endif ?>
                         </div>
                     </div>
@@ -110,6 +122,9 @@
                             <?php if (Auth::user()->role_code == 'CRESTEC' || Auth::user()->role_code == 'MIS' || Auth::user()->role_code == 'E - Purchasing'): ?>
                                 <a href="{{ url('/index/kensa/crestec/report') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: white;color: #4a085e">Report Production Check PT. CRESTEC</a>
                             <?php endif ?>
+                            <?php if (Auth::user()->role_code == 'LTI' || Auth::user()->role_code == 'MIS' || Auth::user()->role_code == 'E - Purchasing'): ?>
+                                <a href="{{ url('/index/kensa/lti/report') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: white;color: #4a085e">Report Production Check PT. LTI</a>
+                            <?php endif ?>
                         </div>
                         <br>
                         <br>
@@ -128,6 +143,9 @@
                             <?php endif ?>
                             <?php if (Auth::user()->role_code == 'CRESTEC' || Auth::user()->role_code == 'MIS' || Auth::user()->role_code == 'E - Purchasing'): ?>
                                 <a href="{{ url('/index/incoming/crestec/report') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: white;color: #4a085e">Report Incoming Check PT. CRESTEC INDONESIA</a>
+                            <?php endif ?>
+                            <?php if (Auth::user()->role_code == 'LTI' || Auth::user()->role_code == 'MIS' || Auth::user()->role_code == 'E - Purchasing'): ?>
+                                <a href="{{ url('/index/incoming/lti/report') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: white;color: #4a085e">Report Incoming Check PT. LTI</a>
                             <?php endif ?>
                         </div>
                     </div>
