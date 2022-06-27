@@ -248,6 +248,14 @@ Route::group(['nav' => 'S0', 'middleware' => 'permission'], function(){
 
 	Route::get('index/kensa/crestec/report', 'OutgoingController@indexReportKensaCrestec');
 	Route::get('fetch/kensa/crestec/report', 'OutgoingController@fetchReportKensaCrestec');
+
+	//LTI
+	Route::get('index/outgoing/lti/input', 'OutgoingController@indexInputLti');
+	Route::post('index/outgoing/lti/confirm', 'OutgoingController@confirmInputLti');
+	Route::get('fetch/outgoing/lti/material', 'OutgoingController@fetchMaterialLti');
+
+	Route::get('index/kensa/lti/report', 'OutgoingController@indexReportKensaLti');
+	Route::get('fetch/kensa/lti/report', 'OutgoingController@fetchReportKensaLti');
 });
 
 Route::get('index/outgoing/ng_rate/{vendor}', 'OutgoingController@indexNgRate');
