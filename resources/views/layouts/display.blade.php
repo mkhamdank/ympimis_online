@@ -74,7 +74,7 @@
           <div class="navbar-header" data-logobg="skin6" style="background-color: #0b76b5;">
               <a class="navbar-brand" href="{{url('')}}">
                   <b class="logo-icon" id="logo-icon" style="padding-left: 40px">
-                      <span class="logo-mini"><img src="{{ url("logo_yamaha_putih.png")}}" height="50px" id="logo-yamaha" style="margin-bottom: 0px;padding: 0px"></span>
+                      <span class="logo-mini"><img src="{{ url("mirai_2.jpg")}}" height="50px" id="logo-yamaha" style="margin-bottom: 0px;padding: 0px"></span>
                   </b>
               </a>
               <a class="nav-toggler waves-effect waves-light text-dark d-block d-md-none"

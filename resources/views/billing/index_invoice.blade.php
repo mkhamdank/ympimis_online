@@ -224,7 +224,7 @@
                     bodyTable += '<td>'+result.invoice[i].purchase_order+'</td>';
                     // bodyTable += '<td>'+result.invoice[i].note+'</td>';
                     bodyTable += '<td>'+result.invoice[i].currency+' '+parseInt(result.invoice[i].amount).toLocaleString('de-DE')+'</td>';
-                    bodyTable += '<td><a href="http://10.109.52.1:887/miraidev_online/public/files/invoice/'+result.invoice[i].file+'" target="_blank" class="fa fa-paperclip"></a></td>';
+                    bodyTable += '<td><a href="http://10.109.33.10/mirai_online/public/files/invoice/'+result.invoice[i].file+'" target="_blank" class="fa fa-paperclip"></a></td>';
                     bodyTable += '<td> <a href="../report/invoice/'+result.invoice[i].id+'" target="_blank" class="btn btn-danger btn-xs" style="margin-right:5px;color:white" data-toggle="tooltip" title="Report PDF"><i class="fa fa-file-pdf-o"></i></a></td>';
 
                     if ("{{ Auth::user()->role_code == 'E - Billing'}}") {
