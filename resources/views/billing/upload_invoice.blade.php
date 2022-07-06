@@ -124,16 +124,17 @@
                           <div class="form-group">
                               <label for="pic" class="col-md-12">PIC - Vendor</label>
                               <div class="col-md-12">
-                                  <input type="text" class="form-control ps-0 form-control-line" value="{{Auth::user()->name}} - {{Auth::user()->remark}} {{$user->supplier_name}}" disabled>
+                                 <!-- {{$user->supplier_name}} -->
+                                  <input type="text" class="form-control ps-0 form-control-line" value="{{Auth::user()->name}} - {{Auth::user()->company}}" disabled>
                                   <input type="hidden" id="pic" name="pic" value="{{Auth::user()->name}}">
                                   <input type="hidden" id="supplier_code" name="supplier_code" value="{{Auth::user()->remark}}">
-                                  <input type="hidden" id="supplier_name" name="supplier_name" value="{{$user->supplier_name}}">
+                                  <input type="hidden" id="supplier_name" name="supplier_name" value="{{Auth::user()->company}}">
                               </div>
                           </div>
                           <div class="form-group">
                               <label class="col-md-12 mb-0">Kwitansi</label>
                               <div class="col-md-12">
-                                  <input type="text" class="form-control ps-0 form-control-line" id="kwitansi" name="kwitansi" required="">
+                                  <input type="text" class="form-control ps-0 form-control-line" id="kwitansi" name="kwitansi">
                               </div>
                           </div>
                           <div class="form-group">
@@ -182,7 +183,7 @@
                           </div>
 
                           <div class="form-group">
-                              <label class="col-sm-12">Jumlah (DPP)</label>
+                              <label class="col-sm-12">Jumlah DPP (Dasar Pengenaan Pajak)</label>
                               <div class="col-md-12">
                                   <input type="text" class="form-control ps-0 form-control-line" id="amount" name="amount" required="" onchange="withPPN()">
                               </div>
@@ -263,7 +264,7 @@
     var amount = $('#amount').val();
     var amount_total = 0;
     if (returns == 'on') {  
-      amount_total = parseInt(amount) + parseInt(amount*0.1)
+      amount_total = parseInt(amount) + parseInt(amount*0.11)
     }
     else{
       amount_total = parseInt(amount);

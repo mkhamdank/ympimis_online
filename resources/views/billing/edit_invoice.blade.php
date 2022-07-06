@@ -182,7 +182,7 @@
                           </div>
 
                            <div class="form-group">
-                              <label class="col-sm-12">Jumlah (DPP)</label>
+                              <label class="col-sm-12">Jumlah DPP (Dasar Pengenaan Pajak)</label>
                               <div class="col-md-12">
                                   <input type="text" class="form-control ps-0 form-control-line" id="amount" name="amount" required="" onchange="withPPN()" value="{{$invoice->amount}}">
                               </div>
@@ -218,8 +218,8 @@
                               <div class="col-sm-12 d-flex">
                                   <input type="hidden" id="id_edit" name="id_edit" value="{{$invoice->id}}">
                                   <button class="btn btn-success mx-auto mx-md-0 text-white" type="submit">Submit Data</button>
-
-                                  <button class="btn btn-success mx-auto mx-md-0 text-white">Back</button>
+                                  &nbsp;
+                                  <button class="btn btn-danger mx-auto mx-md-0 text-white">Back</button>
                               </div>
                           </div>
                       </form>

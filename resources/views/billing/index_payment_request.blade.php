@@ -272,6 +272,7 @@
                             </div>
                             
                             <div class="col-md-2" style="padding:5px;">
+                                <input type="hidden" class="form-control" id="invoice_number1" name="invoice_number1" required="">
                                 <input type="text" class="form-control" id="amount1" name="amount1" required="">
                             </div>
 
@@ -491,7 +492,7 @@
             }else{
                 if (invoice_number[i].supplier_code == isi) {
                     supplier_name = invoice_number[i].supplier_name;;
-                    invoice_list += '<option value="'+invoice_number[i].tagihan+'">'+invoice_number[i].tagihan+'</option>';
+                    invoice_list += '<option value="'+invoice_number[i].id_tagihan+'">'+invoice_number[i].tagihan+'</option>';
                 }
 
             }
@@ -514,6 +515,7 @@
             success: function(data) {
                 var json = data,
                 obj = JSON.parse(json);
+                $('#invoice_number'+no).val(obj.invoice).attr('readonly', true);
                 $('#amount'+no).val(obj.amount).attr('readonly', true);
                 
                 var amount_ppn = 0;
@@ -663,6 +665,7 @@
             
             for (var i = 1; i < no; i++) {
                 formData.append('invoice'+i, $("#invoice"+i).val());
+                formData.append('invoice_number'+i, $("#invoice_number"+i).val());
                 formData.append('amount'+i, $("#amount"+i).val());
                 formData.append('ppn'+i, $("#ppn"+i).val());
                 formData.append('typepph'+i, $("#typepph"+i).val());
@@ -802,7 +805,7 @@
                         listTableBody += '<td style="width:0.1%;"><span class="label label-warning">Approval GM</span></td>';
                     }
                     else if (value.posisi == 'acc'){
-                        listTableBody += '<td style="width:0.1%;"><span class="label label-warning">Diverifikasi Accounting</span></td>';
+                        listTableBody += '<td style="width:0.1%;"><span class="label label-info">Diverifikasi Accounting</span></td>';
                     }
                     else{
                         listTableBody += '<td style="width:0.1%;"><span class="label label-success">Diterima Accounting</span></td>';
@@ -1010,8 +1013,8 @@
                         var tambah2 = "tambah2";
                         var lop2 = "lop2";
 
-                        isi = "<div class='col-md-2' style='padding:5px;'>  <input type='text' class='form-control' id='invoice"+value.id+"'' name='invoice"+value.id+"' value='"+value.invoice+"' readonly=''> </div>"; 
-                        isi += "<div class='col-md-2' style='padding:5px;'> <input type='text' class='form-control' id='amount"+value.id+"'' name='amount"+value.id+"'' required=''  value='"+value.amount+"' readonly></div>";
+                        isi = "<div class='col-md-2' style='padding:5px;'>  <input type='text' class='form-control' id='invoice"+value.id+"'' name='invoice"+value.id+"' value='"+value.id_invoice+"' readonly=''> </div>"; 
+                        isi += "<div class='col-md-2' style='padding:5px;'> <input type='hidden' class='form-control' id='invoice_number"+value.id+"'' name='invoice_number"+value.id+"' value='"+value.invoice+"' readonly=''> <input type='text' class='form-control' id='amount"+value.id+"'' name='amount"+value.id+"'' required=''  value='"+value.amount+"' readonly></div>";
                         isi += "<div class='col-md-1' style='padding:5px;'> <input type='text' class='form-control' id='ppn"+value.id+"'' name='ppn"+value.id+"'' value='"+value.ppn+"' readonly></div>";
                         isi += "<div class='col-md-1' style='padding:5px;'><input type='text' class='form-control' name='typepph"+value.id+"' id='typepph"+value.id+"' value='"+value.typepph+"' readonly=''></div>";
                         isi += "<div class='col-md-2' style='padding:5px;'> <input type='text' class='form-control' id='amount_jasa"+value.id+"' name='amount_jasa"+value.id+"' required='' value='"+value.amount_service+"' readonly=''> </div>";
@@ -1063,7 +1066,7 @@
             lop = "lop2";
         }
 
-        var divdata = $("<div id='"+no+"' class='col-md-12' style='margin-bottom : 5px;padding:0'><div class='row'><div class='col-md-2' style='padding:5px;'> <select class='form-control select3' data-placeholder='Choose Invoice' name='invoice"+no+"' id='invoice"+no+"' style='width: 100% height: 35px;' onchange='pilihInvoice(this)'> </select> </div><div class='col-md-2' style='padding:5px;'> <input type='text' class='form-control' id='amount"+no+"' name='amount"+no+"' required=''></div><div class='col-md-1' style='padding:5px;'> <input type='text' class='form-control' id='amountppn"+no+"' name='amountppn"+no+"'><input type='hidden' class='form-control' id='ppn"+no+"' name='ppn"+no+"'> </div><div class='col-md-1' style='padding:5px;'> <select class='form-control select3' data-placeholder='Choose Type PPH' name='typepph"+no+"' id='typepph"+no+"' style='width: 100% height: 35px;' onchange='pilihPPH(this)' required=''> <option value=''></option><option value='all'>All</option> <option value='partial'>Partial</option> <option value='none'>None</option> </select> </div><div class='col-md-2' style='padding:5px;'> <input type='text' class='form-control' id='amount_jasa"+no+"' name='amount_jasa"+no+"' required=''> </div><div class='col-md-1' style='padding:5px;'> <input type='text' class='form-control' id='pph"+no+"' name='pph"+no+"' onkeyup='getTotal(this.id)'> </div><div class='col-md-2' style='padding:5px;'> <input type='text' class='form-control' id='amount_final"+no+"' name='amount_final"+no+"' required=''> </div><div class='col-md-1' style='padding:5px;'>&nbsp;<button onclick='kurang(this,\""+lop+"\");' class='btn btn-danger'><i class='fa fa-close'></i> </button> <button type='button' onclick='tambah(\""+id+"\",\""+lop+"\"); ' class='btn btn-success'><i class='fa fa-plus' ></i></button></div></div></div>");
+        var divdata = $("<div id='"+no+"' class='col-md-12' style='margin-bottom : 5px;padding:0'><div class='row'><div class='col-md-2' style='padding:5px;'> <select class='form-control select3' data-placeholder='Choose Invoice' name='invoice"+no+"' id='invoice"+no+"' style='width: 100% height: 35px;' onchange='pilihInvoice(this)'> </select> </div><div class='col-md-2' style='padding:5px;'> <input type='text' class='form-control' id='amount"+no+"' name='amount"+no+"' required=''><input type='hidden' class='form-control' id='invoice_number"+no+"' name='invoice_number"+no+"' required=''></div><div class='col-md-1' style='padding:5px;'> <input type='text' class='form-control' id='amountppn"+no+"' name='amountppn"+no+"'><input type='hidden' class='form-control' id='ppn"+no+"' name='ppn"+no+"'> </div><div class='col-md-1' style='padding:5px;'> <select class='form-control select3' data-placeholder='Choose Type PPH' name='typepph"+no+"' id='typepph"+no+"' style='width: 100% height: 35px;' onchange='pilihPPH(this)' required=''> <option value=''></option><option value='all'>All</option> <option value='partial'>Partial</option> <option value='none'>None</option> </select> </div><div class='col-md-2' style='padding:5px;'> <input type='text' class='form-control' id='amount_jasa"+no+"' name='amount_jasa"+no+"' required=''> </div><div class='col-md-1' style='padding:5px;'> <input type='text' class='form-control' id='pph"+no+"' name='pph"+no+"' onkeyup='getTotal(this.id)'> </div><div class='col-md-2' style='padding:5px;'> <input type='text' class='form-control' id='amount_final"+no+"' name='amount_final"+no+"' required=''> </div><div class='col-md-1' style='padding:5px;'>&nbsp;<button onclick='kurang(this,\""+lop+"\");' class='btn btn-danger'><i class='fa fa-close'></i> </button> <button type='button' onclick='tambah(\""+id+"\",\""+lop+"\"); ' class='btn btn-success'><i class='fa fa-plus' ></i></button></div></div></div>");
 
 
         $("#"+id).append(divdata);
@@ -1099,6 +1102,7 @@
 
         $("#"+newid).attr("id",oldid);
         $("#invoice"+newid).attr("name","invoice"+oldid);
+        $("#invoice_number"+newid).attr("name","invoice_number"+oldid);
         $("#amount"+newid).attr("name","amount"+oldid);
         $("#amountppn"+newid).attr("name","amountppn"+oldid);
         $("#ppn"+newid).attr("name","ppn"+oldid);
@@ -1108,6 +1112,7 @@
         $("#amount_final"+newid).attr("name","amount_final"+oldid);   
 
         $("#invoice"+newid).attr("id","invoice"+oldid);
+        $("#invoice_number"+newid).attr("id","invoice_number"+oldid);
         $("#amount"+newid).attr("id","amount"+oldid);
         $("#amountppn"+newid).attr("id","amountppn"+oldid);
         $("#ppn"+newid).attr("id","ppn"+oldid);
@@ -1124,6 +1129,7 @@
             var oldid = newid - 1;
             $("#"+newid).attr("id",oldid);
             $("#invoice"+newid).attr("name","invoice"+oldid);
+            $("#invoice_number"+newid).attr("name","invoice_number"+oldid);
             $("#amount"+newid).attr("name","amount"+oldid);
             $("#amountppn"+newid).attr("name","amountppn"+oldid);
             $("#ppn"+newid).attr("name","ppn"+oldid);
@@ -1133,6 +1139,7 @@
             $("#amount_final"+newid).attr("name","amount_final"+oldid);  
 
             $("#invoice"+newid).attr("id","invoice"+oldid);
+            $("#invoice_number"+newid).attr("id","invoice_number"+oldid);
             $("#amount"+newid).attr("id","amount"+oldid);
             $("#amountppn"+newid).attr("id","amountppn"+oldid);
             $("#ppn"+newid).attr("id","ppn"+oldid);

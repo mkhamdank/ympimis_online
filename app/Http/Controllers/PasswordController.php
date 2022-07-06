@@ -63,34 +63,50 @@ class PasswordController extends Controller
     {
     	$password = $request->get('password');
     	$password_confirm = $request->get('password_confirm');
+
     	if ($password == $password_confirm) {
     		$cek = User::where('username',$request->get('username'))->first();
     		if (count($cek) == 0) {
-    			$live_cooking = User::create(
+    			$users = User::create(
 					[
 						'name' => $request->get('full_name'),
 						'username' => $request->get('username'),
 						'email' => $request->get('email'),
 						'password' => Hash::make($request->get('password')),
-						'role_code' => 'vendor',
+						'company' => $request->get('company'),
+						'role_code' => '',
+						'status' => 'Unconfirmed',
+						'avatar' => 'image-user.png',
 						'created_by' => 1
 					]
 				);
-				$live_cooking->save();
-				$full_name = $request->get('full_name');
-				$mail_to = $request->get('email');
-		    	$contactList = [];
-		        $contactList[0] = 'mokhamad.khamdan.khabibi@music.yamaha.com';
-		        $contactList[1] = 'rio.irvansyah@music.yamaha.com';
-		    	Mail::to($mail_to)->bcc($contactList,'BCC')->send(new SendEmail($full_name, 'register'));
-	    		return redirect('')->with('success','Your account has been created.');
+				$users->save();
+
+				$to = [
+					'erlangga.kharisma@music.yamaha.com',
+					'shega.erik.wicaksono@music.yamaha.com',
+					'amelia.novrinta@music.yamaha.com',
+					'bakhtiar.muslim@music.yamaha.com'
+				];
+
+				Mail::to($to)->bcc(['mokhamad.khamdan.khabibi@music.yamaha.com','rio.irvansyah@music.yamaha.com'])->send(new SendEmail($users, 'register'));
+
+	    		return redirect('')->with('success','Your account has been created. Please Wait For the Confirmation');
     		}else{
     			return back()->with('error', "This credentials already exists.");
     		}
+    	
     	}else{
     		return back()->with('error', "Password doesn't match.");
     	}
     }
+
+	// $full_name = $request->get('full_name');
+	// $mail_to = $request->get('email');
+	// $contactList = [];
+ //    $contactList[0] = 'mokhamad.khamdan.khabibi@music.yamaha.com';
+ //    $contactList[1] = 'rio.irvansyah@music.yamaha.com';
+	// Mail::to($mail_to)->bcc($contactList,'BCC')->send(new SendEmail($full_name, 'register'));
 
     public function terms()
     {

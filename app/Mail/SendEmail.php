@@ -38,7 +38,11 @@ class SendEmail extends Mailable
         }
 
         if($this->remark == 'register'){
-            return $this->from('mis@ympi.co.id', 'PT. Yamaha Musical Products Indonesia')->subject('Register Information (登録情報)')->view('mails.register');
+            return $this->from('mis@ympi.co.id', 'PT. Yamaha Musical Products Indonesia')->subject('Register Vendor Information (登録情報)')->view('mails.register');
+        }
+
+        if($this->remark == 'register_confirmation'){
+            return $this->from('mis@ympi.co.id', 'PT. Yamaha Musical Products Indonesia')->subject('YMPI Register Confirmation')->view('mails.register_confirmation');
         }
 
         if($this->remark == 'change_password'){

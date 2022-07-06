@@ -159,8 +159,83 @@
             <div class="col-sm-12">
                 <div id="container" style="width: 100%"></div>
             </div>
+
+            @elseif (Auth::user()->role_code == "E - Purchasing")
+
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body" style="background-color:#dd4b39">
+                        <h4 class="card-title" style="color:#fff">Invoice Belum Cek</h4>
+                        <div class="text-end" style="color:#fff">
+                            <h2 class="font-light mb-0" id="pch_not_check">
+                                <i class="ti-arrow-up text-success" ></i> 
+                                0 Tagihan
+                            </h2>
+                            <i class="fa fa-close" style="font-size:24px"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body" style="background-color:#f9a825">
+                        <h4 class="card-title" style="color:#fff">Invoice Belum Payment Request</h4>
+                        <div class="text-end" style="color:#fff">
+                            <h2 class="font-light mb-0" id="pch_not_payment">
+                                <i class="ti-arrow-up text-success"></i> 
+                                0 Tagihan
+                            </h2>
+                            <i class="fa fa-clock-o" style="font-size:24px"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="col-sm-12">
+                <div id="container_pch" style="width: 100%"></div>
+            </div>
+            
+            @elseif (Auth::user()->role_code == "E - Accounting")
+
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body" style="background-color:#dd4b39">
+                        <h4 class="card-title" style="color:#fff">Invoice Need Check</h4>
+                        <div class="text-end" style="color:#fff">
+                            <h2 class="font-light mb-0" id="acc_not_check">
+                                <i class="ti-arrow-up text-success" ></i> 
+                                0 Tagihan
+                            </h2>
+                            <i class="fa fa-close" style="font-size:24px"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body" style="background-color:#f9a825">
+                        <h4 class="card-title" style="color:#fff">Invoice Need Payment</h4>
+                        <div class="text-end" style="color:#fff">
+                            <h2 class="font-light mb-0" id="acc_not_payment">
+                                <i class="ti-arrow-up text-success"></i> 
+                                0 Tagihan
+                            </h2>
+                            <i class="fa fa-clock-o" style="font-size:24px"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="col-sm-12">
+                <div id="container_acc" style="width: 100%"></div>
+            </div>
             
             @endif
+
         </div>
     </div>
 @stop
@@ -192,6 +267,14 @@
         if (user == 'MIS' || user == 'E - Billing'){
             // fetchTable();
             drawChart();
+        }
+
+        if (user == 'E - Purchasing'){
+            drawChartPch();
+        }
+
+        if (user == 'E - Accounting'){
+            drawChartAcc();
         }
         
     });
@@ -309,6 +392,218 @@
                             name: 'Closed',
                             data: closed,
                             color : '#5cb85c'
+                        }
+                        ]
+                    })
+                } else{
+                    alert('Attempt to retrieve data failed');
+                }
+            }
+        })
+    }
+
+    function drawChartPch() {
+        $.get('{{ url("fetch/monitoring_pch/invoice") }}', function(result, status, xhr) {
+            if(xhr.status == 200){
+                if(result.status){
+                    var supplier = []
+                    , jumlah = []
+                    , invoice_open = []
+                    , invoice_not_payment = []
+                    , invoice_open_all = []
+                    , invoice_not_payment_all = [];
+
+                    $.each(result.datas, function(key, value) {
+                        if (value.invoice_open != "0" || value.invoice_not_payment != "0") {                        
+                            supplier.push(value.supplier_name);
+                            jumlah.push(parseInt(value.jumlah));
+                            invoice_open.push(parseInt(value.invoice_open));
+                            invoice_not_payment.push(parseInt(value.invoice_not_payment));
+                        }
+                    });
+
+                    $.each(result.data_outstanding, function(key, value) {
+                        invoice_open_all.push(parseInt(value.invoice_open));
+                        invoice_not_payment_all.push(parseInt(value.invoice_not_payment));
+
+                        $('#pch_not_check').html(invoice_open_all+" Tagihan");
+                        $('#pch_not_payment').html(invoice_not_payment_all+" Tagihan");
+                    });
+
+                    var date = new Date();
+
+                    $('#container_pch').highcharts({
+                        chart: {
+                            type: 'column',
+                            height : '250px'
+                        },
+                        title: {
+                            text: 'Data Outstanding Invoice By Vendor'
+                        },
+                        credits : {
+                            enabled:false
+                        },
+                        xAxis: {
+                            type: 'category',
+                            categories: supplier
+                        },
+                        yAxis: {
+                            min: 0,
+                            title: {
+                                text: 'Total Data Tagihan'
+                            },
+                            stackLabels: {
+                                enabled: true,
+                                style: {
+                                    fontWeight: 'bold',
+                            color: ( 
+                                Highcharts.defaultOptions.title.style &&
+                                Highcharts.defaultOptions.title.style.color
+                                ) || 'gray'
+                          }
+                        },
+                        tickInterval: 1
+                      },
+
+                      legend: {
+                        align: 'right',
+                        x: -30,
+                        verticalAlign: 'top',
+                        y: 25,
+                        floating: true,
+                        backgroundColor:
+                        Highcharts.defaultOptions.legend.backgroundColor || 'white',
+                        borderColor: '#CCC',
+                        borderWidth: 1,
+                        shadow: false,
+                        enabled:false
+                      },
+                      tooltip: {
+                        headerFormat: '<b>{point.x}</b><br/>',
+                        pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+                      },
+                      plotOptions: {
+                        column: {
+                            stacking: 'normal',
+                            dataLabels: {
+                                enabled: true
+                            }
+                        }
+                      },
+                        series: [{
+                            name: 'Invoice Not Checked',
+                            color: '#ff6666',
+                            data: invoice_open
+                        }, {
+                            name: 'Invoice Not Payment',
+                            data: invoice_not_payment,
+                            color : '#f0ad4e' 
+                        }
+                        ]
+                    })
+                } else{
+                    alert('Attempt to retrieve data failed');
+                }
+            }
+        })
+    }
+
+    function drawChartAcc() {
+        $.get('{{ url("fetch/monitoring_acc/invoice") }}', function(result, status, xhr) {
+            if(xhr.status == 200){
+                if(result.status){
+                    var supplier = []
+                    , jumlah = []
+                    , payment_invoice = []
+                    , payment_invoice_all = []
+                    , payment_jurnal = []
+                    , payment_jurnal_all = [];
+
+                    $.each(result.datas, function(key, value) {
+                        if (value.invoice_payment_acc != "0" || value.invoice_bank != "0") {                        
+                            supplier.push(value.supplier_name);
+                            jumlah.push(parseInt(value.jumlah));
+                            payment_invoice.push(parseInt(value.invoice_payment_acc));
+                            payment_jurnal.push(parseInt(value.invoice_bank));
+                        }
+                    });
+
+                    $.each(result.data_outstanding, function(key, value) {
+                        payment_invoice_all.push(parseInt(value.invoice_payment_acc));
+                        payment_jurnal_all.push(parseInt(value.invoice_bank));
+
+                        $('#acc_not_check').html(payment_invoice_all+" Tagihan");
+                        $('#acc_not_payment').html(payment_jurnal_all+" Tagihan");
+                    });
+
+                    var date = new Date();
+
+                    $('#container_acc').highcharts({
+                        chart: {
+                            type: 'column',
+                            height : '250px'
+                        },
+                        title: {
+                            text: 'Data Outstanding Invoice By Vendor'
+                        },
+                        credits : {
+                            enabled:false
+                        },
+                        xAxis: {
+                            type: 'category',
+                            categories: supplier
+                        },
+                        yAxis: {
+                            min: 0,
+                            title: {
+                                text: 'Total Data Tagihan'
+                            },
+                            stackLabels: {
+                                enabled: true,
+                                style: {
+                                    fontWeight: 'bold',
+                            color: ( 
+                                Highcharts.defaultOptions.title.style &&
+                                Highcharts.defaultOptions.title.style.color
+                                ) || 'gray'
+                          }
+                        },
+                        tickInterval: 1
+                      },
+
+                      legend: {
+                        align: 'right',
+                        x: -30,
+                        verticalAlign: 'top',
+                        y: 25,
+                        floating: true,
+                        backgroundColor:
+                        Highcharts.defaultOptions.legend.backgroundColor || 'white',
+                        borderColor: '#CCC',
+                        borderWidth: 1,
+                        shadow: false,
+                        enabled:false
+                      },
+                      tooltip: {
+                        headerFormat: '<b>{point.x}</b><br/>',
+                        pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+                      },
+                      plotOptions: {
+                        column: {
+                            stacking: 'normal',
+                            dataLabels: {
+                                enabled: true
+                            }
+                        }
+                      },
+                        series: [{
+                            name: 'Invoice Not Checked',
+                            color: '#ff6666',
+                            data: payment_invoice
+                        }, {
+                            name: 'Invoice Not Payment',
+                            data: payment_jurnal,
+                            color : '#f0ad4e' 
                         }
                         ]
                     })

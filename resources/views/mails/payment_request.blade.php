@@ -130,7 +130,7 @@
 				</tr>
 				<tr>
 					<td style="width: 25%;"><b>Due Date</b></td>
-					<td style="font-weight:bold">:<?= date('d-M-y', strtotime($data[0]->payment_due_date)) ?></td>
+					<td style="font-weight:bold">: <?= date('d-M-y', strtotime($data[0]->payment_due_date)) ?></td>
 				</tr>
 				<tr>
 					<td style="width: 25%; ">Attach Document</td>

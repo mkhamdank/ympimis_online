@@ -91,7 +91,7 @@ Route::get('/', function () {
 	if (Auth::check()) {
 		if (Auth::user()->role_code == 'emp-srv') {
 			// return redirect()->action('EmployeeController@indexEmployeeService', ['id' => 1]);
-			return \redirect()->route('emp_service', ['id' => 1, 'tahun' => date('Y')]);
+			// return \redirect()->route('emp_service', ['id' => 1, 'tahun' => date('Y')]);
 			// return redirect()->route('index/employee/service/{ctg}', ['ctg' => 'home']);
 		} else {
 			return view('home');
@@ -102,7 +102,7 @@ Route::get('/', function () {
 });
 
 Route::get('/forgot/password', function () {
-    return view('auth.passwords.email')->with('success');
+	return view('auth.passwords.email')->with('success');
 })->middleware('guest')->name('password.request');
 
 Route::post('request/reset/password', 'PasswordController@requestResetPassword');
@@ -113,7 +113,7 @@ Route::get('register', 'PasswordController@register');
 Route::post('register/confirm', 'PasswordController@confirmRegister');
 
 Route::get('404', function() {
-	return view('404');
+	// return view('404');
 });
 
 Route::get('terms', 'PasswordController@terms');
@@ -278,6 +278,21 @@ Route::get('index/incoming/ng_rate/{vendor}', 'OutgoingController@indexIncomingN
 Route::get('fetch/incoming/ng_rate/{vendor}', 'OutgoingController@fetchIncomingNgRate');
 Route::get('fetch/incoming/ng_rate/detail/{vendor}', 'OutgoingController@fetchIncomingNgRateDetail');
 
+
+//MASTER VENDOR, BANK, COST CENTER, GL ACCOUNT
+Route::get('index/vendor', 'AccountingController@indexVendor');
+Route::get('fetch/vendor', 'AccountingController@fetchVendor');
+
+Route::get('index/bank', 'AccountingController@indexBank');
+Route::get('fetch/bank', 'AccountingController@fetchBank');
+
+Route::get('index/gl_account', 'AccountingController@indexGLAccount');
+Route::get('fetch/gl_account', 'AccountingController@fetchGLAccount');
+
+Route::get('index/cost_center', 'AccountingController@indexCostCenter');
+Route::get('fetch/cost_center', 'AccountingController@fetchCostCenter');
+
+//INVOICE
 Route::get('index/invoice', 'AccountingController@indexInvoice');
 Route::get('fetch/invoice', 'AccountingController@fetchInvoice');
 Route::get('report/invoice/{id}', 'AccountingController@reportInvoice');
@@ -288,6 +303,11 @@ Route::group(['nav' => 'S1', 'middleware' => 'permission'], function(){
 	Route::get('fetch/monitoring/invoice', 'AccountingController@fetchInvoiceMonitoring');
 });
 
+
+Route::get('fetch/monitoring_pch/invoice', 'AccountingController@fetchInvoiceMonitoringPch');
+Route::get('fetch/monitoring_acc/invoice', 'AccountingController@fetchInvoiceMonitoringAcc');
+
+//PAYMENT REQUEST
 Route::get('index/payment_request', 'AccountingController@indexPaymentRequest');
 Route::get('fetch/payment_request', 'AccountingController@fetchPaymentRequest');
 Route::get('fetch/payment_request/list', 'AccountingController@fetchPaymentRequestList');
@@ -295,11 +315,20 @@ Route::get('fetch/payment_request/detail', 'AccountingController@fetchPaymentReq
 Route::get('report/payment_request/{id}', 'AccountingController@reportPaymentRequest');
 Route::get('email/payment_request', 'AccountingController@emailPaymentRequest');
 
+Route::get('index/payment_request/monitoring', 'AccountingController@indexPaymentRequestMonitoring');
+Route::get('fetch/payment_request/monitoring', 'AccountingController@fetchPaymentRequestMonitoring');
+Route::get('fetch/payment_request/table', 'AccountingController@fetchtableInv');
+
 //Approval Payment Request
 Route::get('payment_request/approvemanager/{id}', 'AccountingController@paymentapprovalmanager');
 Route::get('payment_request/approvegm/{id}', 'AccountingController@paymentapprovalgm');
 Route::get('payment_request/receiveacc/{id}', 'AccountingController@paymentreceiveacc');
 Route::get('payment_request/reject/{id}', 'AccountingController@paymentreject');
+
+
+Route::get('payment_request/verifikasi/{id}', 'AccountingController@verifikasi_payment_request');
+Route::post('payment_request/approval/{id}', 'AccountingController@approval_payment_request');
+Route::post('payment_request/notapprove/{id}', 'AccountingController@reject_payment_request');
 
 
 Route::group(['nav' => 'S2', 'middleware' => 'permission'], function(){
@@ -310,6 +339,11 @@ Route::group(['nav' => 'S2', 'middleware' => 'permission'], function(){
 	Route::post('edit/payment_request', 'AccountingController@editPaymentRequest');
 	Route::post('delete/payment_request', 'AccountingController@deletePaymentRequest');
 	Route::post('checked/invoice', 'AccountingController@checkInvoice');
+
+	Route::get('index/vendor/registration', 'AccountingController@indexVendorRegistration');
+	Route::get('fetch/vendor/registration', 'AccountingController@fetchVendorRegistration');
+	Route::post('approve/vendor/registration', 'AccountingController@approveVendorRegistration');
+	Route::post('delete/vendor/registration', 'AccountingController@deleteVendorRegistration');
 });
 
 Route::get('get_supplier', 'AccountingController@getSupplier');
@@ -317,8 +351,23 @@ Route::post('update/invoice', 'AccountingController@editInvoicePost');
 
 Route::group(['nav' => 'S3', 'middleware' => 'permission'], function(){
 	Route::get('index/accounting', 'AccountingController@indexAccounting');
+	Route::get('accounting/payment', 'AccountingController@indexAccountingPayment');
+	Route::get('fetch/accounting/payment', 'AccountingController@fetchAccountingPayment');
+	Route::get('fetch/accounting/payment/after', 'AccountingController@fetchAccountingPaymentAfter');
+	Route::post('post/accounting/payment', 'AccountingController@postAccountingPayment');
+	Route::get('accounting/jurnal', 'AccountingController@indexAccountingJurnal');
+	Route::get('fetch/accounting/jurnal', 'AccountingController@fetchJurnal');
+	Route::get('fetch/bank/data', 'AccountingController@getBank');
+	Route::get('fetch/bank/id_payment', 'AccountingController@getIDPayment');
+	Route::get('fetch/invoice/verification', 'AccountingController@fetchInvoiceVerification');
+	Route::get('fetch/jurnal_type', 'AccountingController@get_jurnal_type');
+	Route::get('fetch/gl_account/data', 'AccountingController@get_gl_account');
+	Route::get('fetch/cost_center/data', 'AccountingController@get_cost_center');
+	Route::post('create/jurnal', 'AccountingController@createJurnal');
+	Route::get('index/list_bank', 'AccountingController@indexReportJurnal');
+	Route::get('fetch/list_bank', 'AccountingController@fetchReportJurnal');;
+	Route::get('export/bank/list', 'AccountingController@exportJurnal');
 });
-
 
 Route::group(['nav' => 'S4', 'middleware' => 'permission'], function(){
 	Route::get('index/warehouse', 'AccountingController@indexWarehouse');
@@ -326,3 +375,21 @@ Route::group(['nav' => 'S4', 'middleware' => 'permission'], function(){
 
 Route::get('/home', ['middleware' => 'permission', 'nav' => 'Dashboard', 'uses' => 'HomeController@index'])->name('home');
 
+Route::get('pdf','TrialController@trialPdf');
+
+Route::group(['nav' => 'S5', 'middleware' => 'permission'], function(){
+	//ALL - FIXED ASSET
+	Route::get('index/fixed_asset', 'AccountingController@indexFixedAsset');
+	Route::get('fetch/fixed_asset/list', 'AccountingController@fetchFixedAsset');
+	Route::get('fetch/fixed_asset/audit/list', 'AccountingController@fetchAssetAuditList');
+	Route::get('index/check/fixed_asset/{check_num}/{section}/{location}/{period}', 'AccountingController@indexAssetCheck');
+	Route::get('fetch/fixed_asset/location/list', 'AccountingController@fetchAssetbyLocation');
+	Route::post('input/fixed_asset/check/temp', 'AccountingController@inputAssetCheckTemp');
+	Route::post('input/fixed_asset/check', 'AccountingController@inputAssetCheck');
+	Route::get('index/fixed_asset/auditor_audit/list', 'AccountingController@indexAssetAuditListAuditor');
+	Route::post('approval/fixed_asset/check', 'AccountingController@approvalFixedAsset');
+	Route::post('upload/fixed_asset/map', 'AccountingController@postAssetMap');
+	Route::post('pdf/fixed_asset_check/{location}/{period}', 'AccountingController@pdfFixedAsset');
+});
+
+Route::get('approval/fixed_asset/audit/approval/{location}/{period}/{stat}/{position}', 'GeneralController@approvalFixedAssetCheck');

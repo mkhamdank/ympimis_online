@@ -17,14 +17,18 @@
 <body>
 	<div>
 		<center>
-			<img src="data:image/png;base64,{{base64_encode(file_get_contents(public_path('mirai.jpg')))}}" alt=""><br>
-			<p style="font-size: 18px;">Vendor Registration Information (登録情報)</p>
-			This is an automatic notification. Please do not reply to this address.
+
+			<img style="width: 24px" src="data:image/png;base64,{{base64_encode(file_get_contents(public_path('yamaha_putih.png')))}}" alt=""><br><br>
+			<p style="font-size: 18px;">Vendor Registration Confirmation</p>
+			This is an automatic notification. Please do not reply to this address.<br><br>
+			<span style="font-weight: bold; color: green; font-size: 24px;">The Registration Has Been Confirmed by Purchasing Team YMPI</span>
+			<br><br>
+
 			<table style="border:1px solid black; border-collapse: collapse;" width="50%">
 				<thead>
 					<tr>
 						<th colspan="4" style="width: 1%; border:1px solid black;">
-							Register Information
+							Registration Confirmation
 						</th>
 					</tr>
 				</thead>
@@ -52,7 +56,8 @@
 				</tbody>
 			</table>
 			<br>
-			<a href="{{ url('index/vendor/registration') }}">&#10148; Click this link if you want to check vendor registration</a>
+			<a href="https://vendor.ympi.co.id">&#10148; Click this link if you want to login to our system.</a>
+
 		</center>
 	</div>
 </body>

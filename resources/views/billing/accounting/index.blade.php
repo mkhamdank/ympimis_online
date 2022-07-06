@@ -17,10 +17,16 @@
             <div class="col-sm-4 col-xs-6" style="text-align: center; padding: 5px">
                 <div class="card">
                     <div class="card-body" style="padding: 10px">
-                        <h4 class="card-title"><span style="font-size: 20px; color: purple;"><i class="fa fa-angle-double-down"></i> Master & Report <i class="fa fa-angle-double-down"></i></span></h4>
+                        <h4 class="card-title"><span style="font-size: 20px; color: purple;"><i class="fa fa-angle-double-down"></i> Master <i class="fa fa-angle-double-down"></i></span></h4>
                         <div class="text-end">
-                            <a href="{{ url('') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: white;color: #094a05">Vendor Data</a>
-                            <a href="{{ url('/index/outgoing/true/input') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: white;color: #094a05">All Invoice Data</a>
+                            <a href="{{ url('index/vendor') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: white;color: #094a05">Vendor</a>
+
+                            <a href="{{ url('index/bank') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: white;color: #094a05">Bank List</a>
+
+                            <a href="{{ url('index/gl_account') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: white;color: #094a05">GL Account</a>
+
+                            <a href="{{ url('index/cost_center') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: white;color: #094a05">Cost Center</a>
+
                         </div>
                     </div>
                 </div>
@@ -31,12 +37,27 @@
                     <div class="card-body" style="padding: 10px">
                         <h4 class="card-title"><span style="font-size: 20px; color: #0e691e;"><i class="fa fa-angle-double-down"></i> Process <i class="fa fa-angle-double-down"></i></span></h4>
                         <div class="text-end">
-                            <a href="{{ url('') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: #0e691e;background-color: white;color: #094a05">Check Invoice From Purchasing</a>
+                            <a href="{{ url('accounting/payment') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: #0e691e;background-color: white;color: #094a05">Check Payment Request From Purchasing</a>
+
+                            <a href="{{ url('accounting/jurnal') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: #0e691e;background-color: white;color: #094a05">Create Jurnal</a>
                         </div>
                     </div>
                 </div>
             </div>
 
+
+            <div class="col-sm-4 col-xs-6" style="text-align: center; padding: 5px">
+                <div class="card">
+                    <div class="card-body" style="padding: 10px">
+                        <h4 class="card-title"><span style="font-size: 20px; color: purple;"><i class="fa fa-angle-double-down"></i> Report <i class="fa fa-angle-double-down"></i></span></h4>
+                        <div class="text-end">
+                            <a href="{{ url('index/list_bank') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: white;color: #094a05">Maintain List Bank</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 
             <div class="col-sm-4 col-xs-6" style="text-align: center;padding: 5px">
                 <div class="card">
                     <div class="card-body" style="padding: 10px">
@@ -46,8 +67,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
-
+            </div> -->
 
         </div>
     </div>

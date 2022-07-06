@@ -104,18 +104,17 @@
             </span>
 
             @if (session('error'))
-                  <div class="alert alert-danger alert-dismissible">
-                      <h4 style="font-size: 15px;font-weight: bold;"> Error!</h4>
-                      <span style="font-size: 12px">{{ session('error') }}</span>
-                  </div>   
-              @endif
-              @if (session('success'))
-                  <div class="alert alert-success alert-dismissible">
-                      <h4 style="font-size: 15px;font-weight: bold;"> Success!</h4>
-                      <span style="font-size: 12px">{{ session('success') }}</span>
-                  </div>   
-              @endif
-
+              <div class="alert alert-danger alert-dismissible">
+                  <h4 style="font-size: 15px;font-weight: bold;"> Error!</h4>
+                  <span style="font-size: 12px">{{ session('error') }}</span>
+              </div>
+            @endif
+            @if (session('success'))
+              <div class="alert alert-success alert-dismissible">
+                  <h4 style="font-size: 15px;font-weight: bold;"> Success!</h4>
+                  <span style="font-size: 12px">{{ session('success') }}</span>
+              </div>  
+            @endif
 
             <div class="wrap-input100 validate-input"  style="padding-top:10px">
               <input autocomplete="off" type="text" class="input100" placeholder="Company" id="company" name="company" required autofocus>
@@ -135,7 +134,7 @@
             </div>
 
             <div class="wrap-input100 validate-input" >
-              <input autocomplete="off" type="text" class="input100" placeholder="Email" id="email" name="email" required autofocus>
+              <input autocomplete="off" type="email" class="input100" placeholder="Email" id="email" name="email" required autofocus>
               <span class="focus-input100"></span>
               <span class="symbol-input100">
                 <i class="fa fa-envelope" aria-hidden="true"></i>
@@ -168,7 +167,7 @@
 
             <div>
                 <label class="containers" onclick="register()"> Dengan menekan REGISTER, Anda menyetujui <a target="_blank" href="{{url('terms')}}">Syarat dan Ketentuan</a> serta <a target="_blank" href="{{url('policy')}}">Kebijakan dan Privasi</a> kami.
-                  <input type="checkbox" id="reg" name="reg">
+                  <input type="checkbox" id="reg" name="reg" required>
                   <span class="checkmark"></span>
                 </label>
               </div>

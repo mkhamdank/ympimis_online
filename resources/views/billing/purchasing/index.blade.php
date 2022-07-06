@@ -19,8 +19,9 @@
                     <div class="card-body" style="padding: 10px">
                         <h4 class="card-title"><span style="font-size: 20px; color: purple;"><i class="fa fa-angle-double-down"></i> Master & Report <i class="fa fa-angle-double-down"></i></span></h4>
                         <div class="text-end">
-                            <a href="{{ url('') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: white;color: #094a05">Vendor Data</a>
-                            <a href="{{ url('') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: white;color: #094a05">All Invoice Data</a>
+                            <a href="{{ url('index/vendor/registration') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: white;color: #094a05">Vendor Registration Data</a>
+                            <!-- <a href="{{ url('') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: white;color: #094a05">All Invoice Data</a> -->
+                            <a href="{{ url('index/vendor') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: purple;background-color: white;color: #094a05">Vendor Data</a>
                         </div>
                     </div>
                 </div>
@@ -43,7 +44,7 @@
                     <div class="card-body" style="padding: 10px">
                         <h4 class="card-title"><span style="font-size: 20px;color: #e61010"><i class="fa fa-angle-double-down"></i> Display <i class="fa fa-angle-double-down"></i></span></h4>
                         <div class="text-end">
-                            <a href="{{ url('') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: #e61010;background-color: #fff;color: #4a0505 ">Outstanding Invoice </a>
+                            <a href="{{ url('index/payment_request/monitoring') }}" class="btn btn-default btn-block" style="font-size: 17px; border-color: #e61010;background-color: #fff;color: #4a0505 ">Monitoring Payment Request</a>
                         </div>
                     </div>
                 </div>

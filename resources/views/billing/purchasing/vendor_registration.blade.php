@@ -5,11 +5,12 @@
 <link href="{{ url("css/dataTables.bootstrap4.min.css") }}" rel="stylesheet">
 <link rel="stylesheet" href="{{ url("css/buttons.dataTables.min.css")}}">
 <style type="text/css">
-    thead>tr>th {
+    thead>tr>th{
         text-align:center;
         overflow:hidden;
         color: white !important;
     }
+
     tbody>tr>td{
         text-align:center;
     }
@@ -62,9 +63,9 @@
             <div class="col-md-6 col-8 align-self-center">
                 <h3 class="page-title mb-0 p-0">{{$title}}<span class="text-purple"> {{$title_jp}}</span></h3>
             </div>
-            <div class="col-md-6 col-8 align-self-right" style="text-align: right;">
+            <!-- <div class="col-md-6 col-8 align-self-right" style="text-align: right;">
                 <a href="{{ url("/index/upload_invoice") }}" class="btn btn-primary"><i class="fa fa-upload"></i> <span class="hide-menu">Upload Invoice</span></a>
-            </div>
+            </div> -->
         </div>
     </div>
 @endsection
@@ -82,26 +83,18 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table user-table no-wrap" id="TableInvoice">
+                            <table class="table user-table no-wrap" id="TableUser">
                                 <thead>
                                     <tr>
-                                        <th style="background-color: #757ce8;">Tanggal</th>
                                         <th style="background-color: #757ce8;">Vendor</th>
-                                        <!-- <th style="background-color: #757ce8;">PIC</th> -->
-                                        <!-- <th style="background-color: #757ce8;">Kwitansi</th> -->
-                                        <th style="background-color: #757ce8;">Invoice</th>
-                                        <th style="background-color: #757ce8;">Surat Jalan</th>
-                                        <th style="background-color: #757ce8;">Faktur Pajak</th>
-                                        <th style="background-color: #757ce8;">Purchase Order</th>
-                                        <!-- <th style="background-color: #757ce8;">Note</th> -->
-                                        <!-- <th style="background-color: #757ce8;">Currency</th> -->
-                                        <th style="background-color: #757ce8;">Amount</th>
-                                        <th style="background-color: #757ce8;">File</th>
-                                        <th style="background-color: #757ce8;">TT</th>
+                                        <th style="background-color: #757ce8;">Name</th>
+                                        <th style="background-color: #757ce8;">Email</th>
+                                        <th style="background-color: #757ce8;">Username</th>
                                         <th style="background-color: #757ce8;">Status</th>
+                                        <th style="background-color: #757ce8;">Action</th>
                                     </tr>
                                 </thead>
-                               <tbody id="bodyTableInvoice">
+                               <tbody id="bodyTableUser">
                                     
                                 </tbody>
                             </table>
@@ -109,52 +102,61 @@
                     </div>
                 </div>
             </div>
-     </div>
+        </div>
+    </div>
 
- </div>
+    <div class="modal fade" id="modalcheck" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" onclick="modalcheckhide()">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel"></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="col-md-12" style="margin-bottom: 5px;">
+                        <label for="vendor_data" class="control-label">Vendor Name<span class="text-red">*</span></label>
 
+                        <select class="form-control select4" id="vendor_data" name="vendor_data" data-placeholder='Choose Supplier Name' style="width: 100%">
+                            <option value="">&nbsp;</option>
+                            @foreach($vendor as $ven)
+                            <option value="{{$ven->supplier_code}}_{{$ven->supplier_name}}">{{$ven->supplier_code}} - {{$ven->supplier_name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-12">
+                        Apakah anda ingin mengkonfirmasi vendor yang registrasi?                        
+                    </div>
 
-
- <div class="modal fade" id="modalcheck" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" onclick="modalcheckhide()">&times;</button>
-                <h4 class="modal-title" id="myModalLabel"></h4>
-            </div>
-            <div class="modal-body">
-                Apakah anda sudah mengecek tanda terima ini?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" onclick="modalcheckhide()">Cancel</button>
-                <a id="a" name="modalButtonCheck" type="button"  onclick="checked(this.id)" class="btn btn-success">Check</a>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" onclick="modalcheckhide()">Cancel</button>
+                    <a id="a" name="modalButtonCheck" type="button"  onclick="checked(this.id)" class="btn btn-success">Check</a>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-
- <div class="modal fade" id="modalreject" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" onclick="modalrejecthide()">&times;</button>
-                <h4 class="modal-title" id="myModalLabel"></h4>
-            </div>
-            <div class="modal-body">
-                Apakah anda yakin ingin menolak tanda terima Ini ?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" onclick="modalrejecthide()">Cancel</button>
-                <a id="a" name="modalButtonReject" type="button"  onclick="deletePR(this.id)" class="btn btn-danger">Delete</a>
+    <div class="modal fade" id="modalreject" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" onclick="modalrejecthide()">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel"></h4>
+                </div>
+                <div class="modal-body">
+                    Apakah anda yakin ingin menghapus user ini ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" onclick="modalrejecthide()">Cancel</button>
+                    <a id="a" name="modalButtonReject" type="button"  onclick="deleteUser(this.id)" class="btn btn-danger">Delete</a>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 @stop
 @section('scripts')
-<script src="{{ url("js/jquery-3.5.1.js") }}"></script>
+<!-- <script src="{{ url("js/jquery-3.5.1.js") }}"></script> -->
 <script src="<?php echo e(url("js/jquery.numpad.js")); ?>"></script>
 <script src="{{ url("js/jquery.gritter.min.js") }}"></script>
 <script src="{{ url("js/jquery.dataTables.min.js") }}"></script>
@@ -172,31 +174,31 @@
         headers: {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
-      });
-
+    });
 
     jQuery(document).ready(function() {
         fetchData();
-
-        // $("#main-wrapper").attr("data-sidebartype","mini-sidebar");
-        // document.getElementById("main-wrapper").setAttribute('data-sidebartype','mini-sidebar');
-        // document.getElementById("logo-yamaha").setAttribute('height','20px');
-        // document.getElementById("logo-yamaha").style.setProperty('height', '20px', 'important');
-        // document.getElementsByClassName('logo-icon')[0].style.setProperty('padding-left', '0px', 'important');
-        // document.getElementsByClassName('hide-menu')[0].style.setProperty('display', 'none', 'important');
-        // document.getElementsByClassName('sidebar-item active selected')[0].style.setProperty('width', '65px', 'important');
-     
     });
+
+    $('.select2').select2({
+        dropdownAutoWidth : true,
+        allowClear: true
+    });
+
+    $(function () {
+        $('.select4').select2({
+            allowClear:true,
+            dropdownAutoWidth : true,
+            // tags: true,
+            dropdownParent: $('#modalcheck')
+        });
+    })
 
     var audio_error = new Audio('{{ url("sounds/error.mp3") }}');
 
     function getFormattedDate(date) {
         var year = date.getFullYear();
-
-        var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-          "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-        ];
-
+        var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         var month = date.getMonth();
 
         var day = date.getDate().toString();
@@ -206,67 +208,30 @@
       }
 
     function fetchData() {
-        $.get('{{ url("fetch/invoice") }}',  function(result, status, xhr){
+        $.get('{{ url("fetch/vendor/registration") }}',  function(result, status, xhr){
             if(result.status){
-                $('#TableInvoice').DataTable().clear();
-                $('#TableInvoice').DataTable().destroy();
-                $("#bodyTableInvoice").html('');
+                $('#TableUser').DataTable().clear();
+                $('#TableUser').DataTable().destroy();
+                $("#bodyTableUser").html('');
                 var bodyTable = '';
-                for (var i = 0; i < result.invoice.length; i++) {
+                for (var i = 0; i < result.user.length; i++) {
                     bodyTable += '<tr>';
-                    bodyTable += '<td>'+getFormattedDate(new Date(result.invoice[i].tanggal))+'</td>';
-                    bodyTable += '<td>'+result.invoice[i].supplier_name+'</td>';
-                    // bodyTable += '<td>'+result.invoice[i].pic+'</td>';
-                    // bodyTable += '<td>'+result.invoice[i].kwitansi+'</td>';
-                    bodyTable += '<td>'+result.invoice[i].tagihan+'</td>';
-                    bodyTable += '<td>'+result.invoice[i].surat_jalan+'</td>';
-                    bodyTable += '<td>'+result.invoice[i].faktur_pajak+'</td>';
-                    bodyTable += '<td>'+result.invoice[i].purchase_order+'</td>';
-                    // bodyTable += '<td>'+result.invoice[i].note+'</td>';
-                    bodyTable += '<td>'+result.invoice[i].currency+' '+parseInt(result.invoice[i].amount).toLocaleString('de-DE')+'</td>';
-                    bodyTable += '<td><a href="http://10.109.52.1:887/miraidev_online/public/files/invoice/'+result.invoice[i].file+'" target="_blank" class="fa fa-paperclip"></a></td>';
-                    bodyTable += '<td> <a href="../report/invoice/'+result.invoice[i].id+'" target="_blank" class="btn btn-danger btn-xs" style="margin-right:5px;color:white" data-toggle="tooltip" title="Report PDF"><i class="fa fa-file-pdf-o"></i></a></td>';
-
-                    if ("{{ Auth::user()->role_code == 'E - Billing'}}") {
-
-                        if (result.invoice[i].status == "Open") {
-                            bodyTable += '<td><span class="label label-warning">Check By Purchasing</span></td>';
-                        }
-                        else if(result.invoice[i].status == "checked_pch"){
-                            bodyTable += '<td><span class="label label-success"><i class="fa fa-check"></i> Verified By Purchasing</span></td>';
-                        }
-                        else if(result.invoice[i].status == "Acc"){
-                            bodyTable += '<td><span class="label label-success">Process By Accounting</span></td>';
-                        }
-                        else if(result.invoice[i].status == "payment_pch"){
-                            bodyTable += '<td><span class="label label-primary"><i class="fa fa-check"></i> Payment Requested</span></td>';
-                        }
-                        else{
-                            bodyTable += '<td></td>';
-                        }
-                    }
-                    else if ("{{ Auth::user()->role_code == 'E - Purchasing'}}"){
-                        if (result.invoice[i].status == "Open") {
-                            bodyTable += '<td><a href="javascript:void(0)" class="btn btn-xs btn-success" onClick="check('+result.invoice[i].id+')" style="margin-right:5px;color:white" title="Check Tanda Terima"><i class="fa fa-check"></i></a> <a href="{{ url("edit/invoice") }}/'+result.invoice[i].id+'" class="btn btn-primary btn-xs" style="margin-right:5px;color:white" data-toggle="tooltip" title="Edit Tanda Terima"><i class="fa fa-pencil"></i></a> <a href="javascript:void(0)" class="btn btn-xs btn-danger" onClick="rejectConfirmation('+result.invoice[i].id+')" style="margin-right:5px;color:white" title="Reject Tanda Terima"><i class="fa fa-rotate-left"></i> Reject</a></td>';
-                        }
-                        else if(result.invoice[i].status == "checked_pch"){
-                            bodyTable += '<td><span class="label label-success"><i class="fa fa-check"></i> Confirmed</span></td>';
-                        }
-                        else if(result.invoice[i].status == "payment_pch"){
-                            bodyTable += '<td><span class="label label-primary"><i class="fa fa-check"></i> Payment Requested</span></td>';
-                        }
-                        else{
-                            bodyTable += '<td></td>';
-                        }
+                    bodyTable += '<td>'+result.user[i].company+'</td>';
+                    bodyTable += '<td>'+result.user[i].name+'</td>';
+                    bodyTable += '<td>'+result.user[i].email+'</td>';
+                    bodyTable += '<td>'+result.user[i].username+'</td>';
+                    if (result.user[i].status == "Unconfirmed") {
+                        bodyTable += '<td><span class="label label-danger">Unconfirmed</span></td>';
                     }
                     else{
                         bodyTable += '<td></td>';
                     }
+                    bodyTable += '<td><a href="javascript:void(0)" class="btn btn-xs btn-success" onClick="check('+result.user[i].id+')" style="margin-right:5px;color:white" title="Check Vendor Registration"><i class="fa fa-check"></i> Check</a> <a href="javascript:void(0)" class="btn btn-xs btn-danger" onClick="reject('+result.user[i].id+')" style="margin-right:5px;color:white" title="Reject Vendor Registration"><i class="fa fa-rotate-left"></i> Reject</a></td>';
                     bodyTable += '</tr>';
                 }
-                $('#bodyTableInvoice').append(bodyTable);
+                $('#bodyTableUser').append(bodyTable);
 
-                var table = $('#TableInvoice').DataTable({
+                var table = $('#TableUser').DataTable({
                     'dom': 'Bfrtip',
                     'responsive':true,
                     'lengthMenu': [
@@ -325,6 +290,8 @@
         });
     }
 
+
+
     function check(id) {
         $('#modalcheck').modal('show');
         $('[name=modalButtonCheck]').attr("id","check_"+id);
@@ -334,7 +301,7 @@
         $('#modalcheck').modal('hide');
     }
 
-    function rejectConfirmation(id) {
+    function reject(id) {
         $('#modalreject').modal('show');
         $('[name=modalButtonReject]').attr("id","reject_"+id);
     }
@@ -344,22 +311,43 @@
     }
 
     function checked(id){
-
         var id_check = id.split("_");
+        var vendor = $('#vendor_data').val();
 
         var data = {
-            id:id_check[1]
+            id:id_check[1],
+            vendor:vendor
         }
-
 
         $("#loading").show();
 
-
-        $.post('{{ url("checked/invoice") }}', data, function(result, status, xhr){
+        $.post('{{ url("approve/vendor/registration") }}', data, function(result, status, xhr){
             if (result.status == true) {
                 openSuccessGritter("Success","Data Berhasil Dihapus");
                 $("#loading").hide();
                 modalcheckhide();
+                fetchData();
+            }
+            else{
+                openErrorGritter("Success","Data Gagal Dihapus");
+            }
+        });
+    }
+
+     function deleteUser(id){
+
+        var id_delete = id.split("_");
+
+        var data = {
+            id:id_delete[1]
+        }
+        $("#loading").show();
+
+        $.post('{{ url("delete/vendor/registration") }}', data, function(result, status, xhr){
+            if (result.status == true) {
+                openSuccessGritter("Success","Data Berhasil Dihapus");
+                $("#loading").hide();
+                modalrejecthide();
                 fetchData();
             }
             else{
