@@ -65,7 +65,7 @@
       height: 50px !important;
      }
      #logo-icon {
-      padding-left: 40px !important;
+      padding-left: 20px !important;
      }
     }
   </style>
