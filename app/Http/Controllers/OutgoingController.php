@@ -812,7 +812,12 @@ class OutgoingController extends Controller
 	            	array_push($mail_to, 'ratri.sulistyorini@music.yamaha.com');
 	            	array_push($mail_to, 'abdissalam.saidi@music.yamaha.com');
 	            	array_push($mail_to, 'noviera.prasetyarini@music.yamaha.com');
-	            	array_push($mail_to, 'eko.prasetyo.wicaksono@music.yamaha.com');
+	            	if ($material_number == 'ZJ65010') {
+	            		array_push($mail_to, 'ardiyanto@music.yamaha.com');
+	            		array_push($mail_to, 'bambang.ferry@music.yamaha.com');
+	            	}else{
+	            		array_push($mail_to, 'eko.prasetyo.wicaksono@music.yamaha.com');
+	            	}
 
 			        $cc = [];
 			        $cc[0] = 'yayuk.wahyuni@music.yamaha.com';
