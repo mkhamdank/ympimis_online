@@ -95,7 +95,7 @@
         </div> -->
 
         <div class="col-md-12 col-xs-12 pl-md-5" style="margin-top: 20px;">
-        <center><img src="{{url('logo_yamaha.png')}}" style="width:300px;padding-bottom: 0px;" > </center>
+        <center><img src="{{url('logo_mirai_full.png')}}" style="width:300px;padding-bottom: 0px;" > </center>
           <form method="post" action="{{ url('register/confirm') }}">
 
             {{ csrf_field() }}
