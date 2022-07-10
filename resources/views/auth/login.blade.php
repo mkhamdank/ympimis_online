@@ -4,7 +4,7 @@
   <link rel="shortcut icon" type="image/x-icon" href="{{ url("logo_mirai.png")}}" />
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Portal PT.YMPI</title>
+  <title>Bridge For Vendor</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <link rel="stylesheet" href="{{ asset("css/login-style.css")}}">
   <link rel="stylesheet" href="{{ asset("css/bootstrap4.min.css")}}" id="bootstrap-css">
@@ -23,7 +23,7 @@
 
           {{ csrf_field() }}
           <span class="login100-form-title"  style="color: white;background-color: #605ca8;padding-bottom: 0;text-align: center;font-size: 20px;font-weight: bold;padding: 10px;border-radius: 16px;margin-top: 20px;">
-              Portal PT. YMPI
+              Bridge For Vendor
           </span>
 
           @if ($errors->has('username'))

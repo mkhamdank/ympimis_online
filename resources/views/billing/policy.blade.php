@@ -4,7 +4,7 @@
   <link rel="shortcut icon" type="image/x-icon" href="{{ url("logo_mirai.png")}}" />
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>YMPI Information System</title>
+  <title>Bridge For Vendor</title>
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <link rel="stylesheet" href="{{ asset("css/login-style.css")}}">
   <link rel="stylesheet" href="{{ asset("css/bootstrap4.min.css")}}" id="bootstrap-css">
@@ -19,23 +19,23 @@
         
 
         <div class="col-md-12 col-xs-12 pl-md-5" style="margin-top: 20px;">
-        <center><img src="{{url('logo_yamaha.png')}}" style="width:300px;padding-bottom: 0px;" > </center>
+        <center><img src="{{ url("logo_mirai.png")}}" style="width:300px;padding-bottom: 0px;" > </center>
 
             {{ csrf_field() }}
             <div>
 <h2>Kebijakan dan Privasi</h2>
 <br>
 <h5>PENGUMPULAN DAN PENGGUNAAN INFORMASI PRIBADI</h5>
-<br>
+<!-- <br>
 PT Yamaha Musical Products Indonesia adalah salah satu perusahaan Yamaha Music Indonesia yang bergerak dalam bidang Manufaktur dan perakitan alat musik tiup. Kami ingin memastikan bahwa setiap informasi yang kami kumpulkan adalah upaya Kami untuk memberikan informasi, konten, dan pengalaman yang paling bermanfaat bagi Anda. Kami berkomitmen untuk melindungi informasi pribadi Pelanggan, termasuk Anda, pengunjung media daring, vendor, mitra, dan banyak pemilik kepentingan terkait lainnya. 
-<br>
+<br> -->
 Informasi Pribadi berarti data atau informasi mengenai diri Anda yang dapat diidentifikasi secara pribadi dan diperoleh melalui media daring Kami (Aplikasi, Situs web, dll) dan media luring kami (program, toko atau hotel milik Kami, dll), seperti nama, alamat, tanggal lahir, tempat kelahiran, pekerjaan, tempat bekerja, identitas pribadi, dokumen identitas lainnya, nomor telepon, alamat surel, dan informasi lainnya yang dapat mengidentifikasi Anda sebagai pengguna.
 <br> 
 
 <br>
 <h5>RUANG LINGKUP</h5>
 <br>
-Kebijakan Privasi ini berlaku untuk semua informasi pribadi di seluruh produk/layanan PT. Yamaha Musical Products Indonesia atau perusahaan yang bekerja sama dengan PT. YMPI.
+Kebijakan Privasi ini berlaku untuk semua informasi pribadi di website ini.
 <br>
 
 <br>
@@ -72,21 +72,21 @@ Berikut adalah contoh jenis informasi pribadi yang dapat dikumpulkan beserta car
 <br>
 <h5>PENYIMPANAN</h5>
 <br>
-PT. YMPI akan menyimpan informasi pribadi selama data itu dibutuhkan untuk memenuhi tujuan data itu dikumpulkan, tujuan hukum atau bisnis, atau dibutuhkan oleh hukum. Kami biasanya akan menyimpan informasi pribadi sampai 10 tahun semenjak informasi pribadi dikumpulkan. 
+Website ini akan menyimpan informasi pribadi selama data itu dibutuhkan untuk memenuhi tujuan data itu dikumpulkan, tujuan hukum atau bisnis, atau dibutuhkan oleh hukum. Kami biasanya akan menyimpan informasi pribadi sampai 10 tahun semenjak informasi pribadi dikumpulkan. 
 <br>
 
 
 <br>
 <h5>COOKIE DAN TEKNOLOGI LAINNYA</h5>
 <br>
-Situs web, layanan online, pesan email PT YMPI. Teknologi ini membantu kami memahami perilaku pengguna secara lebih baik, memberi tahu kami bagian di situs web yang dikunjungi orang. 
+Situs web, layanan online, pesan email website. Teknologi ini membantu kami memahami perilaku pengguna secara lebih baik, memberi tahu kami bagian di situs web yang dikunjungi orang. 
 <br>
-Kami menggunakan informasi ini untuk memahami dan menganalisis tren, menjalankan situs, mempelajari perilaku pengguna di situs, menyempurnakan produk dan layanan kami, serta mengumpulkan informasi demografis tentang basis pengguna kami secara keseluruhan. PT YMPI  dapat menggunakan informasi ini layanan iklan kami. 
+Kami menggunakan informasi ini untuk memahami dan menganalisis tren, menjalankan situs, mempelajari perilaku pengguna di situs, menyempurnakan produk dan layanan kami, serta mengumpulkan informasi demografis tentang basis pengguna kami secara keseluruhan. Website ini dapat menggunakan informasi ini layanan iklan kami. 
 <br>
 <br>
 <h5>LAINNYA</h5>
 <br>
-Undang-undang, proses hukum, litigasi, dan/atau permintaan dari lembaga publik maupun pemerintah di dalam atau luar negara domisili Anda mungkin mengharuskan PT. YMPI  mengungkapkan informasi pribadi Anda. Kami juga dapat mengungkapkan informasi tentang Anda jika kami menilai bahwa pengungkapan untuk tujuan keamanan nasional, penegakan hukum, atau masalah lain demi kepentingan publik harus atau perlu dilakukan. 
+Undang-undang, proses hukum, litigasi, dan/atau permintaan dari lembaga publik maupun pemerintah di dalam atau luar negara domisili Anda mungkin mengharuskan Website  mengungkapkan informasi pribadi Anda. Kami juga dapat mengungkapkan informasi tentang Anda jika kami menilai bahwa pengungkapan untuk tujuan keamanan nasional, penegakan hukum, atau masalah lain demi kepentingan publik harus atau perlu dilakukan. 
 <br>
 Kami juga dapat mengungkapkan informasi tentang Anda jika kami menilai bahwa pengungkapan tersebut dianggap perlu untuk menegakkan persyaratan dan ketentuan kami atau melindungi operasional kami maupun pengguna. Selain itu, jika terjadi reorganisasi, merger, atau penjualan, kami dapat mengalihkan setiap dan semua informasi pribadi yang kami kumpulkan ke pihak ketiga terkait. 
 <br>
@@ -94,21 +94,21 @@ Kami juga dapat mengungkapkan informasi tentang Anda jika kami menilai bahwa pen
 <br>
 <h5>PERLINDUNGAN INFORMASI PRIBADI</h5>
 <br>
-PT. YMPI menangani keamanan informasi pribadi Anda dengan sangat serius. Layanan PT. YMPI melindungi informasi pribadi Anda selama pengalihan menggunakan enkripsi.
+Website ini menangani keamanan informasi pribadi Anda dengan sangat serius. Layanan Website ini melindungi informasi pribadi Anda selama pengalihan menggunakan enkripsi.
 Ketika Anda menggunakan fitur pembaca, pemutar video, dan layanan lainnya yang berisi konten berlisensi, watermark berisi informasi pribadi dan informasi non-pribadi pada konten Anda dapat dilihat oleh pihak lain dan dikumpulkan, atau digunakan oleh mereka. Dalam hal ini, Anda bertanggung jawab atas informasi pribadi dan informasi non-pribadi dalam konten tersebut. Hati-hati saat menggunakan fitur tersebut pada perangkat publik atau perangkat yang dapat digunakan bersama-sama dengan pihak lain. 
 <br>
 <br>
 
 <h5>INTEGRITAS DAN PENYIMPANAN INFORMASI PRIBADI</h5>
 <br>
-PT. YMPI akan memudahkan Anda menjaga keakuratan, kelengkapan, dan kebaruan informasi pribadi Anda. Kami akan menyimpan informasi pribadi Anda selama diperlukan untuk memenuhi tujuan yang dijelaskan dalam Kebijakan Privasi ini, kecuali jika masa penyimpanan yang lebih lama diperlukan atau diizinkan oleh undang-undang. 
+Website ini akan memudahkan Anda menjaga keakuratan, kelengkapan, dan kebaruan informasi pribadi Anda. Kami akan menyimpan informasi pribadi Anda selama diperlukan untuk memenuhi tujuan yang dijelaskan dalam Kebijakan Privasi ini, kecuali jika masa penyimpanan yang lebih lama diperlukan atau diizinkan oleh undang-undang. 
 
 <br>
 
 <br>
 <h5>AKSES KE INFORMASI PRIBADI</h5>
 <br>
-Anda dapat membantu memastikan bahwa informasi kontak dan preferensi Anda sudah akurat, lengkap, dan terbaru dengan log in ke akun Anda atau menghubungi kami. Untuk informasi pribadi lain yang kami simpan, kami akan memberi Anda akses untuk tujuan apapun, termasuk guna meminta kami mengoreksi data yang tidak akurat jika PT. YMPI tidak wajib menyimpannya berdasarkan hukum atau untuk keperluan bisnis yang sah. Kami dapat menolak untuk memproses permintaan yang tidak serius/mengganggu, membahayakan privasi orang lain, sangat tidak praktis, atau yang aksesnya tidak diwajibkan oleh hukum setempat. Permohonan akses, koreksi dapat diajukan dengan menghubungi kami. 
+Anda dapat membantu memastikan bahwa informasi kontak dan preferensi Anda sudah akurat, lengkap, dan terbaru dengan log in ke akun Anda atau menghubungi kami. Untuk informasi pribadi lain yang kami simpan, kami akan memberi Anda akses untuk tujuan apapun, termasuk guna meminta kami mengoreksi data yang tidak akurat jika Website ini tidak wajib menyimpannya berdasarkan hukum atau untuk keperluan bisnis yang sah. Kami dapat menolak untuk memproses permintaan yang tidak serius/mengganggu, membahayakan privasi orang lain, sangat tidak praktis, atau yang aksesnya tidak diwajibkan oleh hukum setempat. Permohonan akses, koreksi dapat diajukan dengan menghubungi kami. 
 <br>
 
 <br>
@@ -120,7 +120,7 @@ Semua informasi yang Anda berikan dapat ditransfer atau diakses oleh entitas di 
 <br>
 <h5>NOTIFIKASI TENTANG PERUBAHAN</h5>
 <br>
-PT. YMPI dapat memperbarui Kebijakan Privasi ini dari waktu ke waktu. Bila kami melakukan perubahan penting pada kebijakan, pemberitahuan akan diposting di situs web kami bersama Kebijakan Privasi yang telah diperbarui. 
+Website ini dapat memperbarui Kebijakan Privasi ini dari waktu ke waktu. Bila kami melakukan perubahan penting pada kebijakan, pemberitahuan akan diposting di situs web kami bersama Kebijakan Privasi yang telah diperbarui. 
 <br>
 
 <br>

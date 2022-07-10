@@ -6,7 +6,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta content="width=device-width, user-scalable=yes, initial-scale=1.0" name="viewport">
-  <title>Portal PT. YMPI</title>
+  <title>Bridge For Vendor</title>
   <link rel="stylesheet" href="{{ url("css/bootstrap4.min.css")}}">
   <link rel="stylesheet" href="{{ url("css/dashboard/style.min.css")}}">
   <link rel="stylesheet" href="{{ asset("bower_components/font-awesome/css/font-awesome.min.css")}}">
