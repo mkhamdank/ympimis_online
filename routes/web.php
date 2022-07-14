@@ -256,6 +256,14 @@ Route::group(['nav' => 'S0', 'middleware' => 'permission'], function(){
 
 	Route::get('index/kensa/lti/report', 'OutgoingController@indexReportKensaLti');
 	Route::get('fetch/kensa/lti/report', 'OutgoingController@fetchReportKensaLti');
+
+	//CPP
+	Route::get('index/outgoing/cpp/input', 'OutgoingController@indexInputCpp');
+	Route::post('index/outgoing/cpp/confirm', 'OutgoingController@confirmInputCpp');
+	Route::get('fetch/outgoing/cpp/material', 'OutgoingController@fetchMaterialCpp');
+
+	Route::get('index/kensa/cpp/report', 'OutgoingController@indexReportKensaCpp');
+	Route::get('fetch/kensa/cpp/report', 'OutgoingController@fetchReportKensaCpp');
 });
 
 Route::get('index/outgoing/ng_rate/{vendor}', 'OutgoingController@indexNgRate');
